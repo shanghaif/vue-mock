@@ -1,199 +1,250 @@
 <template>
-  <div class="homePage">
-    <div class="leftAside">
-      <el-menu
-        default-active="2"
-        class="el-menu-vertical-demo"
-        @open="handleOpen"
-        @close="handleClose"
-        background-color="#545c64"
-        text-color="#fff"
-        active-text-color="#ffd04b"
-        :default-openeds='selectedIndexs'
-        router
-      >
-        <el-menu-item index="2" class="systemName">
-          <i class="el-icon-menu"></i>
-          <span slot="title">后台管理系统</span>
-        </el-menu-item>
-        <el-menu-item index="statistics">
+  <div class="Home">
+    <el-container class="main">
+      <el-aside class="asideContainer" style="width:auto;">
+        <div class="logo" :class="{'logoCollapse':isCollapse}">
+          <span></span>
+          <strong>
+            <i v-if="!isCollapse">医帆家医</i>
+            <i v-else></i>
+          </strong>
+        </div>
+        <el-menu :unique-opened="true" :default-active="defaultActive" router :collapse="isCollapse"
+         background-color="#121432" text-color="#fff" active-text-color="#ffd04b">
+          <el-menu-item index="statistics">
           <i class="el-icon-setting"></i>
           <span slot="title" >首页</span>
         </el-menu-item>
         <el-submenu index="1">
           <template slot="title">
             <i class="el-icon-location"></i>
-            <span slot="title">记录好友</span>
+            <span slot="title">资讯管理</span>
           </template>
           <el-menu-item-group>
-            <el-menu-item index="aPage" >获取好友列表</el-menu-item>
-            <el-menu-item index="bPage">敏感词汇删查</el-menu-item>
+            <el-menu-item index="aPage" >咨询记录</el-menu-item>
+            <el-menu-item index="bPage">咨询设置</el-menu-item>
           </el-menu-item-group>
           <el-submenu index="1-4">
             <span slot="title">选项4</span>
             <el-menu-item index="1-4-1">选项1</el-menu-item>
           </el-submenu>
         </el-submenu>
-         <!-- <el-submenu index="2">
+        <el-menu-item index="statistics">
+          <i class="el-icon-setting"></i>
+          <span slot="title" >预警数据</span>
+        </el-menu-item>
+        <el-menu-item index="statistics">
+          <i class="el-icon-setting"></i>
+          <span slot="title" >健康讲座</span>
+        </el-menu-item>
+        <el-submenu index="2-1">
           <template slot="title">
             <i class="el-icon-location"></i>
-            <span slot="title">记录好友</span>
+            <span slot="title">患者管理</span>
           </template>
           <el-menu-item-group>
-            <el-menu-item index="aPage">获取好友列表</el-menu-item>
+            <el-menu-item index="aPage" >患者列表</el-menu-item>
+            <el-menu-item index="bPage">待续约</el-menu-item>
+            <el-menu-item index="bPage">检测记录</el-menu-item>
+            <el-menu-item index="aPage" >待随访</el-menu-item>
+            <el-menu-item index="bPage">健康消息</el-menu-item>
+            <el-menu-item index="bPage">生日提醒</el-menu-item>
+            <el-menu-item index="aPage" >广播通知</el-menu-item>
           </el-menu-item-group>
         </el-submenu>
-        <el-menu-item index="3">
-          <i class="el-icon-document"></i>
-          <span slot="title">导航三</span>
-        </el-menu-item>
-        <el-menu-item index="4">
-          <i class="el-icon-setting"></i>
-          <span slot="title">导航四</span>
-        </el-menu-item> -->
-      </el-menu>
-    </div>
-    <div class="contentTrunk">
-      <header>
-        <div class="isShow">
-          <el-button
-            type="primary"
-            v-if="isCollapse"
-            icon="el-icon-s-unfold"
-            @click="btnLeft"
-            >收起</el-button
-          >
-          <el-button
-            type="primary"
-            v-else
-            icon="el-icon-s-fold"
-            @click="btnLeft"
-            >展开</el-button
-          >
-        </div>
-        <div class="tools">
-          <!-- <img src="@/assets/images/logo.png" alt="" /> -->
-          <el-dropdown>
-            <el-button>
-              你好！欢迎登陆<i class="el-icon-setting el-icon--right"></i>
-            </el-button>
+        <el-submenu index="3">
+          <template slot="title">
+            <i class="el-icon-location"></i>
+            <span slot="title">设备管理</span>
+          </template>
+          <el-menu-item-group>
+            <el-menu-item index="aPage" >居间宝设备</el-menu-item>
+            <el-menu-item index="bPage">诊间宝设备</el-menu-item>
+          </el-menu-item-group>
+        </el-submenu>
+        <el-submenu index="4">
+          <template slot="title">
+            <i class="el-icon-location"></i>
+            <span slot="title">权限设置</span>
+          </template>
+          <el-menu-item-group>
+            <el-menu-item index="aPage" >机构认证</el-menu-item>
+            <el-menu-item index="bPage">用户设置</el-menu-item>
+            <el-menu-item index="bPage">角色设置</el-menu-item>
+          </el-menu-item-group>
+        </el-submenu>
+        </el-menu>
+      </el-aside>
+      
+      <el-container>
+        <el-header class="loginBox">
+          <div class="collapse" @click="collapseBtn">
+            <el-button icon="el-icon-s-fold" v-if="isCollapse">展开</el-button>
+            <el-button icon="el-icon-s-unfold" v-else>收起</el-button>
+          </div>
+          <div class="loginContainer">
+            <span class="userImg">
+                <img src="" alt="">
+            </span>
+            <span class="userName" v-if="userName">hi! {{userName}}</span>
+            <router-link v-else to="/login">登录</router-link>
+            <el-dropdown>
+            <i class="el-icon-setting" style="margin-right: 15px;margin-left: 10px;"></i>
             <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item>修改密码</el-dropdown-item>
-              <el-dropdown-item>立即登录</el-dropdown-item>
+              <el-dropdown-item @click.native="changePsw">修改密码</el-dropdown-item>
+              <el-dropdown-item @click.native="logout">退出登录</el-dropdown-item>
             </el-dropdown-menu>
-          </el-dropdown>
-        </div>
-      </header>
-      <div class="trunk">
-        <div class="coreTrunk">
-          <!-- <breadCrumb></breadCrumb> -->
+            </el-dropdown>
+          </div>
+        </el-header>
+        <el-main class="mainContainer">
           <keep-alive>
-            <router-view></router-view>
-          </keep-alive>
-        </div>
-      </div>
-    </div>
+				    <router-view></router-view>
+				  </keep-alive>
+        </el-main>
+      </el-container>
+    </el-container>
   </div>
 </template>
 
 <script>
-import axios from "axios";
+
 export default {
-  data() {
+  data () {
     return {
-      selectedIndexs:['1'],
-      isCollapse: true,
-      setBlock: false,
-    };
+      userName:'',
+      isCollapse:false
+    }
   },
   computed: {
-    defaultActive: function () {
-      return this.$route.path.replace("/", "");
+			defaultActive: function(){
+				return this.$route.path.replace('/', '');
+			}
+		},
+  methods:{
+    collapseBtn(){
+      this.isCollapse = !this.isCollapse
     },
+    changePsw(){
+      this.$router.push('/changePassword')
+    },
+    // async logout(){
+    //   const logoutResult = data => post(`${API}/administrator/logout`);
+    //   try{
+    //       const detailData = await logoutResult();
+    //       if(detailData.data.status == 401){
+    //         localStorage.clear()
+    //           this.$message({
+    //               type: 'success',
+    //               message: '退出成功!'
+    //           });
+    //       }else{
+    //           throw new Error('获取数据失败');
+    //       }
+    //   }catch(err){
+    //       console.log('获取数据失败', err);
+    //   }
+    // }
   },
-  methods: {
-    handleOpen(key, keyPath) {
-      console.log(key, keyPath);
-    },
-    handleClose(key, keyPath) {
-      console.log(key, keyPath);
-    },
-    btnLeft() {
-      this.isCollapse = !this.isCollapse;
-    },
+  created(){
+    let user = window.localStorage.getItem('AccountName');
+    if(user){
+      this.userName = user
+    }
   },
-  created() {},
-};
+  
+}
 </script>
 
-<style lang="less" scoped>
-.homePage {
-  display: flex;
-  background: rgba(246, 249, 253, 1);
-  .leftAside {
-    width: auto;
-    height: 100vh;
-    background: #304156;
-    float: left;
-    .systemName {
-      width: 100%;
+<style lang='less' scoped>
+.Home{
+  height: 100%;
+  .main{
+    border:1px solid #eee;
+    height: 100%;
+    min-width: 800px;
+    min-height: 600px;
+  }
+  .asideContainer{
+    background-color: rgb(238, 241, 246);
+    .menuTitle{
+      vertical-align:top;
+    }
+    .logo{
       height: 60px;
-      line-height: 60px;
-      background: #3c8dbc;
-      text-align: center;
-    }
-  }
-  .contentTrunk {
-    flex: 1;
-    height: 60px;
-    background: white;
-    header {
-      padding: 0 20px;
+      background-color: rgba(18, 20, 50, 1);
       display: flex;
-      .isShow {
-        width: 20%;
-        line-height: 58px;
-        float: left;
+      justify-content: center;
+      align-items: center;
+      width: 200px;
+      span{
+        display: inline-block;
+        width: 30px;
+        height: 30px;
+        background: url(../assets/images/login/qr_code.png) no-repeat;
+        background-size: 100% 100%;
+        margin-right: 5px;
       }
-      .tools {
-        flex: 1;
-        line-height: 60px;
-        text-align: right;
-        img {
-          width: 24px;
-          height: 24px;
-          border-radius: 20px;
-          vertical-align: middle;
-        }
-        .el-button {
-          background: transparent;
-          border: none;
+      strong{
+        color: #fff;
+        i{
+          font-style: normal;
         }
       }
     }
-    .trunk {
-      width: calc(100% - 28px);
-      padding: 14px;
-      .coreTrunk {
-        padding: 10px;
-        background: white;
-        /deep/.el-breadcrumb {
-          padding-bottom: 10px;
-        }
+    .logoCollapse{
+      width: auto;
+     
+    }
+  }
+  .el-header {
+    background-color: #3c8dbc;
+    color: #333;
+    line-height: 60px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .el-aside {
+    background-color:  rgba(18, 20, 50, 1);
+  }
+  .el-menu{
+    border: none;
+  }
+  .el-submenu__title i{
+    color: #fff;
+  }
+
+  .userName{
+    font-size: 20px;
+    color: #fff;
+  }
+  .loginBox{
+    display: flex;
+    align-items: center;
+    justify-content:space-between;
+    .loginContainer{
+      .userImg{
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        // background: url(../assets/images/logo.png) no-repeat;
+        background-size: contain;
+        vertical-align: top;
+      }
+      .el-icon-setting{
+        color: #fff;
       }
     }
   }
+  .mainContainer{
+    padding-top: 0;
+  }
+  
+  
 }
-/deep/ .el-menu-vertical-demo:not(.el-menu--collapse) {
-  width: 200px;
-  min-height: 400px;
+/deep/ .el-menu-item{
+  color: white !important;
 }
-// /deep/ .el-menu-item,
-// .el-submenu,
-// .el-submenu__title {
-//   color: white;
-// }
-// /deep/ .el-menu {
-//   background: #304156 !important;
-// }
 </style>

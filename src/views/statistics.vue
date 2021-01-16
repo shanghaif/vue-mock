@@ -1,10 +1,12 @@
 <template>
   <div class="home clearfix">
     <!-- <bloodcharts></bloodcharts> -->
-    <patientAskCharts></patientAskCharts>
+    <patientAskCharts :echarsDatas = patientAskData></patientAskCharts>
     <userTypes></userTypes>
-    <userGrowthId></userGrowthId>
+    <userGrowthId :echarsDatas = userGrowthData></userGrowthId>
     <todayWarnId></todayWarnId>
+    <testCharts></testCharts>
+    <ecgChart></ecgChart>
     <div id="login_container"></div>
   </div>
 </template>
@@ -23,34 +25,43 @@ import userTypes from '../components/echarts/homeEcharts/userTypes'
 import userGrowthId from '../components/echarts/homeEcharts/userGrowth'
 // 今日预警
 import  todayWarnId from '../components/echarts/homeEcharts/todayWarn'
+import testCharts from '../components/echarts/homeEcharts/testCharts'
+// 心电图
+import ecgChart from '../components/echarts/patientEcharts/ecgChart'
 export default {
   components: {
     // bloodcharts,
     patientAskCharts,
     userTypes,
     userGrowthId,
-    todayWarnId
+    todayWarnId,
+    testCharts,
+    ecgChart
   },
   data() {
-    return {};
+    return {
+      message:'2222',
+      // 患者咨询
+      patientAskData:[],
+      // 用户增长
+      userGrowthData:[]
+    };
   },
-  mounted() {},
+  mounted() {
+    // mock的数据
+    get(`/echarts`).then(res => {
+      console.log(res.data.patientAsk,'8888')
+      this.patientAskData.push(res.data.patientAsk)
+      this.userGrowthData.push(res.data.userGrowth)
+    })
+  },
   created() {
     console.log(patientAskCharts);
-    // 模拟mock数据
-    // get('/echarts').then(res => {
-    //   console.log(res,'8888')
-    // })
-    get(`/login`).then(res => {
-      console.log(res,'8888')
-      this.$cookies.set('name',res.name)
-    })
-    // get(`${base.sq}/echarts`).then(res => {
-    //   console.log(res,'9999')
-    // })
+    
   },
   methods: {
 
   },
+  
 };
 </script>

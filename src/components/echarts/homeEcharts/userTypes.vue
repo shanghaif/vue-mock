@@ -31,7 +31,7 @@ export default {
   },
   mounted() {
     this.initCharts();
-    document.getElementById('userTypesId').style.width = '31'+'%';
+    document.getElementById('userTypesId').style.width = '32'+'%';
     let shopCharts = this.$echarts.init(
     document.getElementById("userTypesId")
 );
@@ -103,7 +103,7 @@ shopCharts.resize();//直接加这句即可
   background: #ffffff;
   box-shadow: 0px 0px 60px 0px rgba(98, 146, 213, 0.16);
   border-radius: 18px;
-  padding: 38px 0 0 24px;
    margin-bottom: 20px;
+   padding: 10px 0;
 }
 </style>

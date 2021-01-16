@@ -31,14 +31,14 @@ export default {
   },
   mounted() {
     this.initCharts();
-    document.getElementById('todayWarnId').style.width = '30'+'%';
-    let shopCharts = this.$echarts.init(
-document.getElementById("todayWarnId")
-);
+    // 改变图表的大小
+    document.getElementById('todayWarnId').style.width = '32'+'%';
+    let shopCharts = this.$echarts.init(document.getElementById("todayWarnId"));
+    shopCharts.resize();
 
-shopCharts.resize();//直接加这句即可
-
-// shopCharts.setOption({...})
+  },
+  created(){
+    
   },
   methods: {
     initCharts() {
@@ -134,6 +134,9 @@ shopCharts.resize();//直接加这句即可
   background: #ffffff;
   box-shadow: 0px 0px 60px 0px rgba(98, 146, 213, 0.16);
   border-radius: 18px;
-  padding: 38px 0 0 24px;
+  // padding: 38px 0 0 24px;
 }
 </style>
+
+
+

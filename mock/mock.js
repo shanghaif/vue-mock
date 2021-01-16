@@ -35,7 +35,7 @@ module.exports = [
             "job|1": ["web", "UI", "python", "php"] //工作是数组中的一个
         }]
     }),
-    Mock.mock('url.echarts', () => {
+    Mock.mock(url.echarts, () => {
         return {
             code: 1,
             data: {
@@ -57,9 +57,29 @@ module.exports = [
                 },
                 todayWarn: {
                     name: '今日预警',
+                    type: "pie",
                     data: [
                         { value: 8821, name: '血糖预警' },
                         { value: 6761, name: '血压预警' }
+                    ]
+                },
+                tests: {
+                    name: '今日预警',
+                    type: "pie",
+                    data: [
+                        { value: 8821, name: '血糖预警' },
+                        { value: 6761, name: '血压预警' }
+                    ]
+                },
+                userGrowth:{
+                    name: '用户增长',
+                    type: "bar",
+                    data:  [
+                        ['product', '2015', '2016', '2017'],
+                        ['Matcha Latte', 43.3, 85.8, 93.7],
+                        ['Milk Tea', 83.1, 73.4, 55.1],
+                        ['Cheese Cocoa', 86.4, 65.2, 82.5],
+                        ['Walnut Brownie', 72.4, 53.9, 39.1]
                     ]
                 }
             }

@@ -8,13 +8,6 @@ import store from '../store/index'
 // 环境的切换
 // process.env.VUE_APP_BASE_URL   是各个环境下的基础域名的定义  ---到时候记得修改生产环境下的变量（.env.build）
 axios.defaults.baseURL = process.env.VUE_APP_BASE_URL
-// if (process.env.NODE_ENV == 'development') {    
-//     axios.defaults.baseURL = '/api';
-// } else if (process.env.NODE_ENV == 'debug') {    
-//     axios.defaults.baseURL = '';
-// } else if (process.env.NODE_ENV == 'production') {    
-//     axios.defaults.baseURL = 'http://api.123dailu.com/';
-// }
 
 // 请求超时时间
 axios.defaults.timeout = 10000;
@@ -82,12 +75,8 @@ axios.interceptors.response.use(
                     }, 1000);                    
                     break; 
                 // 404请求不存在                
-                case 404:                    
-                    // Toast({                        
-                    //     message: '网络请求不存在',                        
-                    //     duration: 1500,                        
-                    //     forbidClick: true                    
-                    // }); 
+                case 404:           
+                    this.$router.push('/notFound')
                     console.log('网络请求不存在')                   
                 break;                
                 // 其他错误，直接抛出错误提示                
