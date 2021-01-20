@@ -21,19 +21,19 @@
             <span slot="title">资讯管理</span>
           </template>
           <el-menu-item-group>
-            <el-menu-item index="aPage" >咨询记录</el-menu-item>
-            <el-menu-item index="bPage">咨询设置</el-menu-item>
+            <el-menu-item index="AskRecord" >咨询记录</el-menu-item>
+            <el-menu-item index="AskSet">咨询设置</el-menu-item>
           </el-menu-item-group>
           <el-submenu index="1-4">
             <span slot="title">选项4</span>
             <el-menu-item index="1-4-1">选项1</el-menu-item>
           </el-submenu>
         </el-submenu>
-        <el-menu-item index="statistics">
+        <el-menu-item index="WarnData">
           <i class="el-icon-setting"></i>
           <span slot="title" >预警数据</span>
         </el-menu-item>
-        <el-menu-item index="statistics">
+        <el-menu-item index="HealthLecture">
           <i class="el-icon-setting"></i>
           <span slot="title" >健康讲座</span>
         </el-menu-item>
@@ -43,8 +43,8 @@
             <span slot="title">患者管理</span>
           </template>
           <el-menu-item-group>
-            <el-menu-item index="aPage" >患者列表</el-menu-item>
-            <el-menu-item index="bPage">待续约</el-menu-item>
+            <el-menu-item index="PatientList" >患者列表</el-menu-item>
+            <el-menu-item index="WaitAppointment">待续约</el-menu-item>
             <el-menu-item index="bPage">检测记录</el-menu-item>
             <el-menu-item index="aPage" >待随访</el-menu-item>
             <el-menu-item index="bPage">健康消息</el-menu-item>
@@ -78,10 +78,10 @@
       
       <el-container>
         <el-header class="loginBox">
-          <div class="collapse" @click="collapseBtn">
+          <!-- <div class="collapse" @click="collapseBtn">
             <el-button icon="el-icon-s-fold" v-if="isCollapse">展开</el-button>
             <el-button icon="el-icon-s-unfold" v-else>收起</el-button>
-          </div>
+          </div> -->
           <div class="loginContainer">
             <span class="userImg">
                 <img src="" alt="">
@@ -122,9 +122,9 @@ export default {
 			}
 		},
   methods:{
-    collapseBtn(){
-      this.isCollapse = !this.isCollapse
-    },
+    // collapseBtn(){
+    //   this.isCollapse = !this.isCollapse
+    // },
     changePsw(){
       this.$router.push('/changePassword')
     },
@@ -198,7 +198,7 @@ export default {
     }
   }
   .el-header {
-    background-color: #3c8dbc;
+    background-color: white;
     color: #333;
     line-height: 60px;
     display: flex;
@@ -221,20 +221,24 @@ export default {
   }
   .loginBox{
     display: flex;
-    align-items: center;
+    align-items: right;
     justify-content:space-between;
+    margin-bottom: 1%;
+    position: relative;
     .loginContainer{
+      position: absolute;
+      right: 20px;
       .userImg{
         display: inline-block;
-        width: 20px;
-        height: 20px;
-        border-radius: 50%;
-        // background: url(../assets/images/logo.png) no-repeat;
-        background-size: contain;
-        vertical-align: top;
+        width: 40px;
+        height:40px;
+        background: url('../assets/images/login/login_bg.png') no-repeat ;
+        background-size: cover;
+        vertical-align: -14%;
+        margin-right: 10px;
       }
       .el-icon-setting{
-        color: #fff;
+        color: rgba(18, 20, 50, 0.6);
       }
     }
   }
@@ -244,7 +248,13 @@ export default {
   
   
 }
+/deep/ .el-container{
+  background:rgba(246, 249, 253, 1) ;
+}
 /deep/ .el-menu-item{
   color: white !important;
+}
+/deep/ .el-main{
+  padding: 0px !important;
 }
 </style>

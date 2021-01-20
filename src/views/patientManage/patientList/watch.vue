@@ -1,0 +1,1071 @@
+<template>
+  <div class="patient_list_watch">
+    <div class="patient_content">
+      <div class="user_block" v-show="true">
+        <div class="user_msg_bar">
+          <img src="@/assets/images/patientList/userLabel.png" alt="" />
+          <p>用户标签</p>
+        </div>
+        <div class="user_label_msg">
+          <div class="photo_contanier">
+            <div class="user_photo">
+              <img src="@/assets/images/login/qr_code.png" alt="" />
+            </div>
+            <div class="user_detail clearfix">
+              <p><span>昵称：</span>爷爷</p>
+              <p><span>会员级别：</span>Vip</p>
+              <p><span>邀请人：</span>细小没</p>
+              <p><span>会员有效期：</span>2019-11-12至2020-11-12日</p>
+            </div>
+          </div>
+          <p class="label"><span>标签：</span>脆性糖尿病，容易愤怒，很有钱</p>
+          <p class="label">
+            <span>下次随访：</span>2020年11月20日通知复诊血常规检查，系主任
+            2020-10-29 10:23
+          </p>
+        </div>
+      </div>
+      <!--  基本信息-->
+      <div class="user_block" v-show="true">
+        <div class="user_msg_bar">
+          <img src="@/assets/images/patientList/userLabel.png" alt="" />
+          <p>基本信息</p>
+        </div>
+        <div class="base_msg_container clearfix">
+          <p><span>姓名：</span>嘻嘻嘻</p>
+          <p><span>籍贯：</span>河北</p>
+          <p><span>性别：</span>女</p>
+          <p><span>文化程度：</span>本科</p>
+          <p><span>民族：</span>汉</p>
+          <p><span>职业：</span>老师</p>
+          <p><span>出生日期：</span>1985-45-63</p>
+          <p><span> 现住址（通讯地址）：</span>北京通州区亦庄经济开大去</p>
+          <p><span> 国籍</span>中国</p>
+          <p><span>工作单位：</span>康波浩瀚（北京）科技有限公司</p>
+          <p><span>婚姻状况：</span>已婚</p>
+          <p><span>定点医疗单位：</span>火神战场医院</p>
+          <div class="fill_more">
+            <p>特殊类型人群：</p>
+            <div class="fill_more_type">
+              <p>低保</p>
+              <p>低保</p>
+            </div>
+          </div>
+          <div class="fill_more">
+            <p>医疗费用类型：</p>
+            <div class="fill_more_type">
+              <p>低保</p>
+              <p>低保</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--  健康信息-->
+      <div class="user_block" v-show="true">
+        <div class="user_msg_bar">
+          <img src="@/assets/images/patientList/userLabel.png" alt="" />
+          <p>基本信息</p>
+        </div>
+        <div class="health_msg_container clearfix">
+          <div class="personal_msg">
+            <p><span>血型：</span>O</p>
+            <p><span>RH阴性：</span>h</p>
+            <p><span>身高：</span>女</p>
+            <p><span>体重：</span>本科</p>
+            <p><span>腰围：</span>汉</p>
+            <p><span>臀围：</span>老师</p>
+            <p><span>BMI：</span>1985-45-63</p>
+            <p><span> 腰：臀：</span>北京通州区亦庄经济开大去</p>
+            <p>
+              <span> 药物过敏史：</span
+              >北京通州区亦庄经济开大去北京通州区亦庄经济开大北京通州区亦庄经济开大去去
+            </p>
+          </div>
+          <div class="personal_record">
+            <div class="before_history">
+              <h6>既往史</h6>
+              <p><span>疾病：</span>糖尿病2018-22-01 高血压2020-11-02</p>
+              <p><span>手术：</span>无</p>
+              <p><span>外伤：</span>无</p>
+              <p><span>输血：</span>无</p>
+            </div>
+
+            <div class="family_history">
+              <h6>既往史</h6>
+              <div class="family">
+                <p>父亲：</p>
+                <div class="family_type clearfix">
+                  <p>高血压</p>
+                  <p>唐学呀</p>
+                </div>
+              </div>
+              <div class="family">
+                <p>母亲：</p>
+                <div class="family_type clearfix">
+                  <p>高血压</p>
+                  <p>唐学呀</p>
+                </div>
+              </div>
+              <div class="family">
+                <p>兄弟姐妹：</p>
+                <div class="family_type clearfix">
+                  <p>高血压</p>
+                  <p>唐学呀</p>
+                </div>
+              </div>
+              <div class="family">
+                <p>子女：</p>
+                <div class="family_type clearfix">
+                  <p>高血压</p>
+                  <p>唐学呀</p>
+                </div>
+              </div>
+              <div class="family">
+                <p>遗传病史：</p>
+                <div class="family_type clearfix">
+                  <p>高血压</p>
+                  <p>唐学呀</p>
+                </div>
+              </div>
+              <div class="family">
+                <p>残疾情况：</p>
+                <div class="family_type clearfix">
+                  <p>高血压</p>
+                  <p>唐学呀</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- 生活习惯 -->
+      <div class="user_block" v-show="true">
+        <div class="user_msg_bar">
+          <img src="@/assets/images/patientList/userLabel.png" alt="" />
+          <p>生活习惯</p>
+        </div>
+        <div class="life_msg_container clearfix">
+          <div class="life_left">
+            <div class="historyBlock smoking_history">
+              <h6>吸烟史</h6>
+              <p><span>是否吸烟：</span>糖尿病2018-22-01</p>
+              <p><span>开始吸烟时间：</span>1921年</p>
+              <p><span>吸烟量：</span>无</p>
+              <p><span>戒烟时间：</span>2020年</p>
+            </div>
+
+            <div class="historyBlock smoking_history">
+              <h6>饮酒史</h6>
+              <p><span>是否饮酒</span>糖尿病2018-22-01</p>
+              <p><span>饮酒类型：</span>1921年</p>
+              <p><span>饮酒量：</span>无</p>
+              <p><span>饮酒频率：</span>2020年</p>
+              <p><span>戒酒日期：</span>2020年</p>
+            </div>
+
+            <p><span>饮食习惯类型</span>糖尿病2018-22-01</p>
+            <p><span>睡眠情况</span>糖尿病2018-22-01</p>
+            <p><span>其他习惯</span>糖尿病2018-22-01</p>
+          </div>
+          <div class="life_right">
+            <div class="historyBlock smoking_history">
+              <h6>体育锻炼情况</h6>
+              <p><span>是否锻炼：</span>糖尿病2018-22-01</p>
+              <p><span>锻炼情况：</span>1921年</p>
+              <p><span>每次锻炼时间：</span>无</p>
+              <p><span>锻炼类型：</span>2020年</p>
+              <p><span>饮食习惯类型：</span>2020年</p>
+              <p><span>睡眠情况：</span>2020年</p>
+              <p><span>其他习惯：</span>2020年</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- 其他习惯 -->
+      <div class="user_block" v-show="true">
+        <div class="user_msg_bar">
+          <img src="@/assets/images/patientList/userLabel.png" alt="" />
+          <p>其他习惯</p>
+        </div>
+        <div class="other_msg_container clearfix">
+          <p><span> 户籍类型：</span>糖尿病2018-22-01</p>
+          <p><span> 所属派出所：</span>1921年</p>
+          <p><span>邮政编码：</span>无</p>
+          <p><span> Email：</span>2020年</p>
+          <p><span> 住宅电话：</span>2020年</p>
+          <p><span>联系人电话：</span>2020年</p>
+          <p><span> 联系人姓名：</span>张三</p>
+          <p><span> 暂住证：</span>张三</p>
+          <p><span> 户别：</span>张三</p>
+          <p><span> 所属居委会：</span>无</p>
+        </div>
+      </div>
+      <!-- 血糖习惯 -->
+      <div class="user_block" v-show="true">
+        <div class="user_msg_bar">
+          <img src="@/assets/images/patientList/userLabel.png" alt="" />
+          <p>血糖习惯</p>
+        </div>
+        <div class="blood_msg_container clearfix">
+
+        </div>
+      </div>
+      <!-- 血压数据 -->
+    </div>
+    <div class="patient_tool_bar">
+      <div class="set_tool_bar">
+        <div
+          class="tools_btn"
+          v-for="(item, index) in toolsBtnList"
+          :key="index"
+          @mouseenter="tool_btn_enter(index)"
+          @click="dialogShow(index)"
+          :style="{
+            background:
+              btn_index == index
+                ? 'linear-gradient(180deg, #6672FB, #7B66FB)'
+                : '',
+          }"
+        >
+          <div class="tool_container">
+            <div class="tool_img">
+              <img :src="item.imgUrl" alt="" />
+            </div>
+            <span :style="{ color: btn_index == index ? 'white' : '' }">{{
+              item.text
+            }}</span>
+          </div>
+        </div>
+      </div>
+      <div class="patient_base_msg">
+        <p>基本信息</p>
+        <el-checkbox-group
+          v-model="ischecked"
+          @change="handleCheckedCitiesChange"
+        >
+          <el-checkbox
+            v-for="(base_msg, baseIndex) in baseMsgLists"
+            :label="base_msg.id + ':' + base_msg.label"
+            :key="baseIndex"
+            >{{ base_msg.label }}</el-checkbox
+          >
+        </el-checkbox-group>
+      </div>
+    </div>
+    <!-- 发送消息 -->
+    <el-dialog
+      title="提示"
+      :visible.sync="sendMsgDialog"
+      width="30%"
+      :before-close="handleClose"
+      center
+    >
+      <el-input
+        type="textarea"
+        :rows="6"
+        placeholder="请输入消息内容"
+        v-model="send_msg_value"
+        resize="none"
+      >
+      </el-input>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="sendMsgDialog = false">取 消</el-button>
+        <el-button type="primary" @click="sendMsgDialog = false"
+          >确 定</el-button
+        >
+      </span>
+    </el-dialog>
+    <!-- 设置随访 -->
+    <el-dialog
+      title="提示"
+      :visible.sync="setFollowDialog"
+      width="30%"
+      :before-close="handleClose"
+      center
+    >
+      <div class="setFollowTime">
+        <span>设置随访时间</span>
+        <el-select v-model="value" filterable placeholder="请选择">
+          <el-option
+            v-for="item in options"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+          >
+          </el-option>
+        </el-select>
+      </div>
+      <el-input
+        type="textarea"
+        :rows="6"
+        placeholder="请输入随访内容 / 自定义内容"
+        v-model="follow_text"
+        resize="none"
+      >
+      </el-input>
+      <div style="margin-top: 15px">
+        <el-input
+          placeholder="自定义常用语"
+          v-model="phrase_text"
+          class="customPhrase"
+          style=""
+          style="height: 44px"
+        >
+          <el-button slot="append" @click="addPharse">添加</el-button>
+        </el-input>
+      </div>
+      <div class="phraseContainer">
+        <div
+          class="phraseBar"
+          v-for="(item, index) in phraseLists"
+          :key="index"
+        >
+          {{ item }}
+        </div>
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="setFollowDialog = false">取 消</el-button>
+        <el-button type="primary" @click="setFollowDialog = false"
+          >确 定</el-button
+        >
+      </span>
+    </el-dialog>
+    <!-- 新增标签 -->
+    <el-dialog
+      title="提示"
+      :visible.sync="addLabelDialog"
+      width="30%"
+      :before-close="handleClose"
+      center
+    >
+      <div class="setFollowTime">
+        <span>优先级</span>
+        <el-select v-model="value" filterable placeholder="请选择">
+          <el-option
+            v-for="item in label_rank"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+          >
+          </el-option>
+        </el-select>
+      </div>
+      <el-input
+        v-model="label_text"
+        placeholder="请输入标签内容，多个标签以“，”号区隔"
+      ></el-input>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="addLabelDialog = false">取 消</el-button>
+        <el-button type="primary" @click="addLabelDialog = false"
+          >确 定</el-button
+        >
+      </span>
+    </el-dialog>
+    <!-- 服药提醒 -->
+    <el-dialog
+      title="提示"
+      :visible.sync="warnDialog"
+      width="30%"
+      :before-close="handleClose"
+      center
+    >
+      <div class="medicine_warn">
+        <span>提醒时间</span>
+        <el-time-select
+          placeholder="起始时间"
+          v-model="medicine_start_time"
+          :picker-options="{
+            start: '08:30',
+            step: '00:15',
+            end: '18:30',
+          }"
+        >
+        </el-time-select>
+        <span class="between">至</span>
+        <el-time-select
+          placeholder="结束时间"
+          v-model="medicine_end_time"
+          :picker-options="{
+            start: '08:30',
+            step: '00:15',
+            end: '18:30',
+            minTime: medicine_end_time,
+          }"
+        >
+        </el-time-select>
+      </div>
+      <el-input
+        type="textarea"
+        :rows="4"
+        placeholder="请输入标签内容，多个标签以“，”号区隔"
+        v-model="medicine_text"
+        resize="none"
+      >
+      </el-input>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="warnDialog = false">取 消</el-button>
+        <el-button type="primary" @click="warnDialog = false">确 定</el-button>
+      </span>
+    </el-dialog>
+    <!-- 新增检测报告 -->
+    <el-dialog
+      title="提示"
+      :visible.sync="testReportDialog"
+      width="30%"
+      :before-close="handleClose"
+      center
+    >
+      <div class="addReport">
+        <span>报告名称</span>
+        <el-input
+          v-model="label_text"
+          placeholder="请输入报告名称"
+          style="width: 80%"
+        ></el-input>
+      </div>
+      <div>
+        <span style="margin-right: 2%">上传报告</span>
+        <el-upload
+          class="avatar-uploader"
+          action="#"
+          :show-file-list="false"
+          on-success=""
+          before-upload=""
+        >
+          <!-- <img v-if="imageUrl" :src="dialogImageUrl" class="avatar" />
+          <i v-else class="el-icon-plus avatar-uploader-icon"></i> -->
+          <!-- <img src="@/assets/images/login/qr_code.png" alt=""> -->
+        </el-upload>
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="testReportDialog = false">取 消</el-button>
+        <el-button type="primary" @click="testReportDialog = false"
+          >确 定</el-button
+        >
+      </span>
+    </el-dialog>
+  </div>
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+      // 发送消息
+      send_msg_value: "",
+      // 随访内容
+      follow_text: "",
+      // 服药开始和结束时间
+      medicine_start_time: "",
+      medicine_end_time: "",
+      medicine_text: "",
+      aa: false,
+      bb: false,
+      btn_index: null,
+      sendMsgDialog: false,
+      setFollowDialog: false,
+      addLabelDialog: false,
+      warnDialog: false,
+      testReportDialog: false,
+      ischecked: [],
+      toolsBtnList: [
+        {
+          imgUrl: require("@/assets/images/patientList/sendMsg.png"),
+          text: "发送消息",
+        },
+        {
+          imgUrl: require("@/assets/images/patientList/setFollow.png"),
+          text: "设置随访",
+        },
+        {
+          imgUrl: require("@/assets/images/patientList/addLabel.png"),
+          text: "新增标签",
+        },
+        {
+          imgUrl: require("@/assets/images/patientList/warn.png"),
+          text: "服药提醒",
+        },
+        {
+          imgUrl: require("@/assets/images/patientList/testReport.png"),
+          text: "新增检测报告",
+        },
+      ],
+      baseMsgLists: [
+        {
+          id: "1",
+          label: "用户标签",
+          checked: false,
+        },
+        {
+          id: "2",
+          label: "基本信息",
+          checked: false,
+        },
+        {
+          id: "3",
+          label: "健康信息",
+          checked: false,
+        },
+        {
+          id: "4",
+          label: "生活习惯",
+          checked: false,
+        },
+        {
+          id: "5",
+          label: "其他信息",
+          checked: false,
+        },
+        {
+          id: "6",
+          label: "血糖数据",
+          checked: false,
+        },
+        {
+          id: "7",
+          label: "血压数据",
+          checked: false,
+        },
+        {
+          id: "8",
+          label: "心电数据",
+        },
+        {
+          id: "9",
+          label: "检测报告",
+        },
+        {
+          id: "10",
+          label: "健康消息",
+        },
+        {
+          id: "10",
+          label: "服药提醒",
+        },
+      ],
+      options: [
+        {
+          value: "选项1",
+          label: "3天后",
+        },
+        {
+          value: "选项2",
+          label: "5天后",
+        },
+        {
+          value: "选项3",
+          label: "7天后",
+        },
+        {
+          value: "选项4",
+          label: "10天后",
+        },
+        {
+          value: "选项5",
+          label: "半个月后",
+        },
+      ],
+      // 新增标签---优先级
+      label_rank: [
+        {
+          value: "选项1",
+          label: "一级",
+        },
+        {
+          value: "选项2",
+          label: "二级",
+        },
+        {
+          value: "选项3",
+          label: "三级",
+        },
+      ],
+      label_text: "",
+      value: "",
+      // 设置随访--常用语（放一个数组里面，添加就添加到数组里面）
+      phrase_text: "",
+      phraseLists: ["糖尿病"],
+      // 基本信息
+      base_ids: [], // 存储value的数组
+      base_labels: [], // 存储label的数组
+    };
+  },
+  created() {
+    this.base_fu();
+  },
+  methods: {
+    tool_btn_enter(index) {
+      this.btn_index = index;
+      console.log(index);
+    },
+    // 弹窗
+    dialogShow(index) {
+      switch (index) {
+        case 0:
+          this.sendMsgDialog = true;
+          break;
+        case 1:
+          this.setFollowDialog = true;
+          break;
+        case 2:
+          this.addLabelDialog = true;
+          break;
+        case 3:
+          this.warnDialog = true;
+          break;
+        case 4:
+          this.testReportDialog = true;
+          break;
+        default:
+          break;
+      }
+    },
+    handleClose(done) {
+      this.$confirm("确认关闭？")
+        .then((_) => {
+          done();
+        })
+        .catch((_) => {});
+    },
+    // 多选框全选
+    handleCheckedCitiesChange(val) {
+      console.log(val, "多选框获取的值");
+      (this.base_ids = []), // 存储value的数组
+        (this.base_labels = []);
+      val.forEach((item) => {
+        const base_id = item.split(":")[0];
+        const base_label = item.split(":")[1];
+        this.base_ids.push(base_id);
+        this.base_labels.push(base_label);
+      });
+      console.log("id", JSON.parse(JSON.stringify(this.base_ids)));
+      console.log("labels", JSON.parse(JSON.stringify(this.base_labels)));
+      this.base_fu();
+    },
+    base_fu() {
+      for (let i of this.base_labels) {
+        let aas = JSON.parse(JSON.stringify(i));
+        console.log(aas);
+        switch (i) {
+          case (i = "用户标签"):
+            this.aa = true;
+            console.log("用户标签11111");
+            break;
+          case (i = "基本信息"):
+            // this.bb = true;
+            console.log("基本信息11111");
+            break;
+          case (i = "健康信息"):
+            console.log("健康信息11111");
+            break;
+          case (i = "生活习惯"):
+            console.log("生活习惯11111");
+            break;
+          case (i = "其他信息"):
+            console.log("其他信息11111");
+            break;
+          case (i = "血糖数据"):
+            console.log("血糖数据11111");
+            break;
+          case (i = "血压数据"):
+            console.log("血压数据11111");
+            break;
+          case (i = "心电数据"):
+            console.log("心电数据11111");
+            break;
+          case (i = "检测报告"):
+            console.log("检测报告11111");
+            break;
+          case (i = "健康消息"):
+            console.log("健康消息11111");
+            break;
+          case (i = "服药提醒"):
+            console.log("服药提醒11111");
+            break;
+          default:
+            break;
+        }
+      }
+    },
+    // 添加常用语的btn
+    addPharse() {
+      if (this.phrase_text == "") return;
+      this.phraseLists.push(this.phrase_text);
+      this.phrase_text = "";
+      // console.log(this.phrase_text,'添加的常用语')
+    },
+  },
+};
+</script>
+
+<style lang="less" scoped>
+.patient_list_watch {
+  height: calc(100% - 2%);
+  padding: 0% 10% 0% 1%;
+  display: flex;
+
+  .patient_content {
+    width: 80%;
+    margin-right: 1%;
+    border-radius: 20px;
+    p {
+      font-size: 18px;
+      color: #666699;
+    }
+    .user_block {
+      width: 100%;
+      border-radius: 20px;
+      margin-bottom: 2%;
+      // 查看信息中的bar
+      .user_msg_bar {
+        height: 70px;
+        position: relative;
+        img {
+          width: 100%;
+        }
+        p {
+          font-size: 20px;
+          color: white;
+          position: absolute;
+          left: 100px;
+          top: 50%;
+          transform: translate(0, -50%);
+        }
+      }
+    }
+
+    // 用户标签---板块
+    .user_label_msg {
+      padding: 3%;
+      background: white;
+      .photo_contanier {
+        display: flex;
+        margin-bottom: 1%;
+        .user_photo {
+          width: 100px;
+          border-radius: 50%;
+          margin-right: 2%;
+          border: 1px dashed rgba(102, 114, 251, 1);
+          img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+          }
+        }
+        .user_detail {
+          flex: 1;
+          padding-top: 1%;
+          p:last-child {
+            width: 40%;
+          }
+          p {
+            width: 30%;
+            font-size: 18px;
+            line-height: 40px;
+            float: left;
+            color: #666699;
+          }
+        }
+      }
+    }
+    .label {
+      line-height: 42px;
+    }
+
+    // 基本信息--板块
+    .base_msg_container {
+      padding: 3%;
+      background: white;
+      p {
+        width: 50%;
+        line-height: 42px;
+        float: left;
+      }
+      .fill_more {
+        width: 100%;
+        display: flex;
+        p {
+          width: 12%;
+        }
+        .fill_more_type {
+          flex: 1;
+          p {
+            width: auto;
+            margin: 0 1%;
+          }
+        }
+      }
+    }
+
+    // 健康信息--板块
+    .health_msg_container {
+      display: flex;
+      padding: 3%;
+      .personal_msg {
+        width: 46%;
+        margin-right: 4%;
+        p {
+          line-height: 42px;
+        }
+      }
+      .personal_record {
+        flex: 1;
+        .before_history {
+          margin-bottom: 2%;
+          h6 {
+            font-size: 20px;
+            color: #666699;
+          }
+          p {
+            line-height: 42px;
+            font-size: 18px;
+            color: #666699;
+          }
+        }
+        .family_history {
+          h6 {
+            font-size: 20px;
+            color: #666699;
+          }
+          .family {
+            display: flex;
+            p {
+              width: 16%;
+              line-height: 42px;
+            }
+            .family_type {
+              flex: 1;
+              p {
+                width: auto;
+                padding: 0 1%;
+                float: left;
+              }
+            }
+          }
+        }
+      }
+    }
+
+    // 生活习惯---板块
+    .life_msg_container {
+      display: flex;
+      padding: 3%;
+      .historyBlock {
+        margin-bottom: 2%;
+        h6 {
+          font-size: 20px;
+          color: #666699;
+        }
+      }
+      .life_left {
+        width: 50%;
+        float: left;
+        p {
+          line-height: 42px;
+        }
+        .smoking_history {
+          p {
+            line-height: 42px;
+          }
+        }
+      }
+      .life_right {
+        width: 50%;
+        float: right;
+        p {
+          line-height: 42px;
+        }
+      }
+    }
+  }
+  // 其他信息--板块
+  .other_msg_container {
+    padding: 3%;
+    p {
+      width: 50%;
+      float: left;
+      line-height: 42px;
+    }
+  }
+
+  // 血糖数据
+
+  .patient_tool_bar {
+    flex: 1;
+    width: 0;
+    .set_tool_bar {
+      width: calc(100% - 8%);
+      height: auto;
+      padding: 8% 4% 2% 4%;
+      background: white;
+      border-radius: 20px;
+      margin-bottom: 20px;
+      .tools_btn:nth-child(5) {
+        .tool_container {
+          width: 60%;
+        }
+      }
+      .tools_btn {
+        width: 100%;
+        height: 66px;
+        background: #f4f7ff;
+        border-radius: 0px 33px 33px 33px;
+        position: relative;
+        margin-bottom: 20px;
+        .tool_container {
+          position: absolute;
+          left: 50%;
+          top: 50%;
+          transform: translate(-50%, -50%);
+          .tool_img {
+            float: left;
+            img {
+              width: 30px;
+              height: 30px;
+            }
+          }
+          span {
+            margin-left: 20px;
+            color: #333366;
+          }
+        }
+      }
+    }
+    .patient_base_msg {
+      width: calc(100% - 30%);
+      height: auto;
+      padding: 3% 10% 3% 20%;
+      background: white;
+      border-radius: 20px;
+      p {
+        font-size: 18px;
+        font-family: Source Han Sans CN;
+        font-weight: 400;
+        color: #333366;
+        line-height: 38px;
+      }
+      .el-checkbox {
+        width: 100%;
+        height: 50px;
+        line-height: 50px;
+      }
+      /deep/.el-checkbox__input {
+        background: #ffffff;
+        border-radius: 4px;
+      }
+      /deep/.el-checkbox__inner {
+        width: 18px;
+        height: 18px;
+      }
+      /deep/.el-checkbox__inner::after {
+        left: 7px;
+        top: 3px;
+      }
+      /deep/.el-checkbox__label {
+        color: #333366;
+        font-size: 16px;
+      }
+    }
+  }
+  // 设置随访
+  .setFollowTime {
+    margin-bottom: 18px;
+    span {
+      font-size: 16px;
+      color: #333366;
+      margin-right: 14px;
+    }
+  }
+  /deep/.el-input-group > .el-input__inner {
+    border-radius: 26px 0 0 26px !important;
+  }
+  .phraseContainer {
+    margin-top: 12px;
+    .phraseBar {
+      width: calc(100% - 4%);
+      height: 44px;
+      font-size: 14px;
+      line-height: 44px;
+      background: #fafafa;
+      border: 1px solid #eeeeee;
+      border-radius: 27px;
+      color: #333366;
+      padding-left: 4%;
+      margin-bottom: 12px;
+    }
+  }
+  // 服药提醒
+  .medicine_warn {
+    margin-bottom: 3%;
+    span:nth-child(1) {
+      margin-right: 2%;
+    }
+    .between {
+      padding: 0 2%;
+    }
+    .el-date-editor.el-input {
+      width: 140px;
+    }
+  }
+  // 新增检测报告
+  .addReport {
+    span {
+      margin-right: 2%;
+    }
+  }
+}
+
+// input获取焦点出现边框
+/deep/.el-input__inner:focus,
+/deep/.el-textarea__inner:focus {
+  border: 1px solid rgba(102, 114, 251, 1) !important;
+  background: rgba(102, 114, 251, 0.05) !important;
+}
+/deep/.el-input__inner {
+  border: none !important;
+  background: rgba(102, 114, 251, 0.05) !important;
+}
+/deep/.el-textarea__inner {
+  border: none !important;
+  background: rgba(102, 114, 251, 0.05) !important;
+}
+/deep/.el-input-group__append {
+  border: none;
+  border-radius: 0 26px 26px 0;
+  cursor: pointer;
+}
+
+.avatar-uploader {
+  display: inline-block;
+  margin-top: 10px;
+}
+
+.avatar-uploader img {
+  width: 100px;
+  height: 100px;
+}
+
+.avatar-uploader .el-upload {
+  border: 1px dashed #d9d9d9;
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.avatar-uploader .el-upload:hover {
+  border-color: #409eff;
+}
+
+.avatar-uploader-icon {
+  font-size: 28px;
+  color: #8c939d;
+  width: 100px;
+  height: 100px;
+  line-height: 100px;
+  text-align: center;
+  background-color: #fbfdff;
+  border: 1px dashed #c0ccda;
+  border-radius: 6px;
+}
+</style>
