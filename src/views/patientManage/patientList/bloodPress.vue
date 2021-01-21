@@ -2,8 +2,8 @@
   <!-- 业绩表现 -->
   <div class="index">
     <MyEcharts
-      :id="'bloodPressId'"
-      :style="{ width: '100%', height: '330px' }"
+      :id="'exampleId'"
+      :style="{ width: '100%', height: '380px' }"
       :option="chartOption"
     >
     </MyEcharts>
@@ -27,8 +27,8 @@ export default {
   mounted() {
     this.initCharts();
     this.initCharts();
-    document.getElementById("bloodPressId").style.width = "100" + "%"
-    let shopCharts = this.$echarts.init(document.getElementById("bloodPressId"))
+    document.getElementById("exampleId").style.width = "30" + "%"
+    let shopCharts = this.$echarts.init(document.getElementById("exampleId"))
   },
   methods: {
     initCharts() {

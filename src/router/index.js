@@ -87,7 +87,49 @@ const routes = [
         path: '/WaitAppointment',
         name: 'WaitAppointment',
         component: () => import('../views/patientManage/waitAppointment'),
-        meta: ['健康管理','待预约']
+        meta: ['待预约']
+      },
+      {
+        path: '/TestRecord',
+        name: 'TestRecord',
+        component: () => import('../views/patientManage/testRecord'),
+        meta: ['检测记录']
+      },
+      {
+        path: '/WaitVisit',
+        name: 'WaitVisit',
+        component: () => import('../views/patientManage/waitVisit'),
+        meta: ['待随访']
+      },
+      {
+        path: '/HealthMsg',
+        name: 'HealthMsg',
+        component: () => import('../views/patientManage/healthMsg'),
+        meta: ['健康消息']
+      },
+      {
+        path: '/BirthdayWish',
+        name: 'BirthdayWish',
+        component: () => import('../views/patientManage/birthdayWish'),
+        meta: ['生日祝福']
+      },
+      {
+        path: '/Broadcast',
+        name: 'Broadcast',
+        component: () => import('../views/patientManage/broadcast'),
+        meta: ['广播通知']
+      },
+      {
+        path: '/LiveHome',
+        name: 'LiveHome',
+        component: () => import('../views/equipment/liveHome'),
+        meta: ['居间宝设备']
+      },
+      {
+        path: '/TreatHome',
+        name: 'TreatHome',
+        component: () => import('../views/equipment/treatHome'),
+        meta: ['诊间包设备']
       },
     ]
   },

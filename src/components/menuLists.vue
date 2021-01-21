@@ -45,11 +45,11 @@
           <el-menu-item-group>
             <el-menu-item index="PatientList" >患者列表</el-menu-item>
             <el-menu-item index="WaitAppointment">待续约</el-menu-item>
-            <el-menu-item index="bPage">检测记录</el-menu-item>
-            <el-menu-item index="aPage" >待随访</el-menu-item>
-            <el-menu-item index="bPage">健康消息</el-menu-item>
-            <el-menu-item index="bPage">生日提醒</el-menu-item>
-            <el-menu-item index="aPage" >广播通知</el-menu-item>
+            <el-menu-item index="TestRecord">检测记录</el-menu-item>
+            <el-menu-item index="WaitVisit" >待随访</el-menu-item>
+            <el-menu-item index="HealthMsg">健康消息</el-menu-item>
+            <el-menu-item index="BirthdayWish">生日提醒</el-menu-item>
+            <el-menu-item index="Broadcast" >广播通知</el-menu-item>
           </el-menu-item-group>
         </el-submenu>
         <el-submenu index="3">
@@ -58,8 +58,8 @@
             <span slot="title">设备管理</span>
           </template>
           <el-menu-item-group>
-            <el-menu-item index="aPage" >居间宝设备</el-menu-item>
-            <el-menu-item index="bPage">诊间宝设备</el-menu-item>
+            <el-menu-item index="LiveHome" >居间宝设备</el-menu-item>
+            <el-menu-item index="TreatHome">诊间宝设备</el-menu-item>
           </el-menu-item-group>
         </el-submenu>
         <el-submenu index="4">

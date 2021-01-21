@@ -1,7 +1,7 @@
 <template>
   <div class="patient_list_watch">
     <div class="patient_content">
-      <div class="user_block" v-show="true">
+      <div class="user_block" v-show="modules_block.user_label_B">
         <div class="user_msg_bar">
           <img src="@/assets/images/patientList/userLabel.png" alt="" />
           <p>用户标签</p>
@@ -26,7 +26,7 @@
         </div>
       </div>
       <!--  基本信息-->
-      <div class="user_block" v-show="true">
+      <div class="user_block" v-show="modules_block.base_msg_B">
         <div class="user_msg_bar">
           <img src="@/assets/images/patientList/userLabel.png" alt="" />
           <p>基本信息</p>
@@ -61,10 +61,11 @@
         </div>
       </div>
       <!--  健康信息-->
-      <div class="user_block" v-show="true">
+        
+      <div class="user_block" v-show="modules_block.health_msg_B">
         <div class="user_msg_bar">
           <img src="@/assets/images/patientList/userLabel.png" alt="" />
-          <p>基本信息</p>
+          <p>健康信息</p>
         </div>
         <div class="health_msg_container clearfix">
           <div class="personal_msg">
@@ -139,7 +140,7 @@
         </div>
       </div>
       <!-- 生活习惯 -->
-      <div class="user_block" v-show="true">
+      <div class="user_block" v-show="modules_block.life_habit_B">
         <div class="user_msg_bar">
           <img src="@/assets/images/patientList/userLabel.png" alt="" />
           <p>生活习惯</p>
@@ -182,7 +183,7 @@
         </div>
       </div>
       <!-- 其他习惯 -->
-      <div class="user_block" v-show="true">
+      <div class="user_block" v-show="modules_block.other_msg_B">
         <div class="user_msg_bar">
           <img src="@/assets/images/patientList/userLabel.png" alt="" />
           <p>其他习惯</p>
@@ -201,13 +202,16 @@
         </div>
       </div>
       <!-- 血糖习惯 -->
-      <div class="user_block" v-show="true">
+      <div class="user_block" v-show="modules_block.blood_data_B">
         <div class="user_msg_bar">
           <img src="@/assets/images/patientList/userLabel.png" alt="" />
           <p>血糖习惯</p>
+          <div class="detail_more_btn">
+            <el-button type="primary" round>更多资料</el-button>
+          </div>
         </div>
         <div class="blood_msg_container clearfix">
-
+          <bloodPress></bloodPress>
         </div>
       </div>
       <!-- 血压数据 -->
@@ -239,14 +243,14 @@
       </div>
       <div class="patient_base_msg">
         <p>基本信息</p>
-        <el-checkbox-group
-          v-model="ischecked"
-          @change="handleCheckedCitiesChange"
-        >
+        <el-checkbox-group v-model="ischecked">
           <el-checkbox
             v-for="(base_msg, baseIndex) in baseMsgLists"
-            :label="base_msg.id + ':' + base_msg.label"
+            :label="base_msg.id"
             :key="baseIndex"
+            v-model="base_msg.checked"
+            :checked="base_msg.checked"
+            @change="(val) => handleChecked(val, base_msg)"
             >{{ base_msg.label }}</el-checkbox
           >
         </el-checkbox-group>
@@ -308,7 +312,6 @@
           placeholder="自定义常用语"
           v-model="phrase_text"
           class="customPhrase"
-          style=""
           style="height: 44px"
         >
           <el-button slot="append" @click="addPharse">添加</el-button>
@@ -448,7 +451,11 @@
 </template>
 
 <script>
+import bloodPress from "./bloodPress";
 export default {
+  components: {
+    bloodPress,
+  },
   data() {
     return {
       // 发送消息
@@ -459,8 +466,19 @@ export default {
       medicine_start_time: "",
       medicine_end_time: "",
       medicine_text: "",
-      aa: false,
-      bb: false,
+      modules_block:{
+        user_label_B: false,
+        base_msg_B: false,
+        health_msg_B:false,
+        life_habit_B:false,
+        other_msg_B:false,
+        blood_data_B:false,
+        BloodPress_data_B:false,
+        heart_data_B:false,
+        test_report_B:false,
+        health_information_B:false,
+        medicine_warn:false
+      },
       btn_index: null,
       sendMsgDialog: false,
       setFollowDialog: false,
@@ -494,12 +512,12 @@ export default {
         {
           id: "1",
           label: "用户标签",
-          checked: false,
+          checked: true,
         },
         {
           id: "2",
           label: "基本信息",
-          checked: false,
+          checked: true,
         },
         {
           id: "3",
@@ -519,7 +537,7 @@ export default {
         {
           id: "6",
           label: "血糖数据",
-          checked: false,
+          checked: true,
         },
         {
           id: "7",
@@ -591,7 +609,7 @@ export default {
     };
   },
   created() {
-    this.base_fu();
+    // this.base_fu();
   },
   methods: {
     tool_btn_enter(index) {
@@ -628,63 +646,141 @@ export default {
         .catch((_) => {});
     },
     // 多选框全选
-    handleCheckedCitiesChange(val) {
-      console.log(val, "多选框获取的值");
-      (this.base_ids = []), // 存储value的数组
-        (this.base_labels = []);
-      val.forEach((item) => {
-        const base_id = item.split(":")[0];
-        const base_label = item.split(":")[1];
-        this.base_ids.push(base_id);
-        this.base_labels.push(base_label);
-      });
-      console.log("id", JSON.parse(JSON.stringify(this.base_ids)));
-      console.log("labels", JSON.parse(JSON.stringify(this.base_labels)));
-      this.base_fu();
+    handleChecked(val, base_msg) {
+      let ischeckMsg = JSON.parse(JSON.stringify(base_msg));
+        if (val) {
+          console.log(ischeckMsg.label);
+          switch (ischeckMsg.label) {
+            case (ischeckMsg.label = "用户标签"):
+              this.modules_block.user_label_B = true;
+              break;
+            case (ischeckMsg.label = "基本信息"):
+              this.modules_block.base_msg_B = true;
+              break;
+            case (ischeckMsg.label = "健康信息"):
+              this.modules_block.health_msg_B = true;
+              break;
+            case (ischeckMsg.label = "生活习惯"):
+              this.modules_block.life_habit_B = true;
+              break;
+            case (ischeckMsg.label = "其他信息"):
+              this.modules_block.other_msg_B = true;
+              break;
+            case (ischeckMsg.label = "血糖数据"):
+              this.modules_block.blood_data_B = true;
+              break;
+            case (ischeckMsg.label = "血压数据"):
+              this.modules_block.BloodPress_data_B = true;
+              break;
+            case (ischeckMsg.label = "心电数据"):
+              this.modules_block.heart_data_B = true;
+              break;
+            case (ischeckMsg.label = "检测报告"):
+              this.modules_block.test_report_B = true;
+              break;
+            case (ischeckMsg.label = "健康消息"):
+              this.modules_block.health_information_B = true;
+              break;
+            case (ischeckMsg.label = "服药提醒"):
+              this.modules_block.medicine_warn = true;
+              break;
+            default:
+              break;
+          }
+        } else {
+         switch (ischeckMsg.label) {
+            case (ischeckMsg.label = "用户标签"):
+              this.modules_block.user_label_B = false;
+              console.log("用户标签11111");
+              break;
+            case (ischeckMsg.label = "基本信息"):
+              this.modules_block.base_msg_B = false;
+              console.log("基本信息11111");
+              break;
+            case (ischeckMsg.label = "健康信息"):
+              this.modules_block.health_msg_B = false;
+              console.log("健康信息11111");
+              break;
+            case (ischeckMsg.label = "生活习惯"):
+              this.modules_block.life_habit_B = false;
+              console.log("生活习惯11111");
+              break;
+            case (ischeckMsg.label = "其他信息"):
+              this.modules_block.other_msg_B = false;
+              console.log("其他信息11111");
+              break;
+            case (ischeckMsg.label = "血糖数据"):
+              this.modules_block.blood_data_B = false;
+              console.log("血糖数据11111");
+              break;
+            case (ischeckMsg.label = "血压数据"):
+              this.modules_block.BloodPress_data_B = false;
+              console.log("血压数据11111");
+              break;
+            case (ischeckMsg.label = "心电数据"):
+              this.modules_block.heart_data_B = false;
+              console.log("心电数据11111");
+              break;
+            case (ischeckMsg.label = "检测报告"):
+              this.modules_block.test_report_B = false;
+              console.log("检测报告11111");
+              break;
+            case (ischeckMsg.label = "健康消息"):
+              this.modules_block.health_information_B = false;
+              console.log("健康消息11111");
+              break;
+            case (ischeckMsg.label = "服药提醒"):
+              this.modules_block.medicine_warn = false;
+              console.log("服药提醒11111");
+              break;
+            default:
+              break;
+          }
+        }
+      // }
     },
     base_fu() {
-      for (let i of this.base_labels) {
+      for (let i of this.baseMsgLists) {
         let aas = JSON.parse(JSON.stringify(i));
         console.log(aas);
-        switch (i) {
-          case (i = "用户标签"):
-            this.aa = true;
-            console.log("用户标签11111");
-            break;
-          case (i = "基本信息"):
-            // this.bb = true;
-            console.log("基本信息11111");
-            break;
-          case (i = "健康信息"):
-            console.log("健康信息11111");
-            break;
-          case (i = "生活习惯"):
-            console.log("生活习惯11111");
-            break;
-          case (i = "其他信息"):
-            console.log("其他信息11111");
-            break;
-          case (i = "血糖数据"):
-            console.log("血糖数据11111");
-            break;
-          case (i = "血压数据"):
-            console.log("血压数据11111");
-            break;
-          case (i = "心电数据"):
-            console.log("心电数据11111");
-            break;
-          case (i = "检测报告"):
-            console.log("检测报告11111");
-            break;
-          case (i = "健康消息"):
-            console.log("健康消息11111");
-            break;
-          case (i = "服药提醒"):
-            console.log("服药提醒11111");
-            break;
-          default:
-            break;
-        }
+        if(i.checked){}
+         switch (i.checked) {
+            case (i.checked == true):
+              this.modules_block.user_label_B = true;
+              break;
+            case (i = "基本信息"):
+              this.modules_block.base_msg_B = true;
+              break;
+            case (i = "健康信息"):
+              this.modules_block.health_msg_B = true;
+              break;
+            case (i = "生活习惯"):
+              this.modules_block.life_habit_B = true;
+              break;
+            case (i = "其他信息"):
+              this.modules_block.other_msg_B = true;
+              break;
+            case (i = "血糖数据"):
+              this.modules_block.blood_data_B = true;
+              break;
+            case (i = "血压数据"):
+              this.modules_block.BloodPress_data_B = true;
+              break;
+            case (i = "心电数据"):
+              this.modules_block.heart_data_B = true;
+              break;
+            case (i = "检测报告"):
+              this.modules_block.test_report_B = true;
+              break;
+            case (i = "健康消息"):
+              this.modules_block.health_information_B = true;
+              break;
+            case (i = "服药提醒"):
+              this.modules_block.medicine_warn = true;
+              break;
+            default:
+              break;
+          }
       }
     },
     // 添加常用语的btn
@@ -720,6 +816,7 @@ export default {
       .user_msg_bar {
         height: 70px;
         position: relative;
+        display: flex;
         img {
           width: 100%;
         }
@@ -730,6 +827,17 @@ export default {
           left: 100px;
           top: 50%;
           transform: translate(0, -50%);
+        }
+        .detail_more_btn {
+          position: absolute;
+          right: 3.2%;
+          top: 50%;
+          transform: translate(0, -50%);
+          /deep/ .el-button--primary {
+            background: rgba(255, 255, 255, 0.8) !important;
+            border: none !important;
+            color: rgba(88, 142, 207, 1);
+          }
         }
       }
     }
@@ -900,31 +1008,24 @@ export default {
       background: white;
       border-radius: 20px;
       margin-bottom: 20px;
-      .tools_btn:nth-child(5) {
-        .tool_container {
-          width: 60%;
-        }
-      }
       .tools_btn {
-        width: 100%;
-        height: 66px;
+        width: calc(100% - 14%);
+        padding: 6% 0 6% 14%;
         background: #f4f7ff;
         border-radius: 0px 33px 33px 33px;
         position: relative;
         margin-bottom: 20px;
         .tool_container {
-          position: absolute;
-          left: 50%;
-          top: 50%;
-          transform: translate(-50%, -50%);
+          display: flex;
           .tool_img {
-            float: left;
+            width: 30px;
             img {
               width: 30px;
-              height: 30px;
             }
           }
           span {
+            flex: 1;
+            line-height: 30px;
             margin-left: 20px;
             color: #333366;
           }
