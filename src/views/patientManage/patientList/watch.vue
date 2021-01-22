@@ -1,6 +1,7 @@
 <template>
   <div class="patient_list_watch">
     <div class="patient_content">
+      <!-- 用户标签 -->
       <div class="user_block" v-show="modules_block.user_label_B">
         <div class="user_msg_bar">
           <img src="@/assets/images/patientList/userLabel.png" alt="" />
@@ -61,7 +62,6 @@
         </div>
       </div>
       <!--  健康信息-->
-        
       <div class="user_block" v-show="modules_block.health_msg_B">
         <div class="user_msg_bar">
           <img src="@/assets/images/patientList/userLabel.png" alt="" />
@@ -244,12 +244,12 @@
       <div class="patient_base_msg">
         <p>基本信息</p>
         <el-checkbox-group v-model="ischecked">
+         <!-- <el-checkbox label="基本信息A" @change="testChecbox"></el-checkbox> -->
           <el-checkbox
             v-for="(base_msg, baseIndex) in baseMsgLists"
             :label="base_msg.id"
             :key="baseIndex"
             v-model="base_msg.checked"
-            :checked="base_msg.checked"
             @change="(val) => handleChecked(val, base_msg)"
             >{{ base_msg.label }}</el-checkbox
           >
@@ -609,9 +609,13 @@ export default {
     };
   },
   created() {
-    // this.base_fu();
+    this.base_fu();
   },
   methods: {
+    // 测试多选框
+    testChecbox(val){
+      console.log(val)
+    },
     tool_btn_enter(index) {
       this.btn_index = index;
       console.log(index);
@@ -740,48 +744,13 @@ export default {
       // }
     },
     base_fu() {
-      for (let i of this.baseMsgLists) {
-        let aas = JSON.parse(JSON.stringify(i));
-        console.log(aas);
-        if(i.checked){}
-         switch (i.checked) {
-            case (i.checked == true):
-              this.modules_block.user_label_B = true;
-              break;
-            case (i = "基本信息"):
-              this.modules_block.base_msg_B = true;
-              break;
-            case (i = "健康信息"):
-              this.modules_block.health_msg_B = true;
-              break;
-            case (i = "生活习惯"):
-              this.modules_block.life_habit_B = true;
-              break;
-            case (i = "其他信息"):
-              this.modules_block.other_msg_B = true;
-              break;
-            case (i = "血糖数据"):
-              this.modules_block.blood_data_B = true;
-              break;
-            case (i = "血压数据"):
-              this.modules_block.BloodPress_data_B = true;
-              break;
-            case (i = "心电数据"):
-              this.modules_block.heart_data_B = true;
-              break;
-            case (i = "检测报告"):
-              this.modules_block.test_report_B = true;
-              break;
-            case (i = "健康消息"):
-              this.modules_block.health_information_B = true;
-              break;
-            case (i = "服药提醒"):
-              this.modules_block.medicine_warn = true;
-              break;
-            default:
-              break;
-          }
-      }
+        if(this.baseMsgLists[0].checked){
+          console.log('0000')
+          this.modules_block.user_label_B = true;
+        }else if(this.baseMsgLists[1].checked){
+          console.log('555555')
+          this.modules_block.base_msg_B = true;
+        }
     },
     // 添加常用语的btn
     addPharse() {

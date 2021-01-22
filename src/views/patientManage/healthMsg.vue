@@ -42,7 +42,7 @@
       </el-pagination>
     </div>
     <!-- 详情 -->
-    <el-dialog title="详情" :visible.sync="dialogVisible" width="20%" center class="detail_dialog">
+    <el-dialog title="详情" :visible.sync="dialogVisible" width="40%" center class="detail_dialog">
         <div class="content">本周四复诊提醒通知请不要空腹吃早餐，早上 8点之前到达，先找们正李大夫做个登记</div>
         <p>李主任</p>
         <p class="date">2020-02-11 10：36</p>

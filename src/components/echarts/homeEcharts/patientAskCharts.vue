@@ -3,7 +3,7 @@
   <div class="index">
     <MyEcharts
       :id="'bloodPressId'"
-      :style="{  height: '380px' }"
+      :style="{ height: '380px' }"
       :option="option"
     >
     </MyEcharts>
@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import MyEcharts from "@/components/echarts/index"
+import MyEcharts from "@/components/echarts/index";
 export default {
   components: {
     MyEcharts,
@@ -32,13 +32,14 @@ export default {
   },
   data() {
     return {
-      dataList: [
-        { value: 335, name: "今日资讯" },
-        { value: 310, name: "历史咨询" },
-      ],
       option: {
         title: {
           text: "患者咨询",
+          padding:[20,0,0,20],
+          textStyle: {
+            fontFamily: '幼圆',
+            lineHeight:20,
+          }
         },
         tooltip: {
           trigger: "item",
@@ -48,8 +49,23 @@ export default {
           width: 200,
           orient: "vertical",
           right: 100,
-          top:160,
-          formatter : function(name){return name}
+          top: 160,
+          textStyle: {
+            // 修改图例的样式
+            rich: {
+              title: {
+                color: "#333366",
+                fontSize: 16,
+              },
+              value: {
+                color: "#333366",
+                fontSize: 16,
+                fontWeight: 600,
+                fontFamily: "HuaKang",
+                padding: [0, 10, 0, 10],
+              },
+            },
+          },
         },
         series: [
           {
@@ -57,7 +73,7 @@ export default {
             type: "pie",
             radius: ["30%", "40%"],
             // 修改饼图的左右上下位置['左右'，'上下']
-            center:['30%','50%'],
+            center: ["30%", "50%"],
             avoidLabelOverlap: false,
             label: {
               show: false,
@@ -96,10 +112,10 @@ export default {
   },
   mounted() {
     this.echarts();
-    document.getElementById("bloodPressId").style.width = "32" + "%"
-     window.addEventListener("resize", function () {
+    document.getElementById("bloodPressId").style.width = "32" + "%";
+    window.addEventListener("resize", function () {
       myChartm.resize();
-    })
+    });
   },
   methods: {
     echarts() {
@@ -108,23 +124,35 @@ export default {
         document.getElementById("bloodPressId")
       );
       that.myChartm.setOption(that.option);
-      
-      
+
       let echartsETCB = JSON.parse(JSON.stringify(this.echarsDatas));
-      let tuliData = []
-      for( let item of echartsETCB[0].data){
-          tuliData.push(item.name)
+      console.log(echartsETCB, "患者咨询的数据:::");
+      let tuliData = [];
+      let objData = array2obj(echartsETCB[0].data, "name");
+      function array2obj(array, key) {
+        var resObj = {};
+        for (var i = 0; i < array.length; i++) {
+          resObj[array[i][key]] = array[i];
+        }
+        return resObj;
       }
+      // 显示图例的数值---end
+
       this.myChartm.setOption({
         title: {
-          text: echartsETCB[0].name, //可以写死 也可以用后台传回来的数据 title
-          left: "center",
+          text:echartsETCB[0].name, //可以写死 也可以用后台传回来的数据 title
+          left: "left",
+        },
+        legend: {
+          data: echartsETCB[0].data,
+          // 修改图例显示value值
+          formatter: function (name) {
+            return `{title|${name}}{value|${objData[name].value}}`;
+            // return `${name}:${objData[name].value}`;
+          },
         },
         series: [
           {
-            legend: {
-              data: tuliData,
-            },
             data: echartsETCB[0].data,
           },
         ],

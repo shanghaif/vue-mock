@@ -32,7 +32,7 @@
         </el-table-column>
         <el-table-column prop="address" label="手机号" align="center">
         </el-table-column>
-        <el-table-column prop="address" label="用户标签" align="center">
+        <el-table-column prop="address" label="操作" align="center">
           <!-- <template slot-scope="scope"> -->
           <el-button size="text" @click="dialogVisible = true">祝福</el-button>
           <!-- </template> -->
@@ -193,10 +193,6 @@ export default {
       span {
         padding-right: 14px;
       }
-      // /deep/ .el-input__inner {
-      //   border: 1px solid #6672fb;
-      //   background: rgba(102, 114, 251, 0.05);
-      // }
     }
     // input获取焦点出现边框
 /deep/.el-input__inner:focus,

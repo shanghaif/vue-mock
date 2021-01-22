@@ -2,7 +2,7 @@
   <div class="home clearfix">
     <!-- <bloodcharts></bloodcharts> -->
     <patientAskCharts :echarsDatas = patientAskData></patientAskCharts>
-    <userTypes></userTypes>
+    <userTypes :userTypesDatas = userTypesData></userTypes>
     <userGrowthId :echarsDatas = userGrowthData></userGrowthId>
     <todayWarnId></todayWarnId>
     <testCharts></testCharts>
@@ -43,6 +43,8 @@ export default {
       message:'2222',
       // 患者咨询
       patientAskData:[],
+      // 用户分类
+      userTypesData:[],
       // 用户增长
       userGrowthData:[]
     };
@@ -50,9 +52,10 @@ export default {
   mounted() {
     // mock的数据
     get(`/echarts`).then(res => {
-      console.log(res.data.patientAsk,'8888')
+      console.log(res.data,'8888')
       this.patientAskData.push(res.data.patientAsk)
       this.userGrowthData.push(res.data.userGrowth)
+      this.userTypesData.push(res.data.userTypes)
     })
   },
   created() {
@@ -65,3 +68,11 @@ export default {
   
 };
 </script>
+
+<style lang="less" scoped>
+.home{
+   height: calc(100% - 2%);
+    padding: 1% 1% 0% 1%;
+    background: white;
+}
+</style>

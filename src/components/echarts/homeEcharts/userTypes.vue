@@ -4,8 +4,8 @@
   <div class="index">
     <MyEcharts
       :id="'userTypesId'"
-      :style="{ width: '100%', height: '380px' }"
-      :option="chartOption"
+      :style="{  height: '380px' }"
+      :option="option"
     >
     </MyEcharts>
   </div>
@@ -18,92 +18,132 @@ export default {
   components: {
     MyEcharts,
   },
+  props:['userTypesDatas'],
+  watch:{
+    userTypesDatas:{
+      handler(newval,oldval){
+        if (newval) {
+          this.echarts();
+        }
+        return newval;
+      },
+       deep: true,
+    }
+  },
   data() {
     return {
-      dataList: [
-        { value: 335, name: "今日资讯" },
-        { value: 310, name: "历史咨询" },
-      ],
+      option: {
+        title: {
+          text: "用户分类",
+          padding:[20,0,0,20],
+          left: "center",
+        },
+        tooltip: {
+          trigger: "item",
+          formatter: "{a} <br/>{b} : {c} ({d}%)",
+        },
+        legend: {
+           y:'center',
+           right:100,
+          orient: "vertical",
+          data: [],
+        },
+         series: [
+          {
+            name: "访问来源",
+            type: "pie",
+            radius: "50%",
+            center: ["30%", "50%"],
+            data: [],
+            emphasis: {
+              itemStyle: {
+                shadowBlur: 10,
+                shadowOffsetX: 0,
+                shadowColor: "rgba(0, 0, 0, 0.5)",
+              },
+            },
+            itemStyle: {
+              normal: {
+                borderWidth: 2,
+                borderColor: "#fff",
+                label: {
+                  show: false, //隐藏标示文字
+                },
+                labelLine: {
+                  show: false, //隐藏标示线
+                },
+              },
+            },
+          },
+        ],
+      },
       chartOption: {},
       echartsXYcolor: "#fff000",
       lineColor: "#5bb1f0",
     };
   },
   mounted() {
-    this.initCharts();
-    document.getElementById('userTypesId').style.width = '32'+'%';
-    let shopCharts = this.$echarts.init(
-    document.getElementById("userTypesId")
-);
-
-shopCharts.resize();//直接加这句即可
-
-// shopCharts.setOption({...})
+    this.echarts();
+    document.getElementById("userTypesId").style.width = "32" + "%";
+    window.addEventListener("resize", function () {
+      myChartm.resize();
+    });
   },
   methods: {
-    initCharts() {
-      const _dataList = this.dataList;
-      this.chartOption = {
-         title: {
-        text: '某站点用户访问来源',
-        left: 'center'
-    },
-    tooltip: {
-        trigger: 'item',
-        formatter: '{a} <br/>{b} : {c} ({d}%)'
-    },
-    legend: {
-        orient: 'vertical',
-        left: 'right',
-        data: ['糖尿病', '高血压', '心脏病', '肿瘤']
-    },
-    series: [
-        {
-            name: '访问来源',
-            type: 'pie',
-            radius: '55%',
-            center: ['50%', '60%'],
-            data: [
-                {value: 335, name: '糖尿病'},
-                {value: 310, name: '高血压'},
-                {value: 234, name: '心脏病'},
-                {value: 135, name: '肿瘤'},
-            ],
-            emphasis: {
-                itemStyle: {
-                    shadowBlur: 10,
-                    shadowOffsetX: 0,
-                    shadowColor: 'rgba(0, 0, 0, 0.5)'
-                }
-            },
-            itemStyle : {
-                normal : {
-                    'borderWidth':2,
-                    'borderColor':'#fff',
-                    label : {
-                        show : false   //隐藏标示文字
-                    },
-                    labelLine : {
-                        show : false   //隐藏标示线
-                    }
-                }
-            }
+    echarts() {
+      let that = this;
+      that.myChartm = that.$echarts.init(
+        document.getElementById("userTypesId")
+      );
+      that.myChartm.setOption(that.option);
+
+      let echartsETCB = JSON.parse(JSON.stringify(this.userTypesDatas));
+      console.log(echartsETCB, "患者咨询的数据:::");
+      let tuliData = [];
+      // for (let item of echartsETCB[0].data) {
+      //   var data = {
+      //     name: item.name,
+      //     value: item.value,
+      //   };
+      //   tuliData.push(data);
+      //   console.log(tuliData,'图例数据：：：：：')
+      // }
+      let objData = array2obj(echartsETCB[0].data, "name");
+      function array2obj(array, key) {
+        var resObj = {};
+        for (var i = 0; i < array.length; i++) {
+          resObj[array[i][key]] = array[i];
         }
-    ]
-      };
+        return resObj;
+      }
+      this.myChartm.setOption({
+        title: {
+          text:echartsETCB[0].name, //可以写死 也可以用后台传回来的数据 title
+          left: "left",
+        },
+        legend: {
+          data: echartsETCB[0].data,
+        },
+        series: [
+          {
+            data: echartsETCB[0].data,
+          },
+        ],
+      });
     },
   },
 };
 </script>
 
 <style lang="less" scoped>
-#userTypesId{
+#userTypesId {
+  width: 32% !important;
   float: left;
   margin-left: 2%;
   background: #ffffff;
   box-shadow: 0px 0px 60px 0px rgba(98, 146, 213, 0.16);
   border-radius: 18px;
-   margin-bottom: 20px;
-   padding: 10px 0;
+  margin-bottom: 20px;
+  padding: 10px 0;
 }
 </style>

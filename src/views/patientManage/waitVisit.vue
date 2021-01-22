@@ -52,9 +52,9 @@
     <el-dialog
       title="随访"
       :visible.sync="dialogVisible"
-      center=""
       width="30%"
       :before-close="handleClose"
+      center
     >
       <div class="visited">
         <el-form
@@ -63,6 +63,7 @@
           ref="ruleForm"
           label-width="100px"
           class="demo-ruleForm"
+         
         >
           <el-form-item label="随访状态" prop="name">
             <el-select v-model="ruleForm.region" placeholder="请选择活动区域">
@@ -314,4 +315,5 @@ export default {
     box-shadow: 0px 0px 50px 0px rgba(155, 209, 255, 0.4);
     border-radius: 20px;
 }
+
 </style>                                                                                                                       

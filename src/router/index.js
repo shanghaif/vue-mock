@@ -123,13 +123,43 @@ const routes = [
         path: '/LiveHome',
         name: 'LiveHome',
         component: () => import('../views/equipment/liveHome'),
-        meta: ['居间宝设备']
+        meta: ['设备管理','居间宝设备']
       },
       {
         path: '/TreatHome',
         name: 'TreatHome',
         component: () => import('../views/equipment/treatHome'),
-        meta: ['诊间包设备']
+        meta: ['设备管理','诊间包设备']
+      },
+      {
+        path: '/ApproveOrganize',
+        name: 'ApproveOrganize',
+        component: () => import('../views/permissions/approveOrganize'),
+        meta: ['权限设置','机构认证']
+      },
+      {
+        path: '/UserSet',
+        name: 'UserSet',
+        component: () => import('../views/permissions/userSet/userSet'),
+        meta: ['权限设置','用户设置']
+      },
+      {
+        path: '/AddPerson',
+        name: 'AddPerson',
+        component: () => import('../views/permissions/userSet/addPerson'),
+        meta: ['权限设置','用户设置','新增人员']
+      },
+      {
+        path: '/RoleSet',
+        name: 'RoleSet',
+        component: () => import('../views/permissions/roleSet/roleSet'),
+        meta: ['权限设置','角色设置']
+      },
+      {
+        path: '/AddRole',
+        name: 'AddRole',
+        component: () => import('../views/permissions/roleSet/addRole'),
+        meta: ['权限设置','角色设置']
       },
     ]
   },

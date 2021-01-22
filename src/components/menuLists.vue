@@ -24,10 +24,6 @@
             <el-menu-item index="AskRecord" >咨询记录</el-menu-item>
             <el-menu-item index="AskSet">咨询设置</el-menu-item>
           </el-menu-item-group>
-          <el-submenu index="1-4">
-            <span slot="title">选项4</span>
-            <el-menu-item index="1-4-1">选项1</el-menu-item>
-          </el-submenu>
         </el-submenu>
         <el-menu-item index="WarnData">
           <i class="el-icon-setting"></i>
@@ -68,11 +64,15 @@
             <span slot="title">权限设置</span>
           </template>
           <el-menu-item-group>
-            <el-menu-item index="aPage" >机构认证</el-menu-item>
-            <el-menu-item index="bPage">用户设置</el-menu-item>
-            <el-menu-item index="bPage">角色设置</el-menu-item>
+            <el-menu-item index="ApproveOrganize" >机构认证</el-menu-item>
+            <el-menu-item index="UserSet">用户设置</el-menu-item>
+            <el-menu-item index="RoleSet">角色设置</el-menu-item>
           </el-menu-item-group>
         </el-submenu>
+        <el-menu-item index="WarnData">
+          <i class="el-icon-setting"></i>
+          <span slot="title" >退出登录</span>
+        </el-menu-item>
         </el-menu>
       </el-aside>
       
