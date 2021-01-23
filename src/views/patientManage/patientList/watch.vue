@@ -1,11 +1,17 @@
 <template>
   <div class="patient_list_watch">
+    <!-- 编辑健康档案 -->
     <div class="patient_content">
+      <div class="edit_msg">
+      <editHealth :editblock = editblock ></editHealth>
+      </div>
+      <div class="gain_msg" v-show="gainShow">
       <!-- 用户标签 -->
       <div class="user_block" v-show="modules_block.user_label_B">
         <div class="user_msg_bar">
           <img src="@/assets/images/patientList/userLabel.png" alt="" />
           <p>用户标签</p>
+          <el-button plain @click="editblock = 1">编辑</el-button>
         </div>
         <div class="user_label_msg">
           <div class="photo_contanier">
@@ -31,6 +37,7 @@
         <div class="user_msg_bar">
           <img src="@/assets/images/patientList/userLabel.png" alt="" />
           <p>基本信息</p>
+          <el-button plain @click="editblock = 2">编辑</el-button>
         </div>
         <div class="base_msg_container clearfix">
           <p><span>姓名：</span>嘻嘻嘻</p>
@@ -66,6 +73,7 @@
         <div class="user_msg_bar">
           <img src="@/assets/images/patientList/userLabel.png" alt="" />
           <p>健康信息</p>
+          <el-button plain @click="editblock = 3">编辑</el-button>
         </div>
         <div class="health_msg_container clearfix">
           <div class="personal_msg">
@@ -144,6 +152,7 @@
         <div class="user_msg_bar">
           <img src="@/assets/images/patientList/userLabel.png" alt="" />
           <p>生活习惯</p>
+          <el-button plain @click="editblock = 4">编辑</el-button>
         </div>
         <div class="life_msg_container clearfix">
           <div class="life_left">
@@ -187,6 +196,7 @@
         <div class="user_msg_bar">
           <img src="@/assets/images/patientList/userLabel.png" alt="" />
           <p>其他习惯</p>
+          <el-button plain @click="editblock = 5">编辑</el-button>
         </div>
         <div class="other_msg_container clearfix">
           <p><span> 户籍类型：</span>糖尿病2018-22-01</p>
@@ -215,6 +225,7 @@
         </div>
       </div>
       <!-- 血压数据 -->
+    </div>
     </div>
     <div class="patient_tool_bar">
       <div class="set_tool_bar">
@@ -250,6 +261,7 @@
             :label="base_msg.id"
             :key="baseIndex"
             v-model="base_msg.checked"
+            :checked="base_msg.checked"
             @change="(val) => handleChecked(val, base_msg)"
             >{{ base_msg.label }}</el-checkbox
           >
@@ -452,9 +464,11 @@
 
 <script>
 import bloodPress from "./bloodPress";
+import editHealth from './edit'
 export default {
   components: {
     bloodPress,
+    editHealth
   },
   data() {
     return {
@@ -486,6 +500,7 @@ export default {
       warnDialog: false,
       testReportDialog: false,
       ischecked: [],
+      allChecked:[],
       toolsBtnList: [
         {
           imgUrl: require("@/assets/images/patientList/sendMsg.png"),
@@ -606,10 +621,24 @@ export default {
       // 基本信息
       base_ids: [], // 存储value的数组
       base_labels: [], // 存储label的数组
+      // 编辑传过去的id
+      editblock:'',
+      gainShow:true
     };
   },
   created() {
-    this.base_fu();
+    // 判断是否
+    
+    this.default_checked();
+  },
+  watch:{
+    // 监听编辑时--不等于空，说明有编辑；等于空，说明没有点编辑
+    editblock:{
+      handler(newVal,oldVal){
+        this.editblock = newVal
+        if(this.editblock !== '') this.gainShow = false
+      }
+    }
   },
   methods: {
     // 测试多选框
@@ -743,13 +772,21 @@ export default {
         }
       // }
     },
-    base_fu() {
-        if(this.baseMsgLists[0].checked){
-          console.log('0000')
-          this.modules_block.user_label_B = true;
-        }else if(this.baseMsgLists[1].checked){
-          console.log('555555')
-          this.modules_block.base_msg_B = true;
+    // 默认选中
+    default_checked() {
+        for(let i=0;i<this.baseMsgLists.length;i++){
+          console.log(this.baseMsgLists[i].checked == true)
+          if(this.baseMsgLists[i].checked){
+            this.allChecked.push(this.baseMsgLists[i])
+            console.log(this.allChecked)
+          }
+        }
+        for(let i in this.allChecked){
+            if(this.allChecked[0].checked == true && this.allChecked[1].checked == true && this.allChecked[2].checked == true){
+              this.modules_block.user_label_B = true;
+              this.modules_block.base_msg_B = true;
+              this.modules_block.blood_data_B = true;
+            }
         }
     },
     // 添加常用语的btn
@@ -759,6 +796,11 @@ export default {
       this.phrase_text = "";
       // console.log(this.phrase_text,'添加的常用语')
     },
+    // 编辑
+    edit_btn(){
+      this.editblock = 1
+      console.log(this.editblock)
+    }
   },
 };
 </script>
@@ -794,6 +836,12 @@ export default {
           color: white;
           position: absolute;
           left: 100px;
+          top: 50%;
+          transform: translate(0, -50%);
+        }
+        .el-button{
+          position: absolute;
+          right: 3%;
           top: 50%;
           transform: translate(0, -50%);
         }
