@@ -57,6 +57,7 @@ export default {
       this.userGrowthData.push(res.data.userGrowth)
       this.userTypesData.push(res.data.userTypes)
     })
+    
   },
   created() {
     console.log(patientAskCharts);

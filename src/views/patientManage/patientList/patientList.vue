@@ -153,7 +153,7 @@ export default {
     // 查看
     patientList_watch() {
         console.log('查看')
-        this.$router.push('/PatientWatch')
+        this.$router.push('/Patienthealth')
     },
   },
 };

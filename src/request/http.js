@@ -7,7 +7,7 @@ import store from '../store/index'
 
 // 环境的切换
 // process.env.VUE_APP_BASE_URL   是各个环境下的基础域名的定义  ---到时候记得修改生产环境下的变量（.env.build）
-axios.defaults.baseURL = process.env.VUE_APP_BASE_URL
+// axios.defaults.baseURL = process.env.VUE_APP_BASE_URL
 
 // 请求超时时间
 axios.defaults.timeout = 10000;

@@ -480,7 +480,12 @@ export default {
   props: ["editblock"],
   data() {
     return {
+        form:{},
+        input:'',
+        value1:'',
+        value3:'',
       editIndex: "",
+      DefaultMsg:'',
       baseMsgLists:{
           name:'',
           sex:'',
@@ -553,13 +558,15 @@ export default {
     };
   },
   created() {
-    console.log(this.editblock, "编辑健康档案");
+    
   },
   watch: {
     editblock: {
       handler(newval, oldval) {
+          console.log(newval, "编辑健康档案");
         if (newval !== "") {
-          this.editIndex = newval;
+          this.editIndex = newval.edit_index;
+          this.DefaultMsg = newval.healthBase;
         }
       },
     },
@@ -568,7 +575,11 @@ export default {
     //   保存基本信息
       savebBseMsg(){
           console.log('保存基本信息')
-      }
+      },
+    //   其他信息保存
+    otherMsgSave(){
+        console.log('其他信息保存')
+    }
   }
 };
 </script>

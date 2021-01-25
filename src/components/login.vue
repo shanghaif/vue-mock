@@ -168,6 +168,12 @@ export default {
       }
     },
     wxlogin() {
+      // 生成base64==二维码样式
+      var content =
+      ".impowerBox .qrcode {width: 200px;}.impowerBox .title {display: none;}.impowerBox .info {width: 200px;}";
+      var blob = new Blob([content],{type: "text/css;charset=utf-8"});
+      var reader = new FileReader();
+      reader.readAsDataURL(blob);
       //用于生成二维码的方法
       var obj = new WxLogin({
         self_redirect: false,
@@ -178,7 +184,7 @@ export default {
         state: "123456",
         style: "black",
         href:
-          "LmltcG93ZXJCb3ggLnRpdGxlIHsKIGRpc3BsYXk6IG5vbmU7Cn0KLmltcG93ZXJCb3ggLnN0YXR1cy5zdGF0dXNfYnJvd3NlciB7CiBkaXNwbGF5OiBub25lOwp9Ci5pbXBvd2VyQm94IC5xcmNvZGUgewogYm9yZGVyOiBub25lOwogd2lkdGg6IDIwMHB4OwogaGVpZ2h0OiAyMDBweDsKfQouaW1wb3dlckJveCAuc3RhdHVzewogZGlzcGxheTogbm9uZQp9",
+          "data:text/css;charset=utf-8;base64,LmltcG93ZXJCb3ggLnFyY29kZSB7d2lkdGg6IDIwMHB4O30uaW1wb3dlckJveCAudGl0bGUge2Rpc3BsYXk6IG5vbmU7fS5pbXBvd2VyQm94IC5pbmZvIHt3aWR0aDogMjAwcHg7fQ==",
       });
     },
     GetQueryString(name) {

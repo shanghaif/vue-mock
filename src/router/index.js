@@ -78,6 +78,12 @@ const routes = [
         meta: ['健康管理','添加讲座']
       },
       {
+        path: '/Patienthealth',
+        name: 'Patienthealth',
+        component: () => import('../views/patientManage/patientList/health'),
+        meta: ['健康管理','健康档案']
+      },
+      {
         path: '/PatientWatch',
         name: 'PatientWatch',
         component: () => import('../views/patientManage/patientList/watch'),
