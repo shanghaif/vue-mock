@@ -87,7 +87,13 @@ const routes = [
         path: '/PatientWatch',
         name: 'PatientWatch',
         component: () => import('../views/patientManage/patientList/watch'),
-        meta: ['健康管理','添加讲座']
+        meta: ['健康管理','查看健康档案']
+      },
+      {
+        path: '/PatientEdit',
+        name: 'PatientEdit',
+        component: () => import('../views/patientManage/patientList/edit'),
+        meta: ['健康管理','编辑健康档案']
       },
       {
         path: '/WaitAppointment',

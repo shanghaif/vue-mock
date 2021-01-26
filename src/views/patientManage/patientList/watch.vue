@@ -5,8 +5,8 @@
         <!-- <editHealth :editblock="editblock"></editHealth> -->
         <!-- <editHealth :editblock="editblock"></editHealth> -->
       </div>
-      <div class="gain_msg" v-show="blocks.labels == true ? true : false">
-        <div class="user_block" >
+      <div class="gain_msg">
+        <div class="user_block" v-show="blocks.labels == true ? true : false">
           <div class="user_msg_bar">
             <img src="@/assets/images/patientList/userLabel.png" alt="" />
             <p>用户标签</p>
@@ -32,11 +32,11 @@
           </div>
         </div>
         <!--  基本信息-->
-        <div class="user_block"  >
+        <div class="user_block"  v-show="blocks.baseMsg == true ? true : false">
           <div class="user_msg_bar">
             <img src="@/assets/images/patientList/userLabel.png" alt="" />
             <p>基本信息</p>
-            <el-button plain @click="healthBase_edit(healthBase)">编辑</el-button>
+            <el-button plain @click="healthBase_edit(2,healthBase)">编辑</el-button>
           </div>
           <div class="base_msg_container clearfix" >
             <p><span>姓名：</span>{{healthBase.name}}</p>
@@ -68,12 +68,14 @@
             </div>
           </div>
         </div>
+        
+      
         <!--  健康信息-->
-        <div class="user_block">
+        <div class="user_block" v-show="blocks.healthMsg == true ? true : false">
           <div class="user_msg_bar">
             <img src="@/assets/images/patientList/userLabel.png" alt="" />
             <p>健康信息</p>
-            <el-button plain @click="editblock = 3">编辑</el-button>
+            <el-button plain @click="healthBase_edit(3,healthInfo)">编辑</el-button>
           </div>
           <div class="health_msg_container clearfix">
             <div class="personal_msg">
@@ -141,12 +143,13 @@
             </div>
           </div>
         </div>
+        
         <!-- 生活习惯 -->
-        <div class="user_block" >
+        <div class="user_block" v-show="blocks.lifeHabit == true ? true : false">
           <div class="user_msg_bar">
             <img src="@/assets/images/patientList/userLabel.png" alt="" />
             <p>生活习惯</p>
-            <el-button plain @click="editblock = 4">编辑</el-button>
+            <el-button plain @click="healthBase_edit(4,healthLife)">编辑</el-button>
           </div>
           <div class="life_msg_container clearfix">
             <div class="life_left">
@@ -177,8 +180,10 @@
             </div>
           </div>
         </div>
+        
+        
         <!-- 其他信息 -->
-        <div class="user_block" >
+        <div class="user_block" v-show="blocks.otherMsg == true ? true : false">
           <div class="user_msg_bar">
             <img src="@/assets/images/patientList/userLabel.png" alt="" />
             <p>其他信息</p>
@@ -197,8 +202,9 @@
             <p><span> 所属居委会：</span>{{healthOther.committee}}</p>
           </div>
         </div>
+        
         <!-- 血糖习惯 -->
-        <div class="user_block" >
+        <div class="user_block" v-show="blocks.bloodData == true ? true : false">
           <div class="user_msg_bar">
             <img src="@/assets/images/patientList/userLabel.png" alt="" />
             <p>血糖习惯</p>
@@ -219,6 +225,7 @@
 <script>
 import axios from "axios";
 // import editHealth from "./edit";
+import bus from '../../../components/bus'
 import { get, post } from "@/request/http";
 export default {
   props:['selectMsg'],
@@ -228,11 +235,11 @@ export default {
       healthInfo:null,
       healthLife:null,
       healthOther:null,
-      showBlockIndex:'',
+      showEditBlock:null,
       blocks:{
-        labels:false,
-        baseMsg:false,
-        healthMsg:false,
+        labels:true,
+        baseMsg:true,
+        healthMsg:true,
         lifeHabit:false,
         otherMsg:false,
         bloodData:false,
@@ -240,8 +247,8 @@ export default {
         heartData:false,
         testReport:false,
         healthData:false,
-
-      }
+      },
+      showWatch:false
     }
   },
    created() {
@@ -273,42 +280,45 @@ export default {
         console.log(newVal,oldVal,'newVal,oldValnewVal,oldValnewVal,oldVal')
         this.showBlockIndex = newVal.selectblockMsg.id
         let ischeckMsg = JSON.parse(JSON.stringify(newVal.selectblockMsg));
-        console.log(ischeckMsg,'--------------')
-        if(newVal.selectIndex){
-        //   console.log('true---------')
-          if(ischeckMsg.id == 1)  {
-            console.log('88888')
-            this.blocks.labels = true
-          }
-          if(ischeckMsg.id == 2)  {
-            console.log('999')
-            this.blocks.baseMsg = true
-          }
-        //   if(ischeckMsg.id == 3)  {
-        //     console.log('log333333')
-        //     this.blocks.healthMsg = true
-        //   }
-        //   if(ischeckMsg.id == 4)  this.blocks.lifeHabit = true
-        //   if(ischeckMsg.id == 5)  this.blocks.otherMsg = true
-        //   if(ischeckMsg.id == 6)  this.blocks.bloodData = true
-        //   if(ischeckMsg.id == 7)  this.blocks.bloodPressData = true
-        //   if(ischeckMsg.id == 8)  this.blocks.heartData = true
-        //   if(ischeckMsg.id == 9)  this.blocks.testReport = true
-          
-        }
-      // if (newVal.selectIndex) {
-      //   // console.log(ischeckMsg.label);
-      //   switch (ischeckMsg.id) {
-      //     case (ischeckMsg.id == 5):
-      //       console.log('555555555666666666666666')
-      //       break;
-      //     default:
-      //       break;
-      //   }
-      // }
+        // if(){
+          if(newVal.selectIndex == true && ischeckMsg.id == 1)  this.blocks.labels = true
+          if(newVal.selectIndex == true && ischeckMsg.id == 2)  this.blocks.baseMsg = true
+          if(newVal.selectIndex == true && ischeckMsg.id == 3)  this.blocks.healthMsg = true
+          if(newVal.selectIndex == true && ischeckMsg.id == 4)  this.blocks.lifeHabit = true
+          if(newVal.selectIndex == true && ischeckMsg.id == 5)  this.blocks.otherMsg = true
+          if(newVal.selectIndex == true && ischeckMsg.id == 6)  this.blocks.bloodData = true
+          if(newVal.selectIndex == true && ischeckMsg.id == 7)  this.blocks.bloodPressData = true
+          if(newVal.selectIndex == true && ischeckMsg.id == 8)  this.blocks.heartData = true
+          if(newVal.selectIndex == true && ischeckMsg.id == 9)  this.blocks.testReport = true
+        // }else{
+          if(newVal.selectIndex == false && ischeckMsg.id == 1)  this.blocks.labels = false
+          if(newVal.selectIndex == false && ischeckMsg.id == 2)  this.blocks.baseMsg = false
+          if(newVal.selectIndex == false && ischeckMsg.id == 3)  this.blocks.healthMsg = false
+          if(newVal.selectIndex == false && ischeckMsg.id == 4)  this.blocks.lifeHabit = false
+          if(newVal.selectIndex == false && ischeckMsg.id == 5)  this.blocks.otherMsg = false
+          if(newVal.selectIndex == false && ischeckMsg.id == 6)  this.blocks.bloodData = false
+          if(newVal.selectIndex == false && ischeckMsg.id == 7)  this.blocks.bloodPressData = false
+          if(newVal.selectIndex == false && ischeckMsg.id == 8)  this.blocks.heartData = false
+          if(newVal.selectIndex == false && ischeckMsg.id == 9)  this.blocks.testReport = false
+        // }
       }
     }
 
+  },
+  methods:{
+    // 编辑
+    healthBase_edit(id,healthBase) {
+      // console.log(id,healthBase,'点击对应的值')
+
+      this.showEditBlock = {
+          edit_id:id,
+          healthBase:healthBase
+      }
+      // 给edit传值
+      bus.$emit('healthEditMsg',this.showEditBlock)
+      // 给父组件传值
+      this.showEditBlock == null ? '' : this.$emit('isShow',this.showWatch)
+    },
   }
 }
 </script>

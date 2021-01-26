@@ -84,4 +84,15 @@ a {
   border: 1px solid #7b66fb  !important;
 }
 
+// 修改多选框-选中字体样式
+.el-checkbox__input.is-checked+.el-checkbox__label{
+  color: rgba(102, 114, 251, 1) !important;
+}
+.el-radio__input.is-checked .el-radio__inner{
+  background: rgba(102, 114, 251, 1) !important;
+  border-color: rgba(102, 114, 251, 1) !important;
+}
+.el-radio__input.is-checked+.el-radio__label{
+  color: rgba(102, 114, 251, 1) !important;
+}
 </style>

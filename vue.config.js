@@ -7,7 +7,7 @@ module.exports = {
         open: true,
         proxy: {
             "/api": {
-                target: "http://192.168.31.124:8888/health-server/api/v1", //要跨域的域名 目标地址
+                target: "http://192.168.31.173:8888/health-server/api/v1", //要跨域的域名 目标地址
                 changeOrigin: true, //是否开启跨域  是否更改源路径
                 ws: true,
                 pathRewrite: {

@@ -2,8 +2,11 @@
   <div class="patient_list_watch">
     <!-- 编辑健康档案 -->
     <div class="patient_content">
-      <div class="gain_msg" v-show="gainShow">
-        <watch :selectMsg="selectMsg"></watch>
+      <div class="gain_msg" v-show="gainBlockShow">
+        <watch :selectMsg="selectMsg" @isShow = 'ishowfun'></watch>
+      </div>
+       <div class="edit_msg"> 
+         <edits></edits>
       </div>
     </div>
     <div class="patient_tool_bar">
@@ -245,14 +248,17 @@
 import axios from "axios";
 import editHealth from "./edit";
 import watch from './watch'
+import edits from './edit'
 import { get, post } from "@/request/http";
 export default {
   components: {
     editHealth,
-    watch
+    watch,
+    edits
   },
   data() {
     return {
+      gainBlockShow:true,
       // 发送消息
       send_msg_value: "",
       // 随访内容
@@ -403,7 +409,6 @@ export default {
       
       // 编辑传过去的id
       editblock:null,
-      gainShow: true,
 
       selectMsg:''
     };
@@ -476,6 +481,10 @@ export default {
       this.phrase_text = "";
       // console.log(this.phrase_text,'添加的常用语')
     },
+    ishowfun(data){
+      console.log(data,'子组件传来的值')
+      this.gainBlockShow = data
+    }
     // 编辑
     // healthBase_edit(healthBase) {
     //   this.editblock = {
