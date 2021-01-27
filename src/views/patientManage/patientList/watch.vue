@@ -69,7 +69,6 @@
           </div>
         </div>
         
-      
         <!--  健康信息-->
         <div class="user_block" v-show="blocks.healthMsg == true ? true : false">
           <div class="user_msg_bar">
@@ -187,7 +186,7 @@
           <div class="user_msg_bar">
             <img src="@/assets/images/patientList/userLabel.png" alt="" />
             <p>其他信息</p>
-            <el-button plain @click="editblock = 5">编辑</el-button>
+            <el-button plain @click="healthBase_edit(5,healthOther)">编辑</el-button>
           </div>
           <div class="other_msg_container clearfix">
             <p><span> 户籍类型：</span>{{healthOther.householdType}}</p>
@@ -213,10 +212,35 @@
             </div>
           </div>
           <div class="blood_msg_container clearfix">
-            <!-- <bloodPress></bloodPress> -->
+            <bloodSugar></bloodSugar>
           </div>
         </div>
         <!-- 血压数据 -->
+        <div class="user_block" v-show="blocks.bloodData == true ? true : false">
+          <div class="user_msg_bar">
+            <img src="@/assets/images/patientList/userLabel.png" alt="" />
+            <p>血压数据</p>
+            <div class="detail_more_btn">
+              <el-button type="primary" round>更多资料</el-button>
+            </div>
+          </div>
+          <div class="blood_msg_container clearfix">
+            <bloodPress></bloodPress>
+          </div>
+        </div>
+        <!-- 心电数据 -->
+        <div class="user_block" v-show="blocks.bloodData == true ? true : false">
+          <div class="user_msg_bar">
+            <img src="@/assets/images/patientList/userLabel.png" alt="" />
+            <p>血压数据</p>
+            <div class="detail_more_btn">
+              <el-button type="primary" round>更多资料</el-button>
+            </div>
+          </div>
+          <div class="blood_msg_container clearfix">
+            <egcChart></egcChart>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -224,11 +248,18 @@
 
 <script>
 import axios from "axios";
-// import editHealth from "./edit";
-import bus from '../../../components/bus'
+import bloodSugar from "./bloodSugar";
+import bloodPress from "./bloodPress";
+import egcChart from './ecgChart'
+import bus from '../../../components/bus';
 import { get, post } from "@/request/http";
 export default {
   props:['selectMsg'],
+  components:{
+    bloodSugar,
+    bloodPress,
+    egcChart
+  },
   data(){
     return{
       healthBase:null,
@@ -242,7 +273,7 @@ export default {
         healthMsg:true,
         lifeHabit:false,
         otherMsg:false,
-        bloodData:false,
+        bloodData:true,
         bloodPressData:false,
         heartData:false,
         testReport:false,
@@ -252,25 +283,22 @@ export default {
     }
   },
    created() {
+     console.log(bloodPress,'血压的数据：：：：：：：')
     //基本信息
     get('/api/healthBase/11111').then(res=>{
       this.healthBase = res.data
-      console.log(this.healthBase,res,'1111111111111111')
     })
     // // 将抗信息
      get('/api/healthInfo/11111').then(res=>{
-       console.log(res,'222222222222')
       this.healthInfo = res.data
     })
     // 生活习惯
      get('/api/healthLife/11111').then(res=>{
-        console.log(res,'3333333')
       this.healthLife = res.data
     })
     // 其他习惯
     get('/api/healthOther/11111').then(res=>{
       this.healthOther = res.data
-      console.log(res, "4444444444444")
     })
 
   },
@@ -309,7 +337,6 @@ export default {
     // 编辑
     healthBase_edit(id,healthBase) {
       // console.log(id,healthBase,'点击对应的值')
-
       this.showEditBlock = {
           edit_id:id,
           healthBase:healthBase

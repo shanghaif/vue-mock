@@ -14,7 +14,8 @@ Mock.setup({
 const url = {
     testLogin: '/api/login',
     testUrl: '/api/peopleLists',
-    echarts: '/api/echarts'
+    echarts: '/api/echarts',
+    checkbox:'/api/checkbox'
 }
 module.exports = [
     Mock.mock(url.testLogin, (req, res) => {
@@ -34,6 +35,23 @@ module.exports = [
             "sex|1": ["男", "女"], //性别是数组中的一个，随机的
             "job|1": ["web", "UI", "python", "php"] //工作是数组中的一个
         }]
+    }),
+    Mock.mock(url.checkbox, {
+        healData:{
+            ills:{
+                ischecked: "无",
+                password: ['中华','2018-12-8']
+            },
+            oprations:{
+                ischecked: "无",
+                password: '手术'
+            },
+            fathered:{
+                ischecked:"有",
+                illTest:['糖尿病','高血压','精神病'],
+                inputText:'手疼'
+            }
+        }
     }),
     Mock.mock(url.echarts, () => {
         return {

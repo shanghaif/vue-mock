@@ -1,7 +1,7 @@
 
 <template>
   <div class="index">
-    <MyEcharts :id="'ecgChart'" :style="{ height: '380px' }" :option="option">
+    <MyEcharts :id="'ecgChart'" :style="{ width:'100% !important',height: '380px' }" :option="option">
     </MyEcharts>
     <div></div>
   </div>
@@ -13,19 +13,19 @@ export default {
   components: {
     MyEcharts,
   },
-  props: ["echarsDatas"],
-  watch: {
-    echarsDatas: {
-      handler(newval, oldval) {
-        console.log(newval, oldval);
-        if (newval) {
-          this.echarts();
-        }
-        return newval;
-      },
-      deep: true,
-    },
-  },
+  // props: ["echarsDatas"],
+  // watch: {
+  //   echarsDatas: {
+  //     handler(newval, oldval) {
+  //       console.log(newval, oldval);
+  //       if (newval) {
+  //         this.echarts();
+  //       }
+  //       return newval;
+  //     },
+  //     deep: true,
+  //   },
+  // },
   data() {
     return {
       ecgDatas:[],
@@ -97,7 +97,14 @@ export default {
             type: "line",
             showSymbol: false,
             clip: true,
-            data: this.ecgDatas,
+            data: [
+                        ['product', '2015', '2016', '2017'],
+                        ['Matcha Latte', 43.3, 85.8, 93.7],
+                        ['Milk Tea', 83.1, 73.4, 55.1],
+                        ['Cheese Cocoa', 86.4, 65.2, 82.5],
+                        ['Walnut Brownie', 72.4, 53.9, 39.1],
+                        
+                    ],
           },
         ],
       },
@@ -109,10 +116,10 @@ export default {
   mounted() {
     //  console.log('222222222',this.ecgDatas)
     this.echarts();
-    document.getElementById("ecgChart").style.width = "32" + "%";
     window.addEventListener("resize", function () {
       myChartm.resize();
     });
+      document.getElementById("ecgChart").style.width = "100" + "%";
   this.myChartm.setOption({
         series: [
           {

@@ -6,7 +6,6 @@
     <userGrowthId :echarsDatas = userGrowthData></userGrowthId>
     <todayWarnId></todayWarnId>
     <testCharts></testCharts>
-    <ecgChart></ecgChart>
     <div id="login_container"></div>
   </div>
 </template>
@@ -26,8 +25,6 @@ import userGrowthId from '../components/echarts/homeEcharts/userGrowth'
 // 今日预警
 import  todayWarnId from '../components/echarts/homeEcharts/todayWarn'
 import testCharts from '../components/echarts/homeEcharts/testCharts'
-// 心电图
-import ecgChart from '../components/echarts/patientEcharts/ecgChart'
 export default {
   components: {
     // bloodcharts,
@@ -35,8 +32,7 @@ export default {
     userTypes,
     userGrowthId,
     todayWarnId,
-    testCharts,
-    ecgChart
+    testCharts
   },
   data() {
     return {
@@ -51,7 +47,7 @@ export default {
   },
   mounted() {
     // mock的数据
-    get(`/echarts`).then(res => {
+    get(`/api/echarts`).then(res => {
       console.log(res.data,'8888')
       this.patientAskData.push(res.data.patientAsk)
       this.userGrowthData.push(res.data.userGrowth)

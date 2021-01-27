@@ -153,7 +153,7 @@
       </div>
     </div>
     <!-- 健康信息--编辑 -->
-    <div class="user_block" v-show="editIndex == 3 ? true : ''">
+    <div class="user_block" v-if="editIndex == 3 ? true : ''">
       <div class="user_msg_bar">
         <img src="@/assets/images/patientList/userLabel.png" alt="" />
         <p>健康信息</p>
@@ -197,7 +197,7 @@
               <div>24.14</div>
             </el-form-item>
             <el-form-item label="药物过敏史">
-                 <el-radio-group v-model="editData.drugAllergy">
+                 <el-radio-group v-model="healDatatest.oprations.ischecked">
                    <el-radio label="无">无</el-radio>
                     <el-radio label="磺胺">磺胺</el-radio>
                     <el-radio label="青霉素">青霉素</el-radio>
@@ -205,16 +205,24 @@
                     <el-radio label="不详">不详</el-radio>
                     <el-radio label="其他过敏药物质(请注明)">其他过敏药物质(请注明)</el-radio>
                 </el-radio-group>
-              <input type="text"  placeholder="请填写其他药物过敏史"  style="border:none;outline:none;margin-left:1%">
+              <input type="text" :value="healDatatest.oprations.password" v-show="healDatatest.oprations.ischecked !== '其他过敏药物质(请注明)' ? false : true"  placeholder="请填写其他药物过敏史"  style="border:none;outline:none;margin-left:1%">
             </el-form-item>
             <h4>既往史</h4>
-            <el-form-item label="疾病">
-                 <el-radio-group v-model="editData.illness">
+            <el-form-item label="疾病test">
+                 <el-radio-group v-model="healDatatest.ills.ischecked">
                    <el-radio label="无">无</el-radio>
                     <el-radio label="有">有</el-radio>
                 </el-radio-group>
-              
-              <input type="text" v-model="editData.illness" v-show="editData.illness == '无' ? false : true" placeholder="请填写疾病名称"  style="border:none;outline:none;margin-left:1%">
+                
+              <input type="text" :value="healDatatest.ills.password[0]" v-show="healDatatest.ills.ischecked == '无' ? false : true" placeholder="请填写疾病名1称"  style="border:none;outline:none;margin-left:1%">
+              <el-date-picker  v-model="healDatatest.ills.password[1]" v-show="healDatatest.ills.ischecked == '无' ? false : true" type="date" placeholder="请选择确诊时间" style="margin-left:1%"></el-date-picker>
+            </el-form-item>
+            <el-form-item label="疾病">
+                 <el-radio-group v-model="editData.illness">
+                   <el-radio label="无">无</el-radio>
+                    <el-radio label="">有</el-radio>
+                </el-radio-group>
+              <input type="text" :value="editData.illness[0]" v-show="editData.illness == '无' ? false : true" placeholder="请填写疾病名1称"  style="border:none;outline:none;margin-left:1%">
               <el-date-picker  v-model="editData.illness" v-show="editData.illness == '无' ? false : true" type="date" placeholder="请选择确诊时间" style="margin-left:1%"></el-date-picker>
             </el-form-item>
            <el-form-item label="手术">
@@ -244,39 +252,25 @@
             </el-form-item>
             <h4>家族病史</h4>
              <el-form-item label="父亲">
-                  <el-radio-group v-model="editData.fatherIll">
+                  <el-radio-group v-model="healDatatest.fathered.ischecked">
                     <el-radio label="无">无</el-radio>
                     <el-radio label="有">有</el-radio>
                 </el-radio-group>
              
-               <el-checkbox-group v-model="editData.fatherIll" v-show="true">
-                    <el-checkbox label="糖尿病">糖尿病</el-checkbox>
-                    <el-checkbox label="高血压">高血压</el-checkbox>
-                    <el-checkbox label="冠心病">冠心病</el-checkbox>
-                    <el-checkbox label="脑猝中" >脑猝中</el-checkbox>
-                    <el-checkbox label="高脂血症" >高脂血症</el-checkbox>
-                    <el-checkbox label="精神病" >精神病</el-checkbox>
-                    <el-checkbox label="肿瘤" >肿瘤</el-checkbox>
-                    <el-checkbox label="其他" >其他</el-checkbox>
-                    <input type="text"  placeholder="请填写其他疾病"  style="border:none;outline:none;margin-left:1%">
+               <el-checkbox-group v-model="healDatatest.fathered.illTest" v-show="healDatatest.fathered.ischecked == '有' ? true : false">
+                    <el-checkbox v-for="(item,index) in fathersIll" :key="index" :label="item">{{item}}</el-checkbox>
+                    <input type="text" v-model="healDatatest.fathered.inputText"  placeholder="请填写其他疾病" v-show="healDatatest.fathered.illTest.indexOf('其他')>=0 ? true : false"  style="border:none;outline:none;margin-left:1%">
                 </el-checkbox-group>
             </el-form-item>
             <el-form-item label="母亲">
-                 <el-radio-group v-model="editData.nationality">
-                   
+                 <el-radio-group v-model="editData.motherIll">
+                    <el-radio label="无">无</el-radio>
+                    <el-radio label="有">有</el-radio>
                 </el-radio-group>
-              <el-radio v-model="editData.motherIll" label="无">无</el-radio>
-              <el-radio v-model="editData.motherIll" label="有">有</el-radio>
-               <el-checkbox-group v-model="editData.fatherIll" v-show="true">
-                    <el-checkbox label="糖尿病">糖尿病</el-checkbox>
-                    <el-checkbox label="高血压">高血压</el-checkbox>
-                    <el-checkbox label="冠心病">冠心病</el-checkbox>
-                    <el-checkbox label="脑猝中" >脑猝中</el-checkbox>
-                    <el-checkbox label="高脂血症" >高脂血症</el-checkbox>
-                    <el-checkbox label="精神病" >精神病</el-checkbox>
-                    <el-checkbox label="肿瘤" >肿瘤</el-checkbox>
-                    <el-checkbox label="其他" >其他</el-checkbox>
-                    <input type="text"  placeholder="请填写其他疾病"  style="border:none;outline:none;margin-left:2%">
+              
+               <el-checkbox-group v-model="healDatatest.fathered.illTest" v-show="healDatatest.fathered.ischecked == '有' ? true : false">
+                    <el-checkbox v-for="(item,index) in fathersIll" :key="index" :label="item">{{item}}</el-checkbox>
+                    <input type="text" v-model="healDatatest.fathered.inputText"  placeholder="请填写其他疾病" v-show="healDatatest.fathered.illTest.indexOf('其他')>=0 ? true : false"  style="border:none;outline:none;margin-left:1%">
                 </el-checkbox-group>
             </el-form-item>
             <el-form-item label="兄弟姐妹">
@@ -284,17 +278,10 @@
                     <el-radio label="无">无</el-radio>
                     <el-radio label="有">有</el-radio>
                 </el-radio-group>
-              
-               <el-checkbox-group v-model="editData.fatherIll" v-show="true">
-                    <el-checkbox label="糖尿病">糖尿病</el-checkbox>
-                    <el-checkbox label="高血压">高血压</el-checkbox>
-                    <el-checkbox label="冠心病">冠心病</el-checkbox>
-                    <el-checkbox label="脑猝中" >脑猝中</el-checkbox>
-                    <el-checkbox label="高脂血症" >高脂血症</el-checkbox>
-                    <el-checkbox label="精神病" >精神病</el-checkbox>
-                    <el-checkbox label="肿瘤" >肿瘤</el-checkbox>
-                    <el-checkbox label="其他" >其他</el-checkbox>
-                    <input type="text"  placeholder="请填写其他疾病"  style="border:none;outline:none;margin-left:2%">
+
+              <el-checkbox-group v-model="healDatatest.fathered.illTest" v-show="healDatatest.fathered.ischecked == '有' ? true : false">
+                    <el-checkbox v-for="(item,index) in fathersIll" :key="index" :label="item">{{item}}</el-checkbox>
+                    <input type="text" v-model="healDatatest.fathered.inputText"  placeholder="请填写其他疾病" v-show="healDatatest.fathered.illTest.indexOf('其他')>=0 ? true : false"  style="border:none;outline:none;margin-left:1%">
                 </el-checkbox-group>
             </el-form-item>
             <el-form-item label="子女">
@@ -302,39 +289,26 @@
                     <el-radio label="无">无</el-radio>
                     <el-radio label="有">有</el-radio>
                 </el-radio-group>
-               <el-checkbox-group v-model="editData.fatherIll" v-show="true">
-                    <el-checkbox label="糖尿病">糖尿病</el-checkbox>
-                    <el-checkbox label="高血压">高血压</el-checkbox>
-                    <el-checkbox label="冠心病">冠心病</el-checkbox>
-                    <el-checkbox label="脑猝中" >脑猝中</el-checkbox>
-                    <el-checkbox label="高脂血症" >高脂血症</el-checkbox>
-                    <el-checkbox label="精神病" >精神病</el-checkbox>
-                    <el-checkbox label="肿瘤" >肿瘤</el-checkbox>
-                    <el-checkbox label="其他" >其他</el-checkbox>
+               <el-checkbox-group v-model="healDatatest.fathered.illTest" v-show="healDatatest.fathered.ischecked == '有' ? true : false">
+                    <el-checkbox v-for="(item,index) in fathersIll" :key="index" :label="item">{{item}}</el-checkbox>
+                    <input type="text" v-model="healDatatest.fathered.inputText"  placeholder="请填写其他疾病" v-show="healDatatest.fathered.illTest.indexOf('其他')>=0 ? true : false"  style="border:none;outline:none;margin-left:1%">
                 </el-checkbox-group>
-                    <input type="text"  placeholder="请填写其他疾病"  style="border:none;outline:none;margin-left:2%">
             </el-form-item>
             <el-form-item label="遗传病史">
                  <el-radio-group v-model="editData.inheritIll">
                    <el-radio label="无">无</el-radio>
                     <el-radio label="有">有</el-radio>
                 </el-radio-group>
-              <input type="text"  placeholder="请填写其他遗传病史"  style="border:none;outline:none;margin-left:2%">
+              <input type="text"  placeholder="请填写其他遗传病史"  v-show="editData.inheritIll == '有' ? true : false"  style="border:none;outline:none;margin-left:2%">
             </el-form-item>
             <el-form-item label="残疾情况">
                  <el-radio-group v-model="editData.disability">
                     <el-radio label="无">无</el-radio>
                     <el-radio label="有">有</el-radio>
                 </el-radio-group>
-               <el-checkbox-group v-model="editData.disability" v-show="true">
-                    <el-checkbox label="视力残疾">视力残疾</el-checkbox>
-                    <el-checkbox label="听力残疾">听力残疾</el-checkbox>
-                    <el-checkbox label="言语残疾">言语残疾</el-checkbox>
-                    <el-checkbox label="肢体残疾" >肢体残疾</el-checkbox>
-                    <el-checkbox label="智力残疾" >智力残疾</el-checkbox>
-                    <el-checkbox label="精神残疾" >精神残疾</el-checkbox>
-                    <el-checkbox label="其他残疾" >其他残疾</el-checkbox>
-                    <input type="text"  placeholder="请填写其他残疾"  style="border:none;outline:none;margin-left:2%">
+               <el-checkbox-group v-model="editData.disability" v-show="editData.disability == '有' ? true : false">
+                    <el-checkbox v-for="(item,index) in disabledCase" :key="index" :label="item">{{item}}</el-checkbox>
+                    <input type="text"  placeholder="请填写其他残疾" v-show="editData.inheritIll.indexOf('其他残疾')>= 0 ? true : false"  style="border:none;outline:none;margin-left:2%">
                 </el-checkbox-group>
             </el-form-item>
           <el-form-item>
@@ -436,7 +410,7 @@
                </el-radio-group>
              
             </el-form-item>
-            <el-form-item label="锻炼情况">
+            <el-form-item label="锻炼情况" v-show="editData.exerciseRegular == '是' || editData.exerciseRegular == '无规律' ? true : false">
                 <el-radio-group v-model="editData.exerciseSituation" v-show="true">
                      <el-radio label="每天锻炼">每天锻炼</el-radio>
                     <el-radio label="每周3次及以上">每周3次及以上</el-radio>
@@ -444,7 +418,7 @@
                </el-radio-group>
              
             </el-form-item>
-            <el-form-item label="每次锻炼时间">
+            <el-form-item label="每次锻炼时间" v-show="editData.exerciseRegular == '是' || editData.exerciseRegular == '无规律' ? true : false">
                 <el-radio-group v-model="editData.exerciseTime" v-show="true">
                     <el-radio label="<30分钟"><30分钟</el-radio>
                     <el-radio label="30-60分钟">30-60分钟</el-radio>
@@ -452,7 +426,7 @@
                </el-radio-group>
               
             </el-form-item>
-            <el-form-item label="锻炼类型">
+            <el-form-item label="锻炼类型" v-show="editData.exerciseRegular == '是' || editData.exerciseRegular == '无规律' ? true : false">
                 <el-radio-group v-model="editData.exerciseType" v-show="true">
                     <el-radio label="有氧运动(慢跑、气功、极拳、跳舞、散步、游泳、登山)">有氧运动(慢跑、气功、极拳、跳舞、散步、游泳、登山)</el-radio>
                     <el-radio label="无氧运动(速跑、篮球、排球、足球等剧烈运动)">无氧运动(速跑、篮球、排球、足球等剧烈运动)</el-radio>
@@ -472,26 +446,23 @@
                     <el-radio label="其他">其他</el-radio>
                </el-radio-group>
               
-              <input type="text"  placeholder="饮食习惯类型"  style="border:none;outline:none;">克/次
+              <input type="text"  placeholder="饮食习惯类型" v-show="editData.eatType == '其他' ? true : false"  style="border:none;outline:none;margin-left:2%;">
+              <input type="text"  placeholder="克/次"  style="border:none;outline:none;margin-left:1%;">
             </el-form-item>
             <el-form-item label="睡眠情况">
-                <el-radio-group v-model="editData.sleepSituation" v-show="true">
-                    <el-radio label="1">睡眠困难</el-radio>
-                    <el-radio label="2">入睡困难</el-radio>
-                    <el-radio label="3">早醒</el-radio>
-                    <el-radio label="4">没有</el-radio>
-                    <el-radio label="7">其他</el-radio>
+                <el-radio-group v-model="editData.sleepSituation">
+                    <el-radio v-for="(item,index) in sleepCase" :key="index" :label="item">{{item}}</el-radio>
                </el-radio-group>
               
-              <input type="text"  placeholder="8小时/天"  style="border:none;outline:none;">
+              <input type="text"  placeholder="8小时/天" v-show="editData.sleepSituation == '其他' ? true : false"   style="border:none;outline:none;margin-left:2%;">
                 </el-form-item>
                 <el-form-item label="其他习惯">
-                    <el-radio-group v-model="editData.otherRegular" v-show="true">
-                        <el-radio label="1">无</el-radio>
-                        <el-radio label="2">有</el-radio>
+                    <el-radio-group v-model="editData.otherRegular">
+                        <el-radio label="无">无</el-radio>
+                        <el-radio label="有">有</el-radio>
                 </el-radio-group>
                 
-                <input type="text"  placeholder="请输入其他习惯"  style="border:none;outline:none;">
+                <input type="text"  placeholder="请输入其他习惯"  v-show="editData.otherRegular == '有' ? true : false"  style="border:none;outline:none;margin-left:2%;">
                 </el-form-item>
 
 
@@ -511,44 +482,44 @@
       <div class="user_label_msg">
           <el-form ref="form" :model="form" label-width="100px">
         <el-form-item label="户籍类型">
-            <el-radio v-model="otherMsgLists.householdType" label="1">本阜</el-radio>
-            <el-radio v-model="otherMsgLists.householdType" label="2">外阜</el-radio>
+            <el-radio v-model="editData.householdType" label="本阜">本阜</el-radio>
+            <el-radio v-model="editData.householdType" label="外阜">外阜</el-radio>
         </el-form-item>
         <el-form-item label="户别">
-            <el-radio v-model="otherMsgLists.householdCategory" label="1">农业</el-radio>
-            <el-radio v-model="otherMsgLists.householdCategory" label="2">非农业</el-radio>
+            <el-radio v-model="editData.householdCategory" label="农业">农业</el-radio>
+            <el-radio v-model="editData.householdCategory" label="非农业">非农业</el-radio>
         </el-form-item>
          <el-form-item label="暂住证">
-            <el-radio v-model="otherMsgLists.kitas" label="1">A类</el-radio>
-            <el-radio v-model="otherMsgLists.kitas" label="2">B类</el-radio>
+            <el-radio v-model="editData.kitas" label="A类">A类</el-radio>
+            <el-radio v-model="editData.kitas" label="B类">B类</el-radio>
         </el-form-item>
          <el-form-item label="来京日期">
               <el-date-picker
-                v-model="otherMsgLists.accessBjTime"
+                v-model="editData.accessBjTime"
                 type="date"
                 placeholder="选择来京日期">
                 </el-date-picker>
         </el-form-item>
         <el-form-item label="邮政编码">
-            <el-input v-model="otherMsgLists.postalCode" placeholder="请填写邮政编码"></el-input>
+            <el-input v-model="editData.postalCode" placeholder="请填写邮政编码"></el-input>
         </el-form-item>
         <el-form-item label="所属派出所">
-            <el-input v-model="otherMsgLists.policeStation" placeholder="请填写所属派出所"></el-input>
+            <el-input v-model="editData.policeStation" placeholder="请填写所属派出所"></el-input>
         </el-form-item>
         <el-form-item label="所属居委会">
-            <el-input v-model="otherMsgLists.committee" placeholder="请填写所属居委会"></el-input>
+            <el-input v-model="editData.committee" placeholder="请填写所属居委会"></el-input>
         </el-form-item>
         <el-form-item label="住宅电话">
-            <el-input v-model="otherMsgLists.homePhone" placeholder="请填写所住宅电,包括区号"></el-input>
+            <el-input v-model="editData.homePhone" placeholder="请填写所住宅电,包括区号"></el-input>
         </el-form-item>
         <el-form-item label="Email">
-            <el-input v-model="otherMsgLists.email" placeholder="请填写Email地址"></el-input>
+            <el-input v-model="editData.email" placeholder="请填写Email地址"></el-input>
         </el-form-item>
         <el-form-item label="联系人姓名">
-            <el-input v-model="otherMsgLists.contactName" placeholder="请填写联系人姓名"></el-input>
+            <el-input v-model="editData.contactName" placeholder="请填写联系人姓名"></el-input>
         </el-form-item>
         <el-form-item label="联系人电话">
-            <el-input v-model="otherMsgLists.contactPhone" placeholder="请填写联系人电话"></el-input>
+            <el-input v-model="editData.contactPhone" placeholder="请填写联系人电话"></el-input>
         </el-form-item>
          <el-form-item>
     <el-button type="primary" @click="otherMsgSave">保存</el-button>
@@ -568,12 +539,13 @@ export default {
   props: ["editblock"],
   data() {
     return {
-        aa:'',
+        bb:'',
         form:{},
         input:'',
         value1:'',
         value3:'',
       editIndex: "",
+      healDatatest:{},
       editData:{},
       DefaultMsg:'',
       baseMsgLists:{
@@ -645,9 +617,15 @@ export default {
           contactPhone:'',
           userId:''
       },
+      fathersIll:['糖尿病','高血压','冠心病','脑猝中','高脂血症','精神病','肿瘤','其他'],
+      disabledCase:['视力残疾','听力残疾','言语残疾','肢体残疾','智力残疾','精神残疾','其他残疾'],
+    //   生活习惯
+    sleepCase:['睡眠困难','入睡困难','早醒','没有','其他'],
     //   
     healthMsgId:''
     };
+  },
+  computed:{
   },
   created() {
       bus.$on('healthEditMsg',data => {
@@ -656,7 +634,7 @@ export default {
           console.log(data,'通组件传来的值')
 
           if(this.editIndex == 2){
-            this.editData.expenseType = this.editData.expenseType.split(' ')
+              this.editData.expenseType = this.editData.expenseType.split(' ')
             this.editData.specialPeople = this.editData.specialPeople.split(' ')
           }else if(this.editIndex == 3){
               this.editData.childIll = this.editData.childIll.split(' ')
@@ -664,18 +642,22 @@ export default {
               this.editData.siblingIll = this.editData.siblingIll.split(' ')
               this.editData.fatherIll = this.editData.fatherIll.split(' ')
               this.editData.illness = this.editData.illness.split(' ')
+              this.editData.illness.push('有')
               this.editData.disability = this.editData.disability.split(' ')
 
-              console.log(this.editData.illness[0],']]]]]')
-              if(this.editData.illness.length !== ''){
-                  this.aa = '有'
-                //   this.editData.illness = '有'
-                  console.log(this.editData.illness,'有或无')
-              }
+              console.log(this.editData.illness.includs('有'),']]]]]')
           }
-
-        
         })
+        get('/api/checkbox').then(res => {
+            console.log(res,'checked测试数据mock')
+            this.healDatatest = res.healData
+            if(this.healDatatest.fathered.inputText !== '') this.healDatatest.fathered.illTest.push('其他')
+        })
+
+        // 对比父亲里的数据
+        // this.fathersIll
+        // healDatatest.fathered.illTest
+        
   },
   watch: {
   },
@@ -687,23 +669,26 @@ export default {
     // },
     //   保存基本信息
       savebBseMsg(){
-          console.log(this.editData.birthplace,this.editData.nationality,'保存基本信息')
-          put('/api/healthBase/11111',{
-              nationality:this.editData.nationality,
-              birthplace:this.editData.birthplace,
-              nation:this.editData.nation,
-              marriage:this.editData.marriage,
-              education:this.editData.education,
-              presentAddr:this.editData.presentAddr,
-              correspondenceAddr:this.editData.correspondenceAddr,
-              profession:this.editData.profession,
-              company:this.editData.company,
-              expenseType:this.editData.expenseType,
-              fixMedicalUnit:this.editData.fixMedicalUnit,
-              specialPeople:this.editData.specialPeople,
-          }).then(res=>{
-              console.log(res,'编辑过后的基本信息')
-          })
+          
+      console.log(this.healDatatest.oprations.password,';;;;;;;;;')
+      window.location.reload()
+        //   console.log(this.editData.birthplace,this.editData.nationality,'保存基本信息')
+        //   put('/api/healthBase/11111',{
+        //       nationality:this.editData.nationality,
+        //       birthplace:this.editData.birthplace,
+        //       nation:this.editData.nation,
+        //       marriage:this.editData.marriage,
+        //       education:this.editData.education,
+        //       presentAddr:this.editData.presentAddr,
+        //       correspondenceAddr:this.editData.correspondenceAddr,
+        //       profession:this.editData.profession,
+        //       company:this.editData.company,
+        //       expenseType:this.editData.expenseType,
+        //       fixMedicalUnit:this.editData.fixMedicalUnit,
+        //       specialPeople:this.editData.specialPeople,
+        //   }).then(res=>{
+        //       console.log(res,'编辑过后的基本信息')
+        //   })
       },
     //   其他信息保存
     otherMsgSave(){
