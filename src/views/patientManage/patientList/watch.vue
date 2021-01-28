@@ -250,6 +250,7 @@
 import axios from "axios";
 import bloodSugar from "./bloodSugar";
 import bloodPress from "./bloodPress";
+// import healthBar from './health'
 import egcChart from './ecgChart'
 import bus from '../../../components/bus';
 import { get, post } from "@/request/http";

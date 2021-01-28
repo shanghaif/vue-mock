@@ -197,15 +197,16 @@
               <div>24.14</div>
             </el-form-item>
             <el-form-item label="药物过敏史">
-                 <el-radio-group v-model="healDatatest.oprations.ischecked">
-                   <el-radio label="无">无</el-radio>
-                    <el-radio label="磺胺">磺胺</el-radio>
-                    <el-radio label="青霉素">青霉素</el-radio>
-                    <el-radio label="链霉素">链霉素</el-radio>
-                    <el-radio label="不详">不详</el-radio>
-                    <el-radio label="其他过敏药物质(请注明)">其他过敏药物质(请注明)</el-radio>
+                <el-radio-group v-model="editData.drugAllergy">
+                   <el-radio label="0">无</el-radio>
+                    <el-radio label="1">磺胺</el-radio>
+                    <el-radio label="2">青霉素</el-radio>
+                    <el-radio label="3">链霉素</el-radio>
+                    <el-radio label="4">不详</el-radio>
+                    <el-radio label="5">其他过敏药物质(请注明)</el-radio>
                 </el-radio-group>
-              <input type="text" :value="healDatatest.oprations.password" v-show="healDatatest.oprations.ischecked !== '其他过敏药物质(请注明)' ? false : true"  placeholder="请填写其他药物过敏史"  style="border:none;outline:none;margin-left:1%">
+                <input type="text" v-model="editData.drugAllergyInfo" v-show="editData.drugAllergy !== '5' ? false : true"  placeholder="请填写其他药物过敏史"  style="border:none;outline:none;margin-left:1%">
+                <!-- <input type="text" :value="healDatatest.oprations.password" v-show="healDatatest.oprations.ischecked !== '其他过敏药物质(请注明)' ? false : true"  placeholder="请填写其他药物过敏史"  style="border:none;outline:none;margin-left:1%"> -->
             </el-form-item>
             <h4>既往史</h4>
             <el-form-item label="疾病test">
@@ -213,9 +214,8 @@
                    <el-radio label="无">无</el-radio>
                     <el-radio label="有">有</el-radio>
                 </el-radio-group>
-                
-              <input type="text" :value="healDatatest.ills.password[0]" v-show="healDatatest.ills.ischecked == '无' ? false : true" placeholder="请填写疾病名1称"  style="border:none;outline:none;margin-left:1%">
-              <el-date-picker  v-model="healDatatest.ills.password[1]" v-show="healDatatest.ills.ischecked == '无' ? false : true" type="date" placeholder="请选择确诊时间" style="margin-left:1%"></el-date-picker>
+                <input type="text" :value="healDatatest.ills.password[0]" v-show="healDatatest.ills.ischecked == '无' ? false : true" placeholder="请填写疾病名1称"  style="border:none;outline:none;margin-left:1%">
+                <el-date-picker  v-model="healDatatest.ills.password[1]" v-show="healDatatest.ills.ischecked == '无' ? false : true" type="date" placeholder="请选择确诊时间" style="margin-left:1%"></el-date-picker>
             </el-form-item>
             <el-form-item label="疾病">
                  <el-radio-group v-model="editData.illness">
@@ -234,7 +234,7 @@
               <el-date-picker  v-model="value1" type="date" placeholder="请选择确诊时间" style="margin-left:1%"></el-date-picker>
             </el-form-item>
             <el-form-item label="外伤">
-                 <el-radio-group v-model="editData.trauma">
+                <el-radio-group v-model="editData.trauma">
                     <el-radio label="无">无</el-radio>
                     <el-radio label="有">有</el-radio>
                 </el-radio-group>
@@ -637,6 +637,7 @@ export default {
               this.editData.expenseType = this.editData.expenseType.split(' ')
             this.editData.specialPeople = this.editData.specialPeople.split(' ')
           }else if(this.editIndex == 3){
+                console.log('9999999999')
               this.editData.childIll = this.editData.childIll.split(' ')
               this.editData.motherIll = this.editData.motherIll.split(' ')
               this.editData.siblingIll = this.editData.siblingIll.split(' ')
@@ -645,7 +646,13 @@ export default {
               this.editData.illness.push('有')
               this.editData.disability = this.editData.disability.split(' ')
 
-              console.log(this.editData.illness.includs('有'),']]]]]')
+              this.editData.drugAllergyInfo = this.getDrugAllergyInfo(this.editData.drugAllergy)
+              this.editData.drugAllergy = this.getDrugAllergy(this.editData.drugAllergy)
+
+              console.log(44444444444);
+              console.log(this.editData)
+              console.log(44444444444);
+
           }
         })
         get('/api/checkbox').then(res => {
@@ -653,25 +660,31 @@ export default {
             this.healDatatest = res.healData
             if(this.healDatatest.fathered.inputText !== '') this.healDatatest.fathered.illTest.push('其他')
         })
-
-        // 对比父亲里的数据
-        // this.fathersIll
-        // healDatatest.fathered.illTest
         
   },
-  watch: {
-  },
   methods:{
-    //   获取国籍
-    // nationalityChange(val){
-    //     console.log(val,'获取国籍的shuju')
-    //     this.editData.nationality = val
-    // },
+    getDrugAllergy(value){
+        const list = ['无','磺胺','青霉素','链霉素','不详']
+        const idx = list.indexOf(value)
+        return idx == -1 ? 5+"" : idx+""
+    },
+    getDrugAllergyInfo(v){
+        const list = ['无','磺胺','青霉素','链霉素','不详']
+        const idx = list.indexOf(v)
+        return idx === -1 ? v : ""
+    },
+    saveDrug(){
+        if (this.editData.drugAllergy == "5") {
+            return this.editData.drugAllergyInfo
+        }
+        const list = ['无','磺胺','青霉素','链霉素','不详']
+        return list[~~this.editData.drugAllergy]
+    },
     //   保存基本信息
       savebBseMsg(){
-          
-      console.log(this.healDatatest.oprations.password,';;;;;;;;;')
-      window.location.reload()
+        this.editData.drugAllergy = this.saveDrug()  
+        console.log(this.editData)
+    //   window.location.reload()
         //   console.log(this.editData.birthplace,this.editData.nationality,'保存基本信息')
         //   put('/api/healthBase/11111',{
         //       nationality:this.editData.nationality,
