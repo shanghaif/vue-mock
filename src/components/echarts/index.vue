@@ -75,21 +75,21 @@ export default {
        * 此方法适用于所有项目的图表，但是每个配置都需要在父组件传进来，相当于每个图表的配置都需要写一遍，不是特别的省代码，主要是灵活度高
        * echarts的配置项，你可以直接在外边配置好，直接扔进来一个this.option
        */
-       this.MyEcharts.clear(); //适用于大数据量的切换时图表绘制错误,先清空在重绘
-      this.MyEcharts.setOption(this.option, true); //设置为true可以是图表切换数据时重新渲染
+      //  this.MyEcharts.clear(); //适用于大数据量的切换时图表绘制错误,先清空在重绘
+      // this.MyEcharts.setOption(this.option, true); //设置为true可以是图表切换数据时重新渲染
       /**
        * Author  HaoYanFeng
        * 第二种
        * 此方法不适用于所有项目，只适用于本项目，但是可以省好多代码，维护性高
        * 在这你还可以根据需求将你的配置项中公共的提取出来，这样就可以省很多代码
        */
-      console.log(this.option);
-      if (this.option.tooltip != undefined) {
-        let publicCharts = this.MyEchartsOption(this.option);
-        console.log(publicCharts);
-        this.MyEcharts.clear(); //适用于大数据量的切换时图表绘制错误,先清空在重绘
-        this.MyEcharts.setOption(publicCharts, true); //设置为true可以是图表切换数据时重新渲染
-      }
+      // console.log(this.option);
+      // if (this.option.tooltip != undefined) {
+      //   let publicCharts = this.MyEchartsOption(this.option);
+      //   console.log(publicCharts);
+      //   this.MyEcharts.clear(); //适用于大数据量的切换时图表绘制错误,先清空在重绘
+      //   this.MyEcharts.setOption(publicCharts, true); //设置为true可以是图表切换数据时重新渲染
+      // }
 //    以下这种方法，当一个页面有多个图表时，会有一个bug那就是只有一个图表会随着窗口大小变化而变化，经过小编的努力，终于找到解决办法。
       window.onresize = () => {
         this.MyEcharts.resize();

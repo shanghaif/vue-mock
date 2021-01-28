@@ -1,14 +1,5 @@
 <template>
-  <div class="patient_list_watch">
-    <!-- 编辑健康档案 -->
-    <div class="patient_content">
-      <div class="gain_msg" v-show="gainBlockShow">
-        <watch :selectMsg="selectMsg" @isShow = 'ishowfun'></watch>
-      </div>
-       <div class="edit_msg"> 
-         <edits></edits>
-      </div>
-    </div>
+  <div class="healthBar">
     <div class="patient_tool_bar">
       <div class="set_tool_bar">
         <div
@@ -36,15 +27,15 @@
       </div>
       <div class="patient_base_msg">
         <p>基本信息</p>
-        <el-checkbox-group v-model="ischecked">
-          <!-- <el-checkbox label="基本信息A" @change="testChecbox"></el-checkbox> -->
+        <!-- @change="(val) => handleChecked(val, base_msg)" -->
+        <el-checkbox-group v-model="ischecked" @change="showBlock">
           <el-checkbox
             v-for="(base_msg, baseIndex) in baseMsgLists"
             :label="base_msg.id"
             :key="baseIndex"
             v-model="base_msg.checked"
             :checked="base_msg.checked"
-            @change="(val) => handleChecked(val, base_msg)"
+            
             >{{ base_msg.label }}</el-checkbox
           >
         </el-checkbox-group>
@@ -413,23 +404,15 @@ export default {
       selectMsg:''
     };
   },
-  created() {
+  created( ){
+    console.log(this.ischecked)
+    this.$emit('defaultBlock',this.ischecked)
   },
-  mounted() {},
-  watch: {
-    // 监听编辑时--不等于空，说明有编辑；等于空，说明没有点编辑
-    // editblock: {
-    //   handler(newVal, oldVal) {
-    //     this.editblock = newVal;
-    //     if (this.editblock !== "") this.gainShow = false;
-    //   },
-    // },
-  },
-  
   methods: {
     // 测试多选框
-    testChecbox(val) {
-      // console.log(val);
+    showBlock(val) {
+      console.log(val,this.ischecked);
+      this.$emit('showBlockList',val)
     },
     tool_btn_enter(index) {
       this.btn_index = index;
@@ -467,11 +450,11 @@ export default {
     // 多选框全选
     handleChecked(val, base_msg) {
       console.log(val,base_msg)
-      this.selectMsg = {
-        selectIndex:val,
-        selectblockMsg:base_msg
-      }
-      let ischeckMsg = JSON.parse(JSON.stringify(base_msg));
+      // this.selectMsg = {
+      //   selectIndex:val,
+      //   selectblockMsg:base_msg
+      // }
+      // let ischeckMsg = JSON.parse(JSON.stringify(base_msg));
       
     },
     // 添加常用语的btn
@@ -485,32 +468,13 @@ export default {
       console.log(data,'子组件传来的值')
       this.gainBlockShow = data
     }
-    // 编辑
-    // healthBase_edit(healthBase) {
-    //   this.editblock = {
-    //     edit_index:2,
-    //     healthBase:healthBase
-    //   }
-    // },
   },
 };
 </script>
 
 <style lang="less" scoped>
-.patient_list_watch {
-  height: calc(100% - 2%);
-  padding: 0% 10% 0% 1%;
-  display: flex;
-
-  .patient_content {
-    width: 80%;
-    margin-right: 1%;
-    border-radius: 20px;
-  }
-
+.healthBar {
   .patient_tool_bar {
-    flex: 1;
-    width: 0;
     .set_tool_bar {
       width: calc(100% - 8%);
       height: auto;

@@ -95,4 +95,46 @@ a {
 .el-radio__input.is-checked+.el-radio__label{
   color: rgba(102, 114, 251, 1) !important;
 }
+
+
+// 将抗档案板块
+.user_block {
+    width: 100%;
+    border-radius: 20px;
+    margin-bottom: 2%;
+    // 查看信息中的bar
+    .user_msg_bar {
+      height: 70px;
+      position: relative;
+      display: flex;
+      img {
+        width: 100%;
+      }
+      p {
+        font-size: 20px;
+        color: white;
+        position: absolute;
+        left: 100px;
+        top: 50%;
+        transform: translate(0, -50%);
+      }
+      .el-button {
+        position: absolute;
+        right: 3%;
+        top: 50%;
+        transform: translate(0, -50%);
+      }
+      .detail_more_btn {
+        position: absolute;
+        right: 3.2%;
+        top: 50%;
+        transform: translate(0, -50%);
+        /deep/ .el-button--primary {
+          background: rgba(255, 255, 255, 0.8) !important;
+          border: none !important;
+          color: rgba(88, 142, 207, 1);
+        }
+      }
+    }
+  }
 </style>

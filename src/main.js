@@ -15,6 +15,9 @@ import VideoPlayer from 'vue-video-player'
 import 'vue-video-player/src/custom-theme.css'
 import 'video.js/dist/video-js.css'
 
+// 健康档案的sidebar
+import healthBar from './views/patientManage/patientList/health'
+
 
 
 
@@ -26,6 +29,8 @@ Vue.prototype.$axios = axios;
 Vue.config.productionTip = false
 Vue.prototype.$echarts = echarts
 Vue.use(VideoPlayer)
+
+Vue.component('healthBar',healthBar);
 
 
 new Vue({

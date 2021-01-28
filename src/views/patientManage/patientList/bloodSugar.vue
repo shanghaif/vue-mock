@@ -4,7 +4,7 @@
     <MyEcharts
       :id="'exampleId'"
       :style="{ width: '100%', height: '380px' }"
-      :option="chartOption"
+      :option="option"
     >
     </MyEcharts>
   </div>
@@ -18,23 +18,9 @@ export default {
   },
   data() {
     return {
-      chartOption: {},
       echartsXYcolor: "#fff000",
       lineColor: "#5bb1f0",
-    };
-  },
-  mounted() {
-    this.initCharts();
-    this.initCharts();
-    document.getElementById("exampleId").style.width = "100" + "%";
-    let shopCharts = this.$echarts.init(document.getElementById("exampleId"));
-  },
-  methods: {
-    initCharts() {
-      this.chartOption = {
-        tooltip: {
-          trigger: "item"
-        },
+      option: {
         xAxis: {
           type: "category",
           boundaryGap: false,
@@ -71,7 +57,21 @@ export default {
              symbolSize:6,
           },
         ],
-      };
+      },
+    };
+  },
+  mounted() {
+    this.echarts();
+    window.addEventListener("resize", function () {
+      myChartm.resize();
+    document.getElementById("exampleId").style.width = "100" + "%";
+    });
+  },
+  methods: {
+    echarts() {
+      let that = this;
+      that.myChartm = that.$echarts.init(document.getElementById("exampleId"));
+      that.myChartm.setOption(that.option);
     },
   },
 };

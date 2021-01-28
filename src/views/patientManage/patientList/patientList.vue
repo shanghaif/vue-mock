@@ -149,11 +149,13 @@ export default {
     // 编辑
     patientList_edit() {
       console.log('编辑')
+      this.$router.push('/PatientEdit')
     },
     // 查看
     patientList_watch() {
         console.log('查看')
-        this.$router.push('/Patienthealth')
+        // this.$router.push('/Patienthealth')
+        this.$router.push('/Patientwatch')
     },
   },
 };
