@@ -53,101 +53,104 @@
                     <el-radio label="5">其他过敏药物质(请注明)</el-radio>
                 </el-radio-group>
                 <input type="text" v-model="editData.drugAllergyInfo" v-show="editData.drugAllergy !== '5' ? false : true"  placeholder="请填写其他药物过敏史"  style="border:none;outline:none;margin-left:1%">
-                <!-- <input type="text" :value="healDatatest.oprations.password" v-show="healDatatest.oprations.ischecked !== '其他过敏药物质(请注明)' ? false : true"  placeholder="请填写其他药物过敏史"  style="border:none;outline:none;margin-left:1%"> -->
             </el-form-item>
             <h4>既往史</h4>
             <el-form-item label="疾病">
-                 <el-radio-group v-model="editData.illness">
-                   <el-radio label="无">无</el-radio>
-                    <el-radio label="">有</el-radio>
+                 <el-radio-group v-model="illness">
+                    <el-radio label="0">无</el-radio>
+                    <el-radio label="1">有</el-radio>
                 </el-radio-group>
-              <input type="text" :value="editData.illness[0]" v-show="editData.illness == '无' ? false : true" placeholder="请填写疾病名1称"  style="border:none;outline:none;margin-left:1%">
-              <el-date-picker  v-model="editData.illness" v-show="editData.illness == '无' ? false : true" type="date" placeholder="请选择确诊时间" style="margin-left:1%"></el-date-picker>
+              <input type="text" v-model="editData.illnessInfo" v-show="illness == '0' ? false : true" placeholder="请填写疾病名1称"  style="border:none;outline:none;margin-left:1%">
+              <el-date-picker  v-model="editData.illnessTime" v-show="illness == '0' ? false : true" type="date" value-format="yyyy-MM-dd" placeholder="请选择确诊时间" style="margin-left:1%"></el-date-picker>
             </el-form-item>
            <el-form-item label="手术">
-                <el-radio-group v-model="editData.operation">
-                    <el-radio label="无">无</el-radio>
-                    <el-radio label="有">有</el-radio>
+                <el-radio-group v-model="operation">
+                    <el-radio label="0">无</el-radio>
+                    <el-radio label="1">有</el-radio>
                 </el-radio-group>
-              <input type="text"  placeholder="请填写手术名称"  style="border:none;outline:none;margin-left:1%">
-              <el-date-picker  v-model="value1" type="date" placeholder="请选择确诊时间" style="margin-left:1%"></el-date-picker>
+              <input type="text" v-model="editData.operationInfo" v-show="operation == '0' ? false : true"  placeholder="请填写手术名称"  style="border:none;outline:none;margin-left:1%">
+              <el-date-picker  v-model="editData.operationTime" v-show="operation == '0' ? false : true" type="date"  value-format="yyyy-MM-dd" placeholder="请选择确诊时间" style="margin-left:1%"></el-date-picker>
             </el-form-item>
             <el-form-item label="外伤">
-                <el-radio-group v-model="editData.trauma">
-                    <el-radio label="无">无</el-radio>
-                    <el-radio label="有">有</el-radio>
+                <el-radio-group v-model="trauma">
+                    <el-radio label="0">无</el-radio>
+                    <el-radio label="1">有</el-radio>
                 </el-radio-group>
-              <input type="text"  placeholder="请填写外伤名称"  style="border:none;outline:none;margin-left:1%">
-              <el-date-picker  v-model="value1" type="date" placeholder="请选择确诊时间" style="margin-left:1%"></el-date-picker>
+              <input type="text" v-model="editData.traumaInfo"  v-show="trauma == '0' ? false : true"  placeholder="请填写外伤名称"  style="border:none;outline:none;margin-left:1%">
+              <el-date-picker  v-model="editData.traumaTime" type="date" v-show="trauma == '0' ? false : true"  value-format="yyyy-MM-dd"  placeholder="请选择确诊时间" style="margin-left:1%"></el-date-picker>
             </el-form-item>
             <el-form-item label="输血">
-                 <el-radio-group v-model="editData.transfusion">
-                    <el-radio label="无">无</el-radio>
-                    <el-radio label="有">有</el-radio>
+                 <el-radio-group v-model="transfusion">
+                    <el-radio label="0">无</el-radio>
+                    <el-radio label="1">有</el-radio>
                 </el-radio-group>
               
-              <input type="text"  placeholder="请填写输血原因"  style="border:none;outline:none;margin-left:1%">
-              <el-date-picker  v-model="value1" type="date" placeholder="请选择时间" style="margin-left:1%"></el-date-picker>
+              <input type="text" v-model="editData.transfusionInfo"  v-show="transfusion == '0' ? false : true"  placeholder="请填写输血原因"  style="border:none;outline:none;margin-left:1%">
+              <el-date-picker  v-model="editData.transfusionTime" v-show="transfusion == '0' ? false : true" type="date" placeholder="请选择时间"  value-format="yyyy-MM-dd" style="margin-left:1%"></el-date-picker>
             </el-form-item>
             <h4>家族病史</h4>
-             <!-- <el-form-item label="父亲">
-                  <el-radio-group v-model="healDatatest.fathered.ischecked">
-                    <el-radio label="无">无</el-radio>
-                    <el-radio label="有">有</el-radio>
+             <el-form-item label="父亲">
+                  <el-radio-group v-model="fatherRadio">
+                    <el-radio label="0">无</el-radio>
+                    <el-radio label="1">有</el-radio>
                 </el-radio-group>
              
-               <el-checkbox-group v-model="healDatatest.fathered.illTest" v-show="healDatatest.fathered.ischecked == '有' ? true : false">
+               <el-checkbox-group v-model="editData.fatherIll" v-show="fatherRadio == '0' ? false : true">
                     <el-checkbox v-for="(item,index) in fathersIll" :key="index" :label="item">{{item}}</el-checkbox>
-                    <input type="text"  placeholder="请填写其他疾病" v-show="healDatatest.fathered.illTest.indexOf('其他')>=0 ? true : false"  style="border:none;outline:none;margin-left:1%">
-                </el-checkbox-group>
-            </el-form-item> -->
-            <el-form-item label="母亲">
-                 <el-radio-group v-model="editData.motherIll">
-                    <el-radio label="无">无</el-radio>
-                    <el-radio label="有">有</el-radio>
-                </el-radio-group>
-              
-               <el-checkbox-group>
-                    <el-checkbox v-for="(item,index) in fathersIll" :key="index" :label="item">{{item}}</el-checkbox>
-                    <input type="text"  placeholder="请填写其他疾病" style="border:none;outline:none;margin-left:1%">
+                    <input type="text" v-model="editData.fatherIllInfo" v-show="editData.fatherIll.includes('其他') ? true : false"  placeholder="请填写其他疾病" style="border:none;outline:none;margin-left:1%">
                 </el-checkbox-group>
             </el-form-item>
+
+            <el-form-item label="母亲">
+                 <el-radio-group v-model="motherRadio">
+                    <el-radio label="0">无</el-radio>
+                    <el-radio label="1">有</el-radio>
+                </el-radio-group>
+               <el-checkbox-group v-model="editData.motherIll" v-show="motherRadio == '0' ? false : true">
+                    <el-checkbox v-for="(item,index) in fathersIll" :key="index" :label="item">{{item}}</el-checkbox>
+                    <input type="text" v-model="editData.motherIllInfo" v-show="editData.motherIll.includes('其他') ? true : false"  placeholder="请填写其他疾病" style="border:none;outline:none;margin-left:1%">
+                </el-checkbox-group>
+            </el-form-item>
+
             <el-form-item label="兄弟姐妹">
-                 <el-radio-group v-model="editData.siblingIll">
-                    <el-radio label="无">无</el-radio>
-                    <el-radio label="有">有</el-radio>
+                 <el-radio-group v-model="siblingRadio">
+                    <el-radio label="0">无</el-radio>
+                    <el-radio label="1">有</el-radio>
                 </el-radio-group>
 
-              <el-checkbox-group >
+              <el-checkbox-group v-model="editData.siblingIll" v-show="siblingRadio == '0' ? false : true">
                     <el-checkbox v-for="(item,index) in fathersIll" :key="index" :label="item">{{item}}</el-checkbox>
-                    <input type="text"  placeholder="请填写其他疾病"   style="border:none;outline:none;margin-left:1%">
+                    <input type="text" v-model="editData.siblingIllInfo" v-show="editData.siblingIll.includes('其他') ? true : false"  placeholder="请填写其他疾病"    style="border:none;outline:none;margin-left:1%">
                 </el-checkbox-group>
             </el-form-item>
+
             <el-form-item label="子女">
-                 <el-radio-group v-model="editData.childIll">
-                    <el-radio label="无">无</el-radio>
-                    <el-radio label="有">有</el-radio>
+                 <el-radio-group v-model="childRadio">
+                    <el-radio label="0">无</el-radio>
+                    <el-radio label="1">有</el-radio>
                 </el-radio-group>
-               <el-checkbox-group >
+               <el-checkbox-group v-model="editData.childIll" v-show="childRadio == '0' ? false : true">
                     <el-checkbox v-for="(item,index) in fathersIll" :key="index" :label="item">{{item}}</el-checkbox>
-                    <input type="text"  placeholder="请填写其他疾病"   style="border:none;outline:none;margin-left:1%">
+                    <input type="text" v-model="editData.childIllInfo" v-show="editData.childIll.includes('其他') ? true : false" placeholder="请填写其他疾病"   style="border:none;outline:none;margin-left:1%">
                 </el-checkbox-group>
             </el-form-item>
+
             <el-form-item label="遗传病史">
                  <el-radio-group v-model="editData.inheritIll">
-                   <el-radio label="无">无</el-radio>
-                    <el-radio label="有">有</el-radio>
+                   <el-radio label="0">无</el-radio>
+                    <el-radio label="1">有</el-radio>
                 </el-radio-group>
-              <input type="text"  placeholder="请填写其他遗传病史"  v-show="editData.inheritIll == '有' ? true : false"  style="border:none;outline:none;margin-left:2%">
+              <input type="text" v-model="editData.inheritIllInfo"  placeholder="请填写其他遗传病史"  v-show="editData.inheritIll == '1' ? true : false"  style="border:none;outline:none;margin-left:2%">
             </el-form-item>
+
             <el-form-item label="残疾情况">
-                 <el-radio-group v-model="editData.disability">
-                    <el-radio label="无">无</el-radio>
-                    <el-radio label="有">有</el-radio>
+                 <el-radio-group v-model="disabilityRadio">
+                    <el-radio label="0">无</el-radio>
+                    <el-radio label="1">有</el-radio>
                 </el-radio-group>
-               <el-checkbox-group v-model="editData.disability" v-show="editData.disability == '有' ? true : false">
+               <el-checkbox-group v-model="editData.disability">
                     <el-checkbox v-for="(item,index) in disabledCase" :key="index" :label="item">{{item}}</el-checkbox>
-                    <input type="text"  placeholder="请填写其他残疾" v-show="editData.inheritIll.indexOf('其他残疾')>= 0 ? true : false"  style="border:none;outline:none;margin-left:2%">
+                    <input type="text" v-model="editData.disabilityInfo" v-show="editData.disability.includes('其他残疾') ? true : false"  placeholder="请填写其他残疾"   style="border:none;outline:none;margin-left:2%">
                 </el-checkbox-group>
             </el-form-item>
           <el-form-item>
@@ -166,18 +169,225 @@ export default {
   data() {
     return {
       form: {},
-      editData: {},
-         fathersIll:['糖尿病','高血压','冠心病','脑猝中','高脂血症','精神病','肿瘤','其他'],
+      illness:'',
+      operation:'',
+      trauma:'',
+      transfusion:'',
+      fatherRadio:'',
+      motherRadio:'',
+      siblingRadio:'',
+      childRadio:'',
+      disabilityRadio:'',
+      editData: {
+         illnessDate:'',
+      },
+      fathersIll:['糖尿病','高血压','冠心病','脑猝中','高脂血症','精神病','肿瘤','其他'],
       disabledCase:['视力残疾','听力残疾','言语残疾','肢体残疾','智力残疾','精神残疾','其他残疾'],
     };
   },
   created(){
       this.editData = this.editDataList
       console.log(this.editDataList,'健康信息--编辑值')
+      this.editData.drugAllergyInfo = this.getDrugAllergyInfo(this.editData.drugAllergy)
+      this.editData.drugAllergy = this.getDrugAllergy(this.editData.drugAllergy)
+        //   疾病
+      this.editData.illnessInfo = this.getIllnessInfo(this.editData.illness)
+      this.editData.illnessDateInfo = this.getIllnessDateInfo(this.editData.illness)
+      this.$set(this.editData, "illnessTime", this.editData.illnessDateInfo);
+      this.illness = this.getIllness(this.editData.illnessInfo)
+      // 手术
+      this.editData.operationInfo = this.getOperationInfo(this.editData.operation)
+      this.editData.operationDateInfo = this.getOperationDateInfo(this.editData.operation)
+      this.$set(this.editData, "operationTime", this.editData.illnessDateInfo);
+      this.operation = this.getOperation(this.editData.operationInfo)
+        //  外伤
+      this.editData.traumaInfo = this.getTraumaInfo(this.editData.trauma)
+      this.editData.traumaDateInfo = this.getTraumaDateInfo(this.editData.trauma)
+      this.$set(this.editData, "traumaTime", this.editData.traumaDateInfo);
+      this.trauma = this.getTrauma(this.editData.traumaInfo)
+       //  输血
+      this.editData.transfusionInfo = this.getTransfusionInfo(this.editData.transfusion)
+      this.editData.transfusionDateInfo = this.getTransfusionDateInfo(this.editData.transfusion)
+      this.$set(this.editData, "transfusionTime", this.editData.transfusionDateInfo);
+      this.transfusion = this.getTransfusion(this.editData.traumaInfo)
+    // 父亲
+     this.editData.fatherIll = this.editData.fatherIll.split(' ')
+      this.editData.fatherIll.push('其他啊--')
+      this.editData.fatherIllInfo = ""
+      for(let item of this.editData.fatherIll){
+          if(this.fathersIll.indexOf(item) == -1){
+              this.editData.fatherIll.push('其他')
+              this.editData.fatherIllInfo = item
+          }
+      }
+      this.fatherRadio = this.getFatherIllRadio(this.editData.fatherIll)
+      // 母亲
+      this.editData.motherIll = this.editData.motherIll.split(' ')
+    //   this.editData.motherIll.push('其他啊--')
+      this.editData.motherIllInfo = ""
+      for(let item of this.editData.motherIll){
+          if(this.fathersIll.indexOf(item) == -1){
+              this.editData.motherIll.push('其他')
+              this.editData.motherIllInfo = item
+          }
+      }
+      this.motherRadio = this.getMotherRadio(this.editData.motherIll)
+    //   兄弟姐妹
+     this.editData.siblingIll = this.editData.siblingIll.split(' ')
+      this.editData.siblingIll.push('其他啊--')
+      this.editData.siblingIllInfo = ""
+      for(let item of this.editData.siblingIll){
+          if(this.fathersIll.indexOf(item) == -1){
+              this.editData.siblingIll.push('其他')
+              this.editData.siblingIllInfo = item
+          }
+      }
+      this.siblingRadio = this.getSiblingIllRadio(this.editData.siblingIll)
+    //   子女
+    this.editData.childIll = this.editData.childIll.split(' ')
+      this.editData.childIll.push('其他啊--')
+      this.editData.childIllInfo = ""
+      for(let item of this.editData.childIll){
+          if(this.fathersIll.indexOf(item) == -1){
+              this.editData.childIll.push('其他')
+              this.editData.childIllInfo = item
+          }
+      }
+      this.childRadio = this.getChildIllRadio(this.editData.childIll)
+    //   遗传病史
+    this.editData.inheritIllInfo = this.getInheritIllInfo(this.editData.inheritIll)
+      this.editData.inheritIll = this.getDrugAllergy(this.editData.inheritIll)
+    //   残疾情况
+    this.editData.disability = this.editData.disability.split(' ')
+    //   this.editData.disability.push('其他啊--')
+      this.editData.disabilityInfo = ""
+      for(let item of this.editData.disability){
+          if(this.disabledCase.indexOf(item) == -1){
+              console.log(item)
+              this.editData.disability.push('其他残疾')
+              this.editData.disabilityInfo = item
+          }
+      }
+      this.disabilityRadio = this.getDisabilityRadio(this.editData.disability)
   },
   methods:{
+      getDrugAllergy(value){
+        const list = ['无','磺胺','青霉素','链霉素','不详']
+        const idx = list.indexOf(value)
+        return idx == -1 ? 5+"" : idx+""
+    },
+    getDrugAllergyInfo(v){
+        console.log(v)
+        const list = ['无','磺胺','青霉素','链霉素','不详']
+        const idx = list.indexOf(v)
+        return idx === -1 ? v : ""
+    },
+    // 疾病
+    getIllness(value){
+        const list = ['无','有']
+        let idx = list.indexOf(value)
+        return idx == -1 ? '1' : idx+""
+    },
+    getIllnessInfo(v){
+        console.log(v);
+        v.split(' ')
+        return  v.split(' ')[0]
+    },
+    getIllnessDateInfo(v){
+        console.log(v);
+        v.split(' ')
+        return  v.split(' ')[1]
+    },
+    // 手术
+    getOperation(value){
+        const list = ['无','有']
+        let idx = list.indexOf(value)
+        return idx == -1 ? '1' : idx+""
+    },
+    getOperationInfo(v){
+        console.log(v);
+        v.split(' ')
+        return  v.split(' ')[0]
+    },
+    getOperationDateInfo(v){
+        console.log(v);
+        v.split(' ')
+        return  v.split(' ')[1]
+    },
+    // 外伤
+    getTrauma(value){
+        const list = ['无','有']
+        let idx = list.indexOf(value)
+        return idx == -1 ? '1' : idx+""
+    },
+    getTraumaInfo(v){
+        console.log(v);
+        v.split(' ')
+        return  v.split(' ')[0]
+    },
+    getTraumaDateInfo(v){
+        console.log(v);
+        v.split(' ')
+        return  v.split(' ')[1]
+    },
+    // 外伤
+    getTransfusion(value){
+        const list = ['无','有']
+        let idx = list.indexOf(value)
+        return idx == -1 ? '1' : idx+""
+    },
+    getTransfusionInfo(v){
+        console.log(v);
+        v.split(' ')
+        return  v.split(' ')[0]
+    },
+    getTransfusionDateInfo(v){
+        console.log(v);
+        v.split(' ')
+        return  v.split(' ')[1]
+    },
+    // 父亲
+    getFatherIllRadio(value){
+        let idx = value.length >= 0 ? '1' : '0'
+        return idx
+    },
+    // 母亲
+    getMotherRadio(value){
+        let idx = value.length >= 0 ? '1' : '0'
+        return idx
+    },
+    // 兄弟姐妹
+    getSiblingIllRadio(value){
+        let idx = value.length >= 0 ? '1' : '0'
+        return idx
+    },
+    // 子女
+    getChildIllRadio(value){
+        let idx = value.length >= 0 ? '1' : '0'
+        return idx
+    },
+    // 遗传病史
+    getDrugAllergy(value){
+        const list = ['无','有']
+        const idx = list.indexOf(value)
+        return idx == -1 ? 1+"" : idx+""
+    },
+    getInheritIllInfo(v){
+        const list = ['无','有']
+        const idx = list.indexOf(v)
+        return idx === -1 ? v : ""
+    },
+    getDisabilityRadio(value){
+        let idx = value.length >= 0 ? '1' : '0'
+        return idx
+    },
       savebBseMsg(){
-          console.log('保存编辑信息')
+          this.editData.fatherIll = this.editData.fatherIll.join(' ')
+          this.editData.motherIll = this.editData.motherIll.join(' ')
+          this.editData.siblingIll = this.editData.siblingIll.join(' ')
+          this.editData.childIll = this.editData.childIll.join(' ')
+          this.editData.disability = this.editData.disability.join(' ')
+          console.log(this.editData.transfusionTime,this.editData.transfusionInfo,'保存编辑信息')
       }
   }
 };

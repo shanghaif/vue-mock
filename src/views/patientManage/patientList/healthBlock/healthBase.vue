@@ -59,7 +59,6 @@ export default {
     edit(){
       console.log(this.healthBase)
       this.$router.push({ name: 'PatientEdit', params: {editIndex:'2',editData:this.healthBase}})
-      console.log('0000')
     }
   }
 };

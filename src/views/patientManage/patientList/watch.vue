@@ -9,6 +9,7 @@
       <bloodSugar v-show="defaultVal.includes('6') ? true : false"></bloodSugar>
       <bloodPress v-show="defaultVal.includes('7') ? true : false"></bloodPress>
       <egcChart v-show="defaultVal.includes('8') ? true : false"></egcChart>
+      <testReport></testReport>
     </div>
     <div class="bar">
       <healthBar @defaultBlock = 'defaultBlock' @showBlockList="showBlockList"></healthBar>
@@ -27,6 +28,7 @@ import otherMsg from './healthBlock/otherMsg'
 import bloodSugar from './healthBlock/bloodSugar'
 import bloodPress from './healthBlock/bloodPress'
 import egcChart from './healthBlock/egcChart'
+import testReport from './healthBlock/testReport'
 export default {
   components: {
     // healthBar,
@@ -37,7 +39,8 @@ export default {
     otherMsg,
     bloodSugar,
     bloodPress,
-    egcChart
+    egcChart,
+    testReport
   },
   data() {
     return {
