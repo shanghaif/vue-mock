@@ -33,7 +33,7 @@ export default {
   },
   created() {
     //其他信息
-   get('/api/healthOther/11111').then(res=>{
+   get('/health/healthOther/11111').then(res=>{
       this.healthOther = res.data
     })
   },

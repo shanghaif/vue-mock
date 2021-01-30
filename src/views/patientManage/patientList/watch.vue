@@ -10,28 +10,33 @@
       <bloodPress v-show="defaultVal.includes('7') ? true : false"></bloodPress>
       <egcChart v-show="defaultVal.includes('8') ? true : false"></egcChart>
       <testReport></testReport>
+      <healthInfo></healthInfo>
+      <medicineWarn></medicineWarn>
     </div>
     <div class="bar">
-      <healthBar @defaultBlock = 'defaultBlock' @showBlockList="showBlockList"></healthBar>
+      <healthBar
+        @defaultBlock="defaultBlock"
+        @showBlockList="showBlockList"
+      ></healthBar>
     </div>
   </div>
 </template>
 
 
 <script>
-// import healthBar from "./health";
-import userLabel from './healthBlock/userLabel'
-import healthBase from './healthBlock/healthBase'
-import healthMsg from './healthBlock/healthMsg'
-import lifeHabit from './healthBlock/lifeHabit'
-import otherMsg from './healthBlock/otherMsg'
-import bloodSugar from './healthBlock/bloodSugar'
-import bloodPress from './healthBlock/bloodPress'
-import egcChart from './healthBlock/egcChart'
-import testReport from './healthBlock/testReport'
+import userLabel from "./healthBlock/userLabel";
+import healthBase from "./healthBlock/healthBase";
+import healthMsg from "./healthBlock/healthMsg";
+import lifeHabit from "./healthBlock/lifeHabit";
+import otherMsg from "./healthBlock/otherMsg";
+import bloodSugar from "./healthBlock/bloodSugar";
+import bloodPress from "./healthBlock/bloodPress";
+import egcChart from "./healthBlock/egcChart";
+import testReport from "./healthBlock/testReport";
+import healthInfo from "./healthBlock/healthInfo";
+import medicineWarn from "./healthBlock/medicineWarn";
 export default {
   components: {
-    // healthBar,
     userLabel,
     healthBase,
     healthMsg,
@@ -40,22 +45,23 @@ export default {
     bloodSugar,
     bloodPress,
     egcChart,
-    testReport
+    testReport,
+    healthInfo,
+    medicineWarn,
   },
   data() {
     return {
-      defaultVal:[]
+      defaultVal: [],
     };
   },
-  methods:{
-    defaultBlock(defaultVal){
-      this.defaultVal = defaultVal
-      console.log(this.defaultVal)
+  methods: {
+    defaultBlock(defaultVal) {
+      this.defaultVal = defaultVal;
     },
-    showBlockList(val){
-      this.defaultVal = val
-    }
-  }
+    showBlockList(val) {
+      this.defaultVal = val;
+    },
+  },
 };
 </script>
 

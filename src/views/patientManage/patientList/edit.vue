@@ -18,6 +18,18 @@
         v-if="editIndex == '5' ? true : false"
         :editDataList="editData"
       ></editOtherMsg>
+      <bloodPressMore
+        v-if="editIndex == '6' ? true : false"
+        :editDataList="editData"
+      ></bloodPressMore>
+      <testReportMore
+        v-if="editIndex == '9' ? true : false"
+        :editDataList="editData"
+      ></testReportMore>
+      <healthInfoMore
+        v-if="editIndex == '10' ? true : false"
+        :editDataList="editData"
+      ></healthInfoMore>
     </div>
     <div class="bar">
       <healthBar
@@ -34,12 +46,18 @@ import editHealthBase from "./editHealthBlock/editHealthBase";
 import editHealthMsg from "./editHealthBlock/editHealthMsg";
 import editLifeHabit from "./editHealthBlock/editLifeHabit";
 import editOtherMsg from "./editHealthBlock/editOtherMsg";
+import testReportMore from "./editHealthBlock/moreTestReport";
+import bloodPressMore from "./editHealthBlock/moreBloodSugar";
+import healthInfoMore from "./editHealthBlock/moreHealthInfo";
 export default {
   components: {
     editHealthBase,
     editHealthMsg,
     editLifeHabit,
     editOtherMsg,
+    testReportMore,
+    bloodPressMore,
+    healthInfoMore,
   },
   data() {
     return {
@@ -49,16 +67,13 @@ export default {
     };
   },
   watch: {
-    editIndex:function(newVal,oldVal){
-      console.log(newVal,oldVal)
-    }
+    editIndex: function (newVal, oldVal) {
+      console.log(newVal, oldVal);
+    },
   },
-  created() {
-    console.log(this.$route.params, "传过来的编辑值");
-  },
-  activated(){
+  activated() {
     this.editIndex = this.$route.params.editIndex;
-    this.editData = this.$route.params.editData;  
+    this.editData = this.$route.params.editData;
   },
   methods: {
     defaultBlock(defaultVal) {

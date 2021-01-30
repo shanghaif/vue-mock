@@ -87,7 +87,7 @@ export default {
   },
   created() {
     //基本信息
-    get('/api/healthInfo/11111').then(res=>{
+    get('/health/healthInfo/11111').then(res=>{
       this.healthInfo = res.data
     })
   },

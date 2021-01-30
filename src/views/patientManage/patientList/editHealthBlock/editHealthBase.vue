@@ -7,7 +7,7 @@
         <p>基本信息</p>
       </div>
       <div class="base_msg clearfix">
-        <el-form ref="form" :model="form" label-width="100px">
+        <el-form ref="healBase" :model="form" label-width="100px">
           <!-- <div class="base_msg_left"> -->
           <!-- <el-form-item label="姓名"> -->
           <el-form-item label="姓名" style="width: 30%; float: left">
@@ -141,12 +141,17 @@
           </el-form-item>
           <el-form-item label="特殊类型人群">
             <el-checkbox-group v-model="editData.specialPeople">
-              <el-checkbox v-for="(item,index) in specialPeople" :key="index" :label="item">{{item}}</el-checkbox>
+              <el-checkbox
+                v-for="(item, index) in specialPeople"
+                :key="index"
+                :label="item"
+                >{{ item }}</el-checkbox
+              >
             </el-checkbox-group>
             <input
               type="text"
               v-model="editData.specialPeopleInfo"
-               v-show="editData.specialPeopleInfo == '' ? false : true"
+              v-show="editData.specialPeopleInfo == '' ? false : true"
               placeholder="请填写其他特殊类型人群"
               style="border: none; outline: none; margin-left: 2%"
             />
@@ -158,7 +163,9 @@
             </el-form-item>
           </div> -->
           <el-form-item>
-            <el-button type="primary" @click="savebBseMsg">保存</el-button>
+            <el-button type="primary" @click="savebBseMsg('healBase')"
+              >保存</el-button
+            >
             <el-button>取消</el-button>
           </el-form-item>
         </el-form>
@@ -168,6 +175,7 @@
 </template>
 
 <script>
+import { get, post, put } from "@/request/http";
 export default {
   props: ["editDataList"],
   data() {
@@ -198,13 +206,12 @@ export default {
         "社会医疗保险",
         "其他",
       ],
-      specialPeople:[
-          '低保','特困','残疾','医保签约','持慈善卡','其他'
-      ]
+      specialPeople: ["低保", "特困", "残疾", "医保签约", "持慈善卡", "其他"],
     };
   },
   created() {
     this.editData = this.editDataList;
+    
     console.log(this.editData, "基本信息--编辑", this.editData.nationality);
     //   国籍
     this.editData.nationalityInfo = this.getNationalityInfo(
@@ -224,22 +231,22 @@ export default {
     // this.editData.expenseType.push("加菲猫");
     this.editData.expenseTypeInfo = "";
     for (let item of this.editData.expenseType) {
-      if(this.expenseType.indexOf(item) == -1 ){
-          this.editData.expenseTypeInfo = item
-          this.editData.expenseType.push("其他")
+      if (this.expenseType.indexOf(item) == -1) {
+        this.editData.expenseTypeInfo = item;
+        this.editData.expenseType.push("其他");
       }
     }
     this.editData.expenseTypeInfo = this.getExpenseTypeInfo(
       this.editData.expenseTypeInfo
     );
     // 特殊类型人群
-    this.editData.specialPeople = this.editData.specialPeople.split(' ')
+    this.editData.specialPeople = this.editData.specialPeople.split(" ");
     // this.editData.specialPeople.push('傻子')
     this.editData.specialPeopleInfo = "";
     for (let item of this.editData.specialPeople) {
-      if(this.specialPeople.indexOf(item) == -1 ){
-          this.editData.specialPeopleInfo = item
-          this.editData.specialPeople.push("其他")
+      if (this.specialPeople.indexOf(item) == -1) {
+        this.editData.specialPeopleInfo = item;
+        this.editData.specialPeople.push("其他");
       }
     }
     this.editData.specialPeopleInfo = this.getSpecialPeopleInfo(
@@ -284,12 +291,44 @@ export default {
       return idx == -1 ? value : "";
     },
     // 特殊类型人群
-    getSpecialPeopleInfo(){
-        let idx = this.specialPeople.indexOf(value);
-        return idx == -1 ? value : "";
+    getSpecialPeopleInfo() {
+      let idx = this.specialPeople.indexOf(value);
+      return idx == -1 ? value : "";
     },
-    savebBseMsg() {
-      console.log(this.editData,"保存编辑内容");
+    savebBseMsg(healBase) {
+      console.log(this.editData.nationality == "0");
+      this.editData.nationality =
+        this.editData.nationality == "0"
+          ? "中国"
+          : this.editData.nationalityInfo;
+      for (let item in this.nation) {
+        console.log(item);
+      }
+      this.$refs[healBase].validate((valid) => {
+        if (valid) {
+          console.log(this.editData, "保存编辑内容");
+          // put('/health/healthOther/11111',{
+          //     householdType:this.editData.householdType,
+          //     householdCategory:this.editData.householdCategory,
+          //     kitas:this.editData.kitas,
+          //     accessBjTime:this.editData.accessBjTime,
+          //     postalCode:this.editData.postalCode,
+          //     policeStation:this.editData.policeStation,
+          //     committee:this.editData.committee,
+          //     homePhone:this.editData.homePhone,
+          //     email:this.editData.email,
+          //     contactName:this.editData.contactName,
+          //     contactPhone:this.editData.contactPhone,
+          //     userId:'11111',
+          // }).then(res => {
+          //     console.log(res,this.editData)
+          //     this.$router.push('/Patientwatch')
+          // })
+        } else {
+          console.log("error submit!!");
+          return false;
+        }
+      });
     },
   },
 };

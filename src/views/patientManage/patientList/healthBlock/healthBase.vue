@@ -50,14 +50,12 @@ export default {
   },
   created() {
     //基本信息
-    get("/api/healthBase/11111").then((res) => {
-        console.log(res,'健康信息')
+    get("/health/healthBase/11111").then((res) => {
       this.healthBase = res.data;
-    });
+    })
   },
   methods:{
     edit(){
-      console.log(this.healthBase)
       this.$router.push({ name: 'PatientEdit', params: {editIndex:'2',editData:this.healthBase}})
     }
   }

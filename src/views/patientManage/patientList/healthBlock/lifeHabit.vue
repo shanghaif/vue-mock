@@ -51,7 +51,7 @@ export default {
   },
   created() {
     //生活习惯
-    get('/api/healthLife/11111').then(res=>{
+    get('/health/healthLife/11111').then(res=>{
       this.healthLife = res.data
     })
   },

@@ -12,6 +12,7 @@
 
 <script>
 import MyEcharts from "@/components/echarts/index"; //echarts
+import {get,post} from "@/request/http"
 export default {
   components: {
     MyEcharts,
@@ -62,6 +63,7 @@ export default {
   },
   mounted() {
     this.echarts();
+    this.getBloodSugar()
     window.addEventListener("resize", function () {
       myChartm.resize();
     document.getElementById("exampleId").style.width = "100" + "%";
@@ -73,6 +75,10 @@ export default {
       that.myChartm = that.$echarts.init(document.getElementById("exampleId"));
       that.myChartm.setOption(that.option);
     },
+    async getBloodSugar(){
+      let res = await get('/healthEcharts/dataGlucose/list/11111?pageNum=1&pageSize=9&measureFlag=3')
+      console.log(res,'777')
+    }
   },
 };
 </script>

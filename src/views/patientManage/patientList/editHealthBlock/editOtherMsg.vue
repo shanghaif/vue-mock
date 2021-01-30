@@ -79,7 +79,9 @@
             ></el-input>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" @click="otherMsgSave('otherMsg')">保存</el-button>
+            <el-button type="primary" @click="otherMsgSave('otherMsg')"
+              >保存</el-button
+            >
             <el-button>取消</el-button>
           </el-form-item>
         </el-form>
@@ -89,7 +91,7 @@
 </template>
 
 <script>
-import { get, post ,put } from "@/request/http";
+import { get, post, put } from "@/request/http";
 export default {
   props: ["editDataList"],
   data() {
@@ -100,30 +102,28 @@ export default {
   },
   created() {
     this.editData = this.editDataList;
-    console.log(this.editData, "编辑--其他习惯");
   },
   methods: {
     otherMsgSave(otherMsg) {
       this.$refs[otherMsg].validate((valid) => {
         if (valid) {
-          console.log(this.editData, "保存编辑内容");
-            put('/api/healthOther/11111',{
-                householdType:this.editData.householdType,
-                householdCategory:this.editData.householdCategory,
-                kitas:this.editData.kitas,
-                accessBjTime:this.editData.accessBjTime,
-                postalCode:this.editData.postalCode,
-                policeStation:this.editData.policeStation,
-                committee:this.editData.committee,
-                homePhone:this.editData.homePhone,
-                email:this.editData.email,
-                contactName:this.editData.contactName,
-                contactPhone:this.editData.contactPhone,
-                userId:'11111',
-            }).then(res => {
-                console.log(res,this.editData)
-                this.$router.push('/Patientwatch')
-            })
+          put("/health/healthOther/11111", {
+            householdType: this.editData.householdType,
+            householdCategory: this.editData.householdCategory,
+            kitas: this.editData.kitas,
+            accessBjTime: this.editData.accessBjTime,
+            postalCode: this.editData.postalCode,
+            policeStation: this.editData.policeStation,
+            committee: this.editData.committee,
+            homePhone: this.editData.homePhone,
+            email: this.editData.email,
+            contactName: this.editData.contactName,
+            contactPhone: this.editData.contactPhone,
+            userId: "11111",
+          }).then((res) => {
+            console.log(res, this.editData);
+            this.$router.push("/Patientwatch");
+          });
         } else {
           console.log("error submit!!");
           return false;

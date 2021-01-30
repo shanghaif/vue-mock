@@ -195,15 +195,15 @@ export default {
       }
     }
     // input获取焦点出现边框
-/deep/.el-input__inner:focus,
-/deep/.el-textarea__inner:focus {
-  border: 1px solid rgba(102, 114, 251, 1) !important;
-  background: rgba(102, 114, 251, 0.05) !important;
-}
-/deep/.el-input__inner {
-  border: none !important;
-  background: rgba(102, 114, 251, 0.05) !important;
-}
+    /deep/.el-input__inner:focus,
+    /deep/.el-textarea__inner:focus {
+      border: 1px solid rgba(102, 114, 251, 1) !important;
+      background: rgba(102, 114, 251, 0.05) !important;
+    }
+    /deep/.el-input__inner {
+      border: none !important;
+      background: rgba(102, 114, 251, 0.05) !important;
+    }
     .birthday_tool_search {
       display: inline-block;
       /deep/ .el-input-group {
@@ -226,9 +226,9 @@ export default {
         border: none;
         background: none !important;
       }
-        /deep/.el-input__inner:focus{
+      /deep/.el-input__inner:focus {
         border: none !important;
-        }
+      }
     }
   }
   .birthday_table {
@@ -279,8 +279,6 @@ export default {
     }
   }
 }
-
-
 
 // 设置dialog弹窗的样式---圆角
 /deep/.el-dialog {

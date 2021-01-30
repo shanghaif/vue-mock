@@ -109,8 +109,8 @@ export default {
       characterCode: "",
       isPhoneLogin: false,
       isQrLogin: true,
-      auth_time: 0 /*倒计时 计数器*/,
-      sendAuthCode: true /*布尔值，通过v-show控制显示‘获取按钮’还是‘倒计时’ */,
+      auth_time: 0 ,
+      sendAuthCode: true ,
       ruleForm: {
         phoneNum: "",
         verify_code: "",
@@ -124,7 +124,9 @@ export default {
         verify_code: [
           { required: true, message: "请填写验证码", trigger: "blur" },
         ],
-        phone_verify_code: [{ required: true, message: "请填写手机验证码", trigger: "blur" }]
+        phone_verify_code: [
+          { required: true, message: "请填写手机验证码", trigger: "blur" },
+        ],
       },
     };
   },
@@ -144,17 +146,16 @@ export default {
       this.checkMobile(this.ruleForm.phoneNum);
     },
     //验证手机号,错误提示请填写正确手机号，并做60秒倒计时
-
     checkMobile(phone) {
       console.log(phone);
-      var reg_phone = /^[1][0-9][0-9]{9}$/;
-      var regPhone = new RegExp(reg_phone);
+      const reg_phone = /^[1][0-9][0-9]{9}$/;
+      const regPhone = new RegExp(reg_phone);
       if (regPhone.test(phone)) {
         console.log("正确手机号");
         if (this.ruleForm.phoneNum.length != 0) {
           this.sendAuthCode = false;
           this.auth_time = 60;
-          var auth_timetimer = setInterval(() => {
+          let auth_timetimer = setInterval(() => {
             this.auth_time--;
             if (this.auth_time <= 0) {
               this.sendAuthCode = true;
@@ -163,21 +164,21 @@ export default {
           }, 1000);
         }
       } else {
-        console.log("错误手机号",this.rules.phone_verify_code);
+        console.log("错误手机号", this.rules.phone_verify_code);
         // this.rules.phone_verify_code = [{ required: true, message: "请填写手机验证码1111", trigger: "blur" }]
       }
     },
     wxlogin() {
       // 生成base64==二维码样式
-      var content =
-      ".impowerBox .qrcode {width: 200px;}.impowerBox .title {display: none;}.impowerBox .info {width: 200px;}";
-      var blob = new Blob([content],{type: "text/css;charset=utf-8"});
-      var reader = new FileReader();
+      let content =
+        ".impowerBox .qrcode {width: 200px;}.impowerBox .title {display: none;}.impowerBox .info {width: 200px;}";
+      let blob = new Blob([content], { type: "text/css;charset=utf-8" });
+      let reader = new FileReader();
       reader.readAsDataURL(blob);
       //用于生成二维码的方法
-      var obj = new WxLogin({
+      let obj = new WxLogin({
         self_redirect: false,
-        id: "qrcode", //显示二维码的容器id
+        id: "qrcode",
         appid: "wx1b82d6e42f678943", //在开放平台申请到的appid
         scope: "snsapi_login",
         redirect_uri: encodeURIComponent("http://127.0.0.1/:8080/menuLists"), //扫码后跳转的链接，网址必须是在开放平台申请时填写的那个
@@ -188,9 +189,9 @@ export default {
       });
     },
     GetQueryString(name) {
-      var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+      let reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
 
-      var r = window.location.search.substr(1).match(reg);
+      let r = window.location.search.substr(1).match(reg);
 
       if (r != null) return unescape(r[2]);
 
@@ -201,8 +202,8 @@ export default {
         if (valid) {
           alert("submit!");
         } else {
-            console.log("error submit!!");
-            this.$router.push('/statistics')
+          console.log("error submit!!");
+          this.$router.push("/statistics");
           return false;
         }
       });
@@ -210,7 +211,7 @@ export default {
   },
   mounted() {
     this.wxlogin(); //当页面加载成功后执行，生成微信二维码
-    console.log(window.location.href, this.GetQueryString('code'));
+    // console.log(window.location.href, this.GetQueryString("code"));
   },
 };
 </script>
@@ -405,8 +406,8 @@ export default {
 /deep/ .el-form-item__content {
   margin-left: 0px !important;
 }
-/deep/.el-form-item__content{
-    line-height: 0;
+/deep/.el-form-item__content {
+  line-height: 0;
 }
 /deep/ .el-input__inner {
   height: 60px;

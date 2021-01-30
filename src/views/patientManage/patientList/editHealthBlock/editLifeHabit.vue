@@ -231,7 +231,9 @@
             />
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" @click="savebBseMsg('lifeHabit')">保存</el-button>
+            <el-button type="primary" @click="savebBseMsg('lifeHabit')"
+              >保存</el-button
+            >
             <el-button>取消</el-button>
           </el-form-item>
         </el-form>
@@ -241,7 +243,7 @@
 </template>
 
 <script>
-import { get, post ,put } from "@/request/http";
+import { get, post, put } from "@/request/http";
 export default {
   props: ["editDataList"],
   data() {
@@ -401,29 +403,29 @@ export default {
       return idx == -1 ? v : "";
     },
     savebBseMsg(lifeHabit) {
-       this.$refs[lifeHabit].validate((valid) => {
+      this.$refs[lifeHabit].validate((valid) => {
         if (valid) {
           console.log(this.editData, "保存编辑内容");
-            put('/api/healthLife/11111',{
-                beginSmokeTime:this.editData.beginSmokeTime,
-                endSmokeTime:this.editData.endSmokeTime,
-                smokeAmount:this.editData.smokeAmount,
-                drinkType:this.editData.drinkType,
-                drinkAmount:this.editData.drinkAmount,
-                drinkFrequency:this.editData.drinkFrequency,
-                endDrinkTime:this.editData.endDrinkTime,
-                exerciseRegular:this.editData.exerciseRegular,
-                exerciseSituation:this.editData.exerciseSituation,
-                exerciseTime:this.editData.exerciseTime,
-                exerciseType:this.editData.exerciseType,
-                eatType:this.editData.eatType,
-                sleepSituation:this.editData.sleepSituation,
-                otherRegular:this.editData.otherRegular,
-                userId:'11111',
-            }).then(res => {
-                console.log(res,this.editData)
-                this.$router.push('/Patientwatch')
-            })
+          put("/health/healthLife/11111", {
+            beginSmokeTime: this.editData.beginSmokeTime,
+            endSmokeTime: this.editData.endSmokeTime,
+            smokeAmount: this.editData.smokeAmount,
+            drinkType: this.editData.drinkType,
+            drinkAmount: this.editData.drinkAmount,
+            drinkFrequency: this.editData.drinkFrequency,
+            endDrinkTime: this.editData.endDrinkTime,
+            exerciseRegular: this.editData.exerciseRegular,
+            exerciseSituation: this.editData.exerciseSituation,
+            exerciseTime: this.editData.exerciseTime,
+            exerciseType: this.editData.exerciseType,
+            eatType: this.editData.eatType,
+            sleepSituation: this.editData.sleepSituation,
+            otherRegular: this.editData.otherRegular,
+            userId: "11111",
+          }).then((res) => {
+            console.log(res, this.editData);
+            this.$router.push("/Patientwatch");
+          });
         } else {
           console.log("error submit!!");
           return false;

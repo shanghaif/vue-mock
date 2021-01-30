@@ -627,19 +627,19 @@ export default {
     // 判断默认展示的模块
     this.default_checked();
     //基本信息
-    get('/api/healthBase/11111').then(res=>{
+    get('/health/healthBase/11111').then(res=>{
       this.healthBase = res.data
     })
     // 将抗信息
-     get('/api/healthInfo/11111').then(res=>{
+     get('/health/healthInfo/11111').then(res=>{
       this.healthInfo = res.data
     })
     // 生活习惯
-     get('/api/healthLife/11111').then(res=>{
+     get('/health/healthLife/11111').then(res=>{
       this.healthLife = res.data
     })
     // 其他习惯
-    get('/api/healthOther/11111').then(res=>{
+    get('/health/healthOther/11111').then(res=>{
       this.healthOther = res.data
       console.log(res, "其他习惯：：：：")
     })

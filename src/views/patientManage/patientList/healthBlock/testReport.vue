@@ -34,13 +34,11 @@ export default {
   },
   methods:{
     async getTestReport(){
-        const res = await get('/api/healthReport/list/11111?pageNum=0&pageSize=1')
-        console.log(res,'00000');
+        const res = await get('/health/healthReport/list/11111?pageNum=0&pageSize=1')
         this.testReportList = res.data
-
     },
     moreInfo(){
-      // this.$router.push('')
+      this.$router.push({ name: 'PatientEdit', params: {editIndex:'9',editData:this.testReportList}})
     }
   }
 };

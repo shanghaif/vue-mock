@@ -35,7 +35,6 @@
             :key="baseIndex"
             v-model="base_msg.checked"
             :checked="base_msg.checked"
-            
             >{{ base_msg.label }}</el-checkbox
           >
         </el-checkbox-group>
@@ -238,18 +237,18 @@
 <script>
 import axios from "axios";
 import editHealth from "./edit";
-import watch from './watch'
-import edits from './edit'
+import watch from "./watch";
+import edits from "./edit";
 import { get, post } from "@/request/http";
 export default {
   components: {
     editHealth,
     watch,
-    edits
+    edits,
   },
   data() {
     return {
-      gainBlockShow:true,
+      gainBlockShow: true,
       // 发送消息
       send_msg_value: "",
       // 随访内容
@@ -396,27 +395,23 @@ export default {
       // 设置随访--常用语（放一个数组里面，添加就添加到数组里面）
       phrase_text: "",
       phraseLists: ["糖尿病"],
-      // 基本信息
-      
       // 编辑传过去的id
-      editblock:null,
-
-      selectMsg:''
+      editblock: null,
+      selectMsg: "",
     };
   },
-  created( ){
-    console.log(this.ischecked)
-    this.$emit('defaultBlock',this.ischecked)
+  created() {
+    console.log(this.ischecked);
+    this.$emit("defaultBlock", this.ischecked);
   },
   methods: {
     // 测试多选框
     showBlock(val) {
-      console.log(val,this.ischecked);
-      this.$emit('showBlockList',val)
+      console.log(val, this.ischecked);
+      this.$emit("showBlockList", val);
     },
     tool_btn_enter(index) {
       this.btn_index = index;
-      // console.log(index);
     },
     // 弹窗
     dialogShow(index) {
@@ -449,25 +444,22 @@ export default {
     },
     // 多选框全选
     handleChecked(val, base_msg) {
-      console.log(val,base_msg)
+      console.log(val, base_msg);
       // this.selectMsg = {
       //   selectIndex:val,
       //   selectblockMsg:base_msg
       // }
       // let ischeckMsg = JSON.parse(JSON.stringify(base_msg));
-      
     },
     // 添加常用语的btn
     addPharse() {
       if (this.phrase_text == "") return;
       this.phraseLists.push(this.phrase_text);
       this.phrase_text = "";
-      // console.log(this.phrase_text,'添加的常用语')
     },
-    ishowfun(data){
-      console.log(data,'子组件传来的值')
-      this.gainBlockShow = data
-    }
+    ishowfun(data) {
+      this.gainBlockShow = data;
+    },
   },
 };
 </script>
