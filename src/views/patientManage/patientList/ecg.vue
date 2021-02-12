@@ -3,7 +3,7 @@
   <div class="index">
     <MyEcharts
       :id="'ecgss'"
-      :style="{ width: '48vw', height: '380px' }"
+      :style="{ width: '63vw', height: '380px' }"
       :option="option"
     >
     </MyEcharts>
@@ -29,12 +29,6 @@ export default {
         },
         xAxis: {
           type: "category",
-          minorTick: {
-            show: true,
-          },
-          minorSplitLine: {
-            show: true,
-          },
         },
 
         yAxis: {
@@ -84,12 +78,10 @@ export default {
         series: [
           {
             data: [],
-            stack: '总量1',
             type: "line",
           },
           {
             data: [],
-            stack: '总量2',
             type: "line",
           },
         ],

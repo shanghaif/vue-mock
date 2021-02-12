@@ -19,13 +19,14 @@
         :editDataList="editData"
       ></editOtherMsg>
       <bloodPressMore
-        v-if="editIndex == '6' ? true : false"
-        :editDataList="editData"
+        v-if="editIndex == '7' ? true : false"
       ></bloodPressMore>
       <testReportMore
         v-if="editIndex == '9' ? true : false"
         :editDataList="editData"
       ></testReportMore>
+      <bloodSuarMore  v-if="editIndex == '6' ? true : false"></bloodSuarMore>
+      <ecgMore v-if="editIndex == '8' ? true : false"></ecgMore>
       <healthInfoMore
         v-if="editIndex == '10' ? true : false"
         :editDataList="editData"
@@ -47,8 +48,10 @@ import editHealthMsg from "./editHealthBlock/editHealthMsg";
 import editLifeHabit from "./editHealthBlock/editLifeHabit";
 import editOtherMsg from "./editHealthBlock/editOtherMsg";
 import testReportMore from "./editHealthBlock/moreTestReport";
-import bloodPressMore from "./editHealthBlock/moreBloodSugar";
+import bloodPressMore from "./editHealthBlock/moreBloodPress";
+import bloodSuarMore from "./editHealthBlock/moreBloodSugar"
 import healthInfoMore from "./editHealthBlock/moreHealthInfo";
+import ecgMore from "./editHealthBlock/moreEcg"
 export default {
   components: {
     editHealthBase,
@@ -57,7 +60,9 @@ export default {
     editOtherMsg,
     testReportMore,
     bloodPressMore,
+    bloodSuarMore,
     healthInfoMore,
+    ecgMore
   },
   data() {
     return {
@@ -72,8 +77,9 @@ export default {
     },
   },
   activated() {
-    this.editIndex = this.$route.params.editIndex;
-    this.editData = this.$route.params.editData;
+    this.editIndex = this.$route.query.editIndex;
+    this.editData = JSON.parse(JSON.stringify(this.$route.query.editData));
+    
   },
   methods: {
     defaultBlock(defaultVal) {

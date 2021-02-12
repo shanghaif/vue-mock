@@ -27,7 +27,6 @@
       </div>
       <div class="patient_base_msg">
         <p>基本信息</p>
-        <!-- @change="(val) => handleChecked(val, base_msg)" -->
         <el-checkbox-group v-model="ischecked" @change="showBlock">
           <el-checkbox
             v-for="(base_msg, baseIndex) in baseMsgLists"
@@ -45,12 +44,12 @@
       title="提示"
       :visible.sync="sendMsgDialog"
       width="30%"
-      :before-close="handleClose"
       center
     >
       <el-input
         type="textarea"
         :rows="6"
+        maxlength="50"
         placeholder="请输入消息内容"
         v-model="send_msg_value"
         resize="none"
@@ -58,9 +57,8 @@
       </el-input>
       <span slot="footer" class="dialog-footer">
         <el-button @click="sendMsgDialog = false">取 消</el-button>
-        <el-button type="primary" @click="sendMsgDialog = false"
-          >确 定</el-button
-        >
+        <!-- <el-button type="primary" @click="sendMsgDialog = false" -->
+        <el-button type="primary" @click="saveSendMsg">确 定</el-button>
       </span>
     </el-dialog>
     <!-- 设置随访 -->
@@ -68,7 +66,6 @@
       title="提示"
       :visible.sync="setFollowDialog"
       width="30%"
-      :before-close="handleClose"
       center
     >
       <div class="setFollowTime">
@@ -122,7 +119,6 @@
       title="提示"
       :visible.sync="addLabelDialog"
       width="30%"
-      :before-close="handleClose"
       center
     >
       <div class="setFollowTime">
@@ -153,7 +149,6 @@
       title="提示"
       :visible.sync="warnDialog"
       width="30%"
-      :before-close="handleClose"
       center
     >
       <div class="medicine_warn">
@@ -199,7 +194,6 @@
       title="提示"
       :visible.sync="testReportDialog"
       width="30%"
-      :before-close="handleClose"
       center
     >
       <div class="addReport">
@@ -235,11 +229,10 @@
 </template>
 
 <script>
-import axios from "axios";
 import editHealth from "./edit";
 import watch from "./watch";
 import edits from "./edit";
-import { get, post } from "@/request/http";
+import { get, post } from "../../../request/http";
 export default {
   components: {
     editHealth,
@@ -349,7 +342,7 @@ export default {
           label: "健康消息",
         },
         {
-          id: "10",
+          id: "11",
           label: "服药提醒",
         },
       ],
@@ -401,13 +394,11 @@ export default {
     };
   },
   created() {
-    console.log(this.ischecked);
     this.$emit("defaultBlock", this.ischecked);
   },
   methods: {
     // 测试多选框
     showBlock(val) {
-      console.log(val, this.ischecked);
       this.$emit("showBlockList", val);
     },
     tool_btn_enter(index) {
@@ -435,21 +426,24 @@ export default {
           break;
       }
     },
-    handleClose(done) {
-      this.$confirm("确认关闭？")
+    // 发送消息
+    saveSendMsg() {
+      console.log(this.send_msg_value,'发送消息')
+      this.$confirm("是否要发送消息？")
         .then((_) => {
-          done();
+          post("/health/healthMessage/web", {
+            userId: 11111,
+            producerId: 11111,
+            message: this.send_msg_value,
+          }).then(res => {
+            if(res.status === 200)  this.sendMsgDialog = false
+            this.send_msg_value = ""
+          }).catch(err => {
+            console.log('发送消息失败')
+          })
         })
         .catch((_) => {});
-    },
-    // 多选框全选
-    handleChecked(val, base_msg) {
-      console.log(val, base_msg);
-      // this.selectMsg = {
-      //   selectIndex:val,
-      //   selectblockMsg:base_msg
-      // }
-      // let ischeckMsg = JSON.parse(JSON.stringify(base_msg));
+      
     },
     // 添加常用语的btn
     addPharse() {
@@ -634,5 +628,11 @@ export default {
   background-color: #fbfdff;
   border: 1px dashed #c0ccda;
   border-radius: 6px;
+}
+
+// 设置dialog弹窗的样式---圆角
+/deep/.el-dialog {
+  box-shadow: 0px 0px 50px 0px rgba(155, 209, 255, 0.4);
+  border-radius: 20px;
 }
 </style>

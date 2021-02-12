@@ -44,7 +44,7 @@ export default {
   },
   methods:{
     moreInfo(){
-      this.$router.push({ name: 'PatientEdit', params: {editIndex:'10',editData:this.healthOther}})
+      this.$router.push({ name: 'PatientEdit', query: {editIndex:'10',editData:this.healthOther}})
     },
   }
 };
@@ -55,6 +55,7 @@ export default {
   
   // 健康消息--板块
   .health_info_container {
+    background: white;
     padding: 3%;
     .healthinfoList{
         .infoBar{

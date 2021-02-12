@@ -6,19 +6,27 @@ module.exports = {
         open: true,
         proxy: {
             "/health": {
-                target: "http://152.136.47.80:8888/health-server/api/v1",
+                target: "http://192.168.31.126:8888/health-server/api/v1",
                 changeOrigin: true,
                 ws: true,
                 pathRewrite: {
                     "^/health": "" 
                 }
             },
-            "/healthEcharts": {
-                target: "http://152.136.47.80:8888/data-server/api/v1", 
+            "/api": {
+                target: "http://192.168.31.126:8888/data-server/api/v1",
                 changeOrigin: true,
                 ws: true,
                 pathRewrite: {
-                    "^/healthEcharts": ""
+                    "^/api": "" 
+                }
+            },
+            "/login": {
+                target: "http://192.168.31.126:8888/user-server/api/v1",
+                changeOrigin: true,
+                ws: true,
+                pathRewrite: {
+                    "^/login": "" 
                 }
             },
         }

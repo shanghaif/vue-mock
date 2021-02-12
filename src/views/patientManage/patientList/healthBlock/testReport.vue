@@ -35,10 +35,10 @@ export default {
   methods:{
     async getTestReport(){
         const res = await get('/health/healthReport/list/11111?pageNum=0&pageSize=1')
-        this.testReportList = res.data
+        this.testReportList = JSON.parse(JSON.stringify(res.data.data))
     },
     moreInfo(){
-      this.$router.push({ name: 'PatientEdit', params: {editIndex:'9',editData:this.testReportList}})
+      this.$router.push({ name: 'PatientEdit', query: {editIndex:'9',editData:this.testReportList}})
     }
   }
 };
@@ -46,7 +46,7 @@ export default {
 
 <style lang="less" scoped>
 .test_report_container{
-    
+    background: white;
     padding: 3%;
     .report_bar{
         p{

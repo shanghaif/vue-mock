@@ -97,17 +97,18 @@ export default {
   data() {
     return {
       form: {},
-      editData: {},
+      editData: this.editDataList,
     };
   },
   created() {
-    this.editData = this.editDataList;
+    console.log(this.editDataList)
+    // this.editData = this.editDataList;
   },
   methods: {
     otherMsgSave(otherMsg) {
       this.$refs[otherMsg].validate((valid) => {
         if (valid) {
-          put("/health/healthOther/11111", {
+          put(`/health/healthOther/${this.editData.id}`, {
             householdType: this.editData.householdType,
             householdCategory: this.editData.householdCategory,
             kitas: this.editData.kitas,
@@ -118,8 +119,7 @@ export default {
             homePhone: this.editData.homePhone,
             email: this.editData.email,
             contactName: this.editData.contactName,
-            contactPhone: this.editData.contactPhone,
-            userId: "11111",
+            contactPhone: this.editData.contactPhone
           }).then((res) => {
             console.log(res, this.editData);
             this.$router.push("/Patientwatch");

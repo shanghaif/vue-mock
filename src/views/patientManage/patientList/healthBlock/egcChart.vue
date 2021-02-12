@@ -6,11 +6,12 @@
             <img src="@/assets/images/patientList/userLabel.png" alt="" />
             <p>心电数据</p>
             <div class="detail_more_btn">
-              <el-button type="primary" round>更多资料</el-button>
+              <el-button type="primary" round @click="moreData">更多资料</el-button>
             </div>
           </div>
-          <div class="blood_msg_container clearfix">
-            <egcChart></egcChart>
+          <div class="egc_container clearfix">
+            <!-- <egcChart></egcChart> -->
+            <egc></egc>
           </div>
         </div>
   </div>
@@ -18,19 +19,27 @@
 
 <script>
 import { get,post } from '@/request/http'
-import egcChart from '../ecgChart'
+// import egcChart from '../ecgChart'
+import egc from '../ecg'
 export default {
     components:{
-        egcChart
+      egc
+        // egcChart
     },
   data() {
     return {
     };
   },
-  created() {
-  },
+ methods:{
+    moreData(){
+      this.$router.push({ name: 'PatientEdit',query: {editIndex:'8'}})
+    },
+ }
 };
 </script>
 
 <style lang="less" scoped>
+.egc_container{
+  background: white;
+}
 </style>

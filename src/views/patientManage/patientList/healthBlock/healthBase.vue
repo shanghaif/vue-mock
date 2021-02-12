@@ -41,22 +41,23 @@
 </template>
 
 <script>
-import { get,post } from '@/request/http'
+import { get,post } from '../../../../request/http'
+
 export default {
   data() {
     return {
-      healthBase: {},
+      healthBase: null,
     };
   },
   created() {
     //基本信息
     get("/health/healthBase/11111").then((res) => {
-      this.healthBase = res.data;
+      this.healthBase = JSON.parse(JSON.stringify(res.data.data));
     })
   },
   methods:{
     edit(){
-      this.$router.push({ name: 'PatientEdit', params: {editIndex:'2',editData:this.healthBase}})
+      this.$router.push({ name: 'PatientEdit', query: {editIndex:'2',editData:JSON.parse(JSON.stringify(this.healthBase))}})
     }
   }
 };

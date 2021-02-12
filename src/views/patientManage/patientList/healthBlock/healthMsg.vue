@@ -82,19 +82,19 @@ import { get,post } from '@/request/http'
 export default {
   data() {
     return {
-      healthInfo: {},
+      healthInfo: null,
     };
   },
   created() {
     //基本信息
     get('/health/healthInfo/11111').then(res=>{
-      this.healthInfo = res.data
+      this.healthInfo = JSON.parse(JSON.stringify(res.data.data))
     })
   },
   methods:{
     edit(){
       console.log(this.healthInfo)
-      this.$router.push({ name: 'PatientEdit', params: {editIndex:'3',editData:this.healthInfo}})
+      this.$router.push({ name: 'PatientEdit', query: {editIndex:'3',editData:this.healthInfo}})
     }
   }
 };

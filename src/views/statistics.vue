@@ -47,12 +47,12 @@ export default {
   },
   mounted() {
     // mock的数据
-    get(`/api/echarts`).then(res => {
-      console.log(res.data,'8888')
-      this.patientAskData.push(res.data.patientAsk)
-      this.userGrowthData.push(res.data.userGrowth)
-      this.userTypesData.push(res.data.userTypes)
-    })
+    // get(`/api/echarts`).then(res => {
+    //   console.log(res.data,'8888')
+    //   this.patientAskData.push(res.data.patientAsk)
+    //   this.userGrowthData.push(res.data.userGrowth)
+    //   this.userTypesData.push(res.data.userTypes)
+    // })
     
   },
   created() {

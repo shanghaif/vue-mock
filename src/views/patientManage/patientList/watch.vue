@@ -9,9 +9,9 @@
       <bloodSugar v-show="defaultVal.includes('6') ? true : false"></bloodSugar>
       <bloodPress v-show="defaultVal.includes('7') ? true : false"></bloodPress>
       <egcChart v-show="defaultVal.includes('8') ? true : false"></egcChart>
-      <testReport></testReport>
-      <healthInfo></healthInfo>
-      <medicineWarn></medicineWarn>
+      <testReport  v-show="defaultVal.includes('9') ? true : false"></testReport>
+      <healthInfo  v-show="defaultVal.includes('10') ? true : false"></healthInfo>
+      <medicineWarn  v-show="defaultVal.includes('11') ? true : false"></medicineWarn>
     </div>
     <div class="bar">
       <healthBar
@@ -61,7 +61,7 @@ export default {
     showBlockList(val) {
       this.defaultVal = val;
     },
-  },
+  }
 };
 </script>
 

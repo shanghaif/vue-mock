@@ -3,7 +3,7 @@
   <div class="index">
     <MyEcharts
       :id="'exampleId'"
-      :style="{ width: '100%', height: '380px' }"
+      :style="{ width: '63vw', height: '380px' }"
       :option="option"
     >
     </MyEcharts>
@@ -11,8 +11,9 @@
 </template>
 
 <script>
+import axios from "axios";
+import { get, post } from "../../../request/http";
 import MyEcharts from "@/components/echarts/index"; //echarts
-import {get,post} from "@/request/http"
 export default {
   components: {
     MyEcharts,
@@ -25,8 +26,11 @@ export default {
         xAxis: {
           type: "category",
           boundaryGap: false,
-          data: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+          data: [],
           show: false,
+        },
+        tooltip: {
+          trigger: "axis", // axis   item   none三个值
         },
         yAxis: {
           type: "value",
@@ -52,10 +56,10 @@ export default {
         },
         series: [
           {
-            data: [150, 230, 224, 218, 135, 147, 260],
+            data: [],
             type: "line",
-            symbol:'emptyCircle',
-             symbolSize:6,
+            symbol: "emptyCircle",
+            symbolSize: 6,
           },
         ],
       },
@@ -63,10 +67,9 @@ export default {
   },
   mounted() {
     this.echarts();
-    this.getBloodSugar()
     window.addEventListener("resize", function () {
       myChartm.resize();
-    document.getElementById("exampleId").style.width = "100" + "%";
+      document.getElementById("exampleId").style.width = "100" + "%";
     });
   },
   methods: {
@@ -74,21 +77,34 @@ export default {
       let that = this;
       that.myChartm = that.$echarts.init(document.getElementById("exampleId"));
       that.myChartm.setOption(that.option);
+
+      let toSplitField = [];
+      let toSplitFlag = [];
+      post("/api/dataGlucose/list/findGlucoseListByDayAndTime", {
+        size: 40,
+        id: 11111,
+      }).then((res) => {
+        if (res.data.code == 0) {
+          for (let item of res.data.data) {
+            toSplitField += item.extendField+';'
+            let extendFieldData = toSplitField.split(';').map(Number)
+
+            toSplitFlag += item.measureFlag+';'
+            let measureFlagData = toSplitFlag.split(';').map(Number)
+            this.myChartm.setOption({
+              xAxis: {
+                data:measureFlagData,
+              },
+              series: [
+                {
+                  data: extendFieldData,
+                },
+              ],
+            });
+          }
+        }
+      });
     },
-    async getBloodSugar(){
-      let res = await get('/healthEcharts/dataGlucose/list/11111?pageNum=1&pageSize=9&measureFlag=3')
-      console.log(res,'777')
-    }
   },
 };
 </script>
-
-
-
-
-
-
-
-
-
-

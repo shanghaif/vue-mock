@@ -52,12 +52,12 @@ export default {
   created() {
     //生活习惯
     get('/health/healthLife/11111').then(res=>{
-      this.healthLife = res.data
+      this.healthLife = JSON.parse(JSON.stringify(res.data.data))
     })
   },
   methods:{
     edit(){
-      this.$router.push({ name: 'PatientEdit', params: {editIndex:'4',editData:this.healthLife}})
+      this.$router.push({ name: 'PatientEdit', query: {editIndex:'4',editData:this.healthLife}})
     }
   }
 };

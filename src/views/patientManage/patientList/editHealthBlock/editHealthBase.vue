@@ -8,8 +8,6 @@
       </div>
       <div class="base_msg clearfix">
         <el-form ref="healBase" :model="form" label-width="100px">
-          <!-- <div class="base_msg_left"> -->
-          <!-- <el-form-item label="姓名"> -->
           <el-form-item label="姓名" style="width: 30%; float: left">
             <div>{{ editData.name }}</div>
           </el-form-item>
@@ -128,7 +126,7 @@
             <input
               type="text"
               v-model="editData.expenseTypeInfo"
-              v-show="editData.expenseTypeInfo == '' ? false : true"
+              v-show="editData.expenseType.indexOf('其他') == -1 ? false : true"
               placeholder="请填写其他医疗费用类型"
               style="border: none; outline: none; margin-left: 2%"
             />
@@ -177,11 +175,13 @@
 <script>
 import { get, post, put } from "@/request/http";
 export default {
-  props: ["editDataList"],
+  props: {
+    editDataList:null
+  },
   data() {
     return {
       form: {},
-      editData: {},
+      editData:this.editDataList,
       nation: ["汉族", "蒙族", "回族", "藏族", "其他"],
       profession: [
         "学生",
@@ -209,10 +209,17 @@ export default {
       specialPeople: ["低保", "特困", "残疾", "医保签约", "持慈善卡", "其他"],
     };
   },
-  created() {
-    this.editData = this.editDataList;
-    
-    console.log(this.editData, "基本信息--编辑", this.editData.nationality);
+  watch:{
+    editData:{
+      handler(newVal,oldVal){
+        console.log(newVal,oldVal)
+      },
+      deep:true,
+      immediate:true
+    }
+  },
+  activated(){
+    console.log(this.editDataList, this.editData,"基本信息--编辑");
     //   国籍
     this.editData.nationalityInfo = this.getNationalityInfo(
       this.editData.nationality
@@ -253,6 +260,9 @@ export default {
       this.editData.specialPeopleInfo
     );
   },
+  created() {
+    
+  },
   methods: {
     //   国籍
     getNationality(value) {
@@ -276,6 +286,13 @@ export default {
       const idx = this.nation.indexOf(v);
       return idx === -1 ? v : "";
     },
+    saveNation(){
+      if(this.editData.nation == '4'){
+        return this.editData.nationInfo
+      }
+      return this.nation[~~this.editData.nation]
+
+    },
     // 职业
     getProfession(value) {
       const idx = this.profession.indexOf(value);
@@ -284,6 +301,13 @@ export default {
     getProfessionInfo(v) {
       const idx = this.profession.indexOf(v);
       return idx == -1 ? v : "";
+    },
+     saveProfession(){
+      if(this.editData.profession == '11'){
+        return this.editData.professionInfo
+      }
+      return this.profession[~~this.editData.profession]
+
     },
     // 医疗商业费用类型
     getExpenseTypeInfo(value) {
@@ -304,9 +328,14 @@ export default {
       for (let item in this.nation) {
         console.log(item);
       }
+
+      this.editData.nation = this.saveNation()
+      this.editData.profession = this.saveProfession()
+      console.log(this.editData.profession)
+
       this.$refs[healBase].validate((valid) => {
         if (valid) {
-          console.log(this.editData, "保存编辑内容");
+          console.log(this.editData,this.editDataList, "保存编辑内容");
           // put('/health/healthOther/11111',{
           //     householdType:this.editData.householdType,
           //     householdCategory:this.editData.householdCategory,

@@ -98,7 +98,9 @@
 </template>
 
 <script>
+import { get, post } from "../request/http";
 import VerificationCode from "../components/verificate.vue";
+import { mapMutations } from 'vuex'
 export default {
   components: {
     VerificationCode,
@@ -109,8 +111,8 @@ export default {
       characterCode: "",
       isPhoneLogin: false,
       isQrLogin: true,
-      auth_time: 0 ,
-      sendAuthCode: true ,
+      auth_time: 0,
+      sendAuthCode: true,
       ruleForm: {
         phoneNum: "",
         verify_code: "",
@@ -131,6 +133,7 @@ export default {
     };
   },
   methods: {
+    ...mapMutations(['changeLogin']),
     // 切换登录方式
     change_methods() {
       this.isPhoneLogin = !this.isPhoneLogin;
@@ -148,7 +151,7 @@ export default {
     //验证手机号,错误提示请填写正确手机号，并做60秒倒计时
     checkMobile(phone) {
       console.log(phone);
-      const reg_phone = /^[1][0-9][0-9]{9}$/;
+      const reg_phone = /^[1][3-9][0-9]{9}$/;
       const regPhone = new RegExp(reg_phone);
       if (regPhone.test(phone)) {
         console.log("正确手机号");
@@ -163,6 +166,11 @@ export default {
             }
           }, 1000);
         }
+        // 获取手机号验证码
+        get(`/login/userInfo/sendCode?phone=${phone}`).then(res => {
+          console.log(res,'获取验证码')
+          if(res.data.code === 0) console.log('已发送')
+        })
       } else {
         console.log("错误手机号", this.rules.phone_verify_code);
         // this.rules.phone_verify_code = [{ required: true, message: "请填写手机验证码1111", trigger: "blur" }]
@@ -188,25 +196,45 @@ export default {
           "data:text/css;charset=utf-8;base64,LmltcG93ZXJCb3ggLnFyY29kZSB7d2lkdGg6IDIwMHB4O30uaW1wb3dlckJveCAudGl0bGUge2Rpc3BsYXk6IG5vbmU7fS5pbXBvd2VyQm94IC5pbmZvIHt3aWR0aDogMjAwcHg7fQ==",
       });
     },
+    // 截取微信code码
     GetQueryString(name) {
       let reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
-
       let r = window.location.search.substr(1).match(reg);
-
       if (r != null) return unescape(r[2]);
-
       return null;
     },
     submitForm(formName) {
+      console.log(formName);
       this.$refs[formName].validate((valid) => {
         if (valid) {
+          console.log(this.ruleForm.phoneNum, this.ruleForm.phone_verify_code);
+          this.getToken()
           alert("submit!");
         } else {
           console.log("error submit!!");
-          this.$router.push("/statistics");
           return false;
         }
       });
+    },
+    // 获取token
+    getToken() {
+      post(
+        `/login/userInfo/login?username=${this.ruleForm.phoneNum}&password=${this.ruleForm.phone_verify_code}`
+      ).then((res) => {
+        console.log(res, "登录接口::::::");
+        if(res.data.code === 0){
+          this.changeLogin({ Authorization : 'Bearer ' + res.data.token});
+          this.$router.push("/statistics");
+        }else{
+          console.log('获取token失败')
+        }
+      }).catch(err => {
+       this.$message({
+          showClose: true,
+          message: '验证码已过期',
+          type: 'warning'
+        });
+      })
     },
   },
   mounted() {

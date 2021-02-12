@@ -24,6 +24,7 @@
             <el-date-picker
               v-model="editData.beginSmokeTime"
               type="year"
+              value-format="yyyy"
               placeholder="选择时间"
             >
             </el-date-picker>
@@ -37,12 +38,6 @@
               <el-radio label="少量（1-4支/日）">少量(<1-4支/日)</el-radio>
               <el-radio label="经常（≥支/日）">经常(≥支/日)</el-radio>
             </el-radio-group>
-
-            <input
-              type="text"
-              placeholder="请填写其他国籍"
-              style="border: none; outline: none"
-            />
           </el-form-item>
           <el-form-item
             label="开始戒烟时间"
@@ -51,6 +46,7 @@
             <el-date-picker
               v-model="editData.endSmokeTime"
               type="year"
+              value-format="yyyy"
               placeholder="选择时间"
             >
             </el-date-picker>
@@ -107,6 +103,7 @@
             <el-date-picker
               v-model="editData.endDrinkTime"
               type="year"
+              value-format="yyyy"
               placeholder="选择戒酒日期"
             >
             </el-date-picker>
@@ -145,9 +142,9 @@
             "
           >
             <el-radio-group v-model="editData.exerciseTime">
-              <el-radio :label="0"><30分钟</el-radio>
-              <el-radio :label="1">30-60分钟</el-radio>
-              <el-radio :label="2">1小时以上</el-radio>
+              <el-radio label="0"><30分钟</el-radio>
+              <el-radio label="1">30-60分钟</el-radio>
+              <el-radio label="2">1小时以上</el-radio>
             </el-radio-group>
           </el-form-item>
           <el-form-item
@@ -184,6 +181,7 @@
             <input
               type="text"
               v-model="editData.eatTypeInfo"
+              v-show="editData.eatType == '6' ? true : false"
               placeholder="饮食习惯类型"
               style="border: none; outline: none; margin-left: 2%"
             />
@@ -212,6 +210,7 @@
             <input
               type="text"
               v-model="editData.sleepSituationInfo"
+              v-show="editData.sleepSituation == '4' ? true : false"
               placeholder="请输入其他睡眠情况"
               style="border: none; outline: none"
             />
@@ -252,13 +251,75 @@ export default {
       smoking: "",
       drinking: "",
       beginSmokingTime: "1956",
-      editData: {},
+      editData: this.editDataList,
       eatType: ["偏咸", "偏甜", "偏油", "素食", "辛辣", "嗜热食", "其他"],
       sleepCase: ["睡眠困难", "入睡困难", "早醒", "没有", "其他"],
     };
   },
+  watch: {
+    smoking(newVal, oldVal) {
+      switch (newVal) {
+        case "0":
+          this.editData.endSmokeTime = "";
+          break;
+        case "1":
+          this.editData.beginSmokeTime = "";
+          this.editData.endSmokeTime = "";
+          this.editData.smokeAmount = "";
+          break;
+        default:
+          break;
+      }
+    },
+    drinking(newVal, oldVal) {
+      switch (newVal) {
+        case "1":
+          this.editData.drinkType = "";
+          this.editData.drinkAmount = "";
+          this.editData.drinkFrequency = "";
+          break;
+        case "2":
+          this.editData.drinkType = "";
+          this.editData.drinkAmount = "";
+          this.editData.drinkFrequency = "";
+          this.editData.endDrinkTime = "";
+          break;
+        default:
+          break;
+      }
+    },
+    editData: {
+      handler(newVal, oldVal) {
+        console.log(newVal.eatType, oldVal);
+        switch (newVal.exerciseRegular) {
+          case "否":
+            this.editData.exerciseSituation = "";
+            this.editData.exerciseTime = "";
+            this.editData.exerciseType = "";
+            break;
+          default:
+            break;
+        }
+
+        switch (newVal.exerciseTime) {
+          case 0:
+            this.editData.exerciseTime = "<30分钟";
+            break;
+          case 1 :
+            this.editData.exerciseTime = "30-60分钟";
+            break;
+          case 2:
+            this.editData.exerciseTime = "每周1-2次";
+            break;
+          default:
+            break;
+        }
+      },
+      deep: true,
+    },
+  },
   created() {
-    this.editData = this.editDataList;
+    // this.editData = this.editDataList;
     //   是否吸烟
     this.editData.beginSmokeTime = this.getYearData(
       this.editData.beginSmokeTime
@@ -279,11 +340,10 @@ export default {
     );
 
     console.log(this.editData, "生活习惯");
-    //   是否锻炼
+    //   每日锻炼时间
     this.editData.exerciseTime = this.getExerciseTime(
       this.editData.exerciseTime
     );
-    console.log(this.editData.exerciseTime);
     //   饮食习惯类型
     // this.editData.eatType = "偏甜"
     this.editData.eatTypeInfo = this.getEatTypeInfo(this.editData.eatType);
@@ -347,49 +407,57 @@ export default {
     },
     // 锻炼时间
     getExerciseTime(value) {
-      const list = ["30分钟", "30-60分钟", "1小时以上"];
+      const list = ["<30分钟", "30-60分钟", "1小时以上"];
       let idx = list.indexOf(value);
       return idx == -1 ? "" : idx;
     },
     // 饮食习惯类型
     getEatType(value) {
       value.split(" ");
-      console.log(value.split(" ")[0]);
       let idx = this.eatType.indexOf(value.split(" ")[0]);
       return idx == -1 ? 6 : idx;
     },
     getEatTypeInfo(v) {
-      console.log(v);
       v.split(" ");
       let idx = this.eatType.indexOf(v.split(" ")[0]);
       return idx == -1 ? v.split(" ")[0] : "";
     },
     getKg(v) {
       v.split(" ");
-      console.log(v.split(" "));
       let idx = v.split(" ")[1];
       return idx !== undefined ? idx : "";
     },
+    saveEatType() {
+      if (this.editData.eatType == "6") {
+        return this.editData.eatTypeInfo;
+      }else{
+        this.editData.eatTypeInfo = ""
+      return this.eatType[~~this.editData.eatType];
+      }
+    },
     // 睡眠情况
     getSleepSituation(value) {
-      console.log("999999");
       value.split(" ");
       console.log(value.split(" ")[0]);
       let idx = this.sleepCase.indexOf(value.split(" ")[0]);
       return idx == -1 ? 4 : idx;
     },
     getSleepSituationInfo(v) {
-      console.log("睡眠情况111");
       v.split(" ");
       let idx = this.sleepCase.indexOf(v.split(" ")[0]);
       return idx == -1 ? v.split(" ")[0] : "";
     },
     getHourOfDay(v) {
-      console.log("睡眠情况222");
       v.split(" ");
       console.log(v.split(" "));
       let idx = v.split(" ")[1];
       return idx !== undefined ? idx : "";
+    },
+    saveSleepSituation() {
+      if (this.editData.sleepSituation == "4") {
+        return this.editData.sleepSituationInfo;
+      }
+      return this.sleepCase[~~this.editData.sleepSituation];
     },
     // 其他习惯
     getOtherRegular(value) {
@@ -402,10 +470,19 @@ export default {
       let idx = list.indexOf(v);
       return idx == -1 ? v : "";
     },
+    saveOtherRegular() {
+      if (this.editData.otherRegular == "1") {
+        return this.editData.otherRegularInfo;
+      }
+      const list = ['无','有']
+      return list[~~this.editData.otherRegular];
+    },
     savebBseMsg(lifeHabit) {
+      this.editData.eatType = this.saveEatType();
+      this.editData.sleepSituation = this.saveSleepSituation();
+      this.editData.otherRegular = this.saveOtherRegular();
       this.$refs[lifeHabit].validate((valid) => {
         if (valid) {
-          console.log(this.editData, "保存编辑内容");
           put("/health/healthLife/11111", {
             beginSmokeTime: this.editData.beginSmokeTime,
             endSmokeTime: this.editData.endSmokeTime,
@@ -423,7 +500,7 @@ export default {
             otherRegular: this.editData.otherRegular,
             userId: "11111",
           }).then((res) => {
-            console.log(res, this.editData);
+            console.log(res, this.editData,'修改生活习惯：：：：');
             this.$router.push("/Patientwatch");
           });
         } else {

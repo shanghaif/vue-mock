@@ -167,13 +167,13 @@
           </el-form-item>
           <h4>家族病史</h4>
           <el-form-item label="父亲">
-            <el-radio-group v-model="fatherRadio">
+            <el-radio-group v-model="fatherRadio" @change="fatherChange">
               <el-radio label="0">无</el-radio>
               <el-radio label="1">有</el-radio>
             </el-radio-group>
 
             <el-checkbox-group
-              v-model="editData.fatherIll"
+              v-model="editData.fatherDefault"
               v-show="fatherRadio == '0' ? false : true"
             >
               <el-checkbox
@@ -193,12 +193,12 @@
           </el-form-item>
 
           <el-form-item label="母亲">
-            <el-radio-group v-model="motherRadio">
+            <el-radio-group v-model="motherRadio" @change="motherChange">
               <el-radio label="0">无</el-radio>
               <el-radio label="1">有</el-radio>
             </el-radio-group>
             <el-checkbox-group
-              v-model="editData.motherIll"
+              v-model="editData.motherDefault"
               v-show="motherRadio == '0' ? false : true"
             >
               <el-checkbox
@@ -218,13 +218,13 @@
           </el-form-item>
 
           <el-form-item label="兄弟姐妹">
-            <el-radio-group v-model="siblingRadio">
+            <el-radio-group v-model="siblingRadio" @change="siblingChange">
               <el-radio label="0">无</el-radio>
               <el-radio label="1">有</el-radio>
             </el-radio-group>
 
             <el-checkbox-group
-              v-model="editData.siblingIll"
+              v-model="editData.siblingDefault"
               v-show="siblingRadio == '0' ? false : true"
             >
               <el-checkbox
@@ -244,12 +244,12 @@
           </el-form-item>
 
           <el-form-item label="子女">
-            <el-radio-group v-model="childRadio">
+            <el-radio-group v-model="childRadio" @change="childChange">
               <el-radio label="0">无</el-radio>
               <el-radio label="1">有</el-radio>
             </el-radio-group>
             <el-checkbox-group
-              v-model="editData.childIll"
+              v-model="editData.childDefault"
               v-show="childRadio == '0' ? false : true"
             >
               <el-checkbox
@@ -287,7 +287,7 @@
               <el-radio label="0">无</el-radio>
               <el-radio label="1">有</el-radio>
             </el-radio-group>
-            <el-checkbox-group v-model="editData.disability">
+            <el-checkbox-group v-model="editData.disability" v-show="disabilityRadio == '0' ? false : true">
               <el-checkbox
                 v-for="(item, index) in disabledCase"
                 :key="index"
@@ -329,7 +329,7 @@ export default {
       childRadio: "",
       disabilityRadio: "",
       editData: {
-        illnessDate: "",
+        // illnessDate: "",
       },
       fathersIll: [
         "糖尿病",
@@ -351,6 +351,28 @@ export default {
         "其他残疾",
       ],
     };
+  },
+  watch: {
+    // 监听选择‘无’，清空input框
+    editData: {
+      handler(newVal, oldVal) {
+        console.log(newVal.inheritIll, oldVal);
+        if(newVal.inheritIll == '0') this.editData.inheritIll = ""
+      },
+      deep: true,
+    },
+    illness(newVal, oldVal) {
+      if (newVal == "0") this.editData.illness = "";
+    },
+    operation(newVal, oldVal) {
+      if (newVal == "0") this.editData.operation = "";
+    },
+    trauma(newVal, oldVal) {
+      if (newVal == "0") this.editData.trauma = "";
+    },
+    transfusion(newVal, oldVal) {
+      if (newVal == "0") this.editData.transfusion = "";
+    },
   },
   created() {
     this.editData = this.editDataList;
@@ -394,7 +416,8 @@ export default {
     this.transfusion = this.getTransfusion(this.editData.traumaInfo);
     // 父亲
     this.editData.fatherIll = this.editData.fatherIll.split(" ");
-    this.editData.fatherIll.push("其他啊--");
+
+    // this.editData.fatherIll.push("其他啊--");
     this.editData.fatherIllInfo = "";
     for (let item of this.editData.fatherIll) {
       if (this.fathersIll.indexOf(item) == -1) {
@@ -402,10 +425,12 @@ export default {
         this.editData.fatherIllInfo = item;
       }
     }
+    this.editData.fatherDefault = this.editData.fatherIll;
     this.fatherRadio = this.getFatherIllRadio(this.editData.fatherIll);
     // 母亲
     this.editData.motherIll = this.editData.motherIll.split(" ");
-    //   this.editData.motherIll.push('其他啊--')
+
+    this.editData.motherIll.push("其他啊--");
     this.editData.motherIllInfo = "";
     for (let item of this.editData.motherIll) {
       if (this.fathersIll.indexOf(item) == -1) {
@@ -413,6 +438,7 @@ export default {
         this.editData.motherIllInfo = item;
       }
     }
+    this.editData.motherDefault = this.editData.motherIll;
     this.motherRadio = this.getMotherRadio(this.editData.motherIll);
     //   兄弟姐妹
     this.editData.siblingIll = this.editData.siblingIll.split(" ");
@@ -422,6 +448,7 @@ export default {
       if (this.fathersIll.indexOf(item) == -1) {
         this.editData.siblingIll.push("其他");
         this.editData.siblingIllInfo = item;
+        this.editData.siblingDefault = this.editData.siblingIll;
       }
     }
     this.siblingRadio = this.getSiblingIllRadio(this.editData.siblingIll);
@@ -435,6 +462,7 @@ export default {
         this.editData.childIllInfo = item;
       }
     }
+    this.editData.childDefault = this.editData.childIll;
     this.childRadio = this.getChildIllRadio(this.editData.childIll);
     //   遗传病史
     this.editData.inheritIllInfo = this.getInheritIllInfo(
@@ -465,6 +493,13 @@ export default {
       const list = ["无", "磺胺", "青霉素", "链霉素", "不详"];
       const idx = list.indexOf(v);
       return idx === -1 ? v : "";
+    },
+    saveDrug() {
+      if (this.editData.drugAllergy == "5") {
+        return this.editData.drugAllergyInfo;
+      }
+      const list = ["无", "磺胺", "青霉素", "链霉素", "不详"];
+      return list[~~this.editData.drugAllergy];
     },
     // 疾病
     getIllness(value) {
@@ -535,10 +570,31 @@ export default {
       let idx = value.length >= 0 ? "1" : "0";
       return idx;
     },
+    fatherChange(val) {
+      if (val == "0") {
+        this.editData.fatherIll = "";
+      }
+    },
     // 母亲
     getMotherRadio(value) {
       let idx = value.length >= 0 ? "1" : "0";
       return idx;
+    },
+    motherChange() {
+      if (val == "0") {
+        console.log("666666");
+        this.editData.motherIll = "";
+      }
+    },
+    siblingChange() {
+      if (val == "0") {
+        this.editData.siblingIll = "";
+      }
+    },
+    childChange() {
+      if (val == "0") {
+        this.editData.childIll = "";
+      }
     },
     // 兄弟姐妹
     getSiblingIllRadio(value) {
@@ -566,6 +622,8 @@ export default {
       return idx;
     },
     savebBseMsg() {
+      console.log(this.editData.fatherDefault, this.editData.motherDefault);
+      this.editData.drugAllergy = this.saveDrug();
       this.editData.fatherIll = this.editData.fatherIll.join(" ");
       this.editData.motherIll = this.editData.motherIll.join(" ");
       this.editData.siblingIll = this.editData.siblingIll.join(" ");
