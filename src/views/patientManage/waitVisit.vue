@@ -2,9 +2,14 @@
   <div class="askRecord">
     <div class="ask_tool_bar">
       <div class="ask_tool_date">
-        <el-select v-model="value" clearable placeholder="请选择">
+        <el-select
+          v-model="visitedNum"
+          clearable
+          placeholder="请选择"
+          @change="visitedTimeChange"
+        >
           <el-option
-            v-for="item in options"
+            v-for="item in visitedNumoptions"
             :key="item.value"
             :label="item.label"
             :value="item.value"
@@ -13,179 +18,209 @@
         </el-select>
       </div>
       <div class="ask_tool_search">
-        <el-input placeholder="请输入内容" v-model="input1">
+        <el-input placeholder="根据姓名或手机号搜索" v-model="filterValue" @blur="filterSearch">
           <el-button slot="prepend" icon="el-icon-search"></el-button>
-          <template slot="append" icon="el-icon-search">搜索</template>
+          <template slot="append" icon="el-icon-search" >搜索</template>
         </el-input>
       </div>
     </div>
     <!-- 展示表格 -->
     <div class="ask_table">
-      <el-table :data="tableData" border style="width: 100%">
-        <el-table-column prop="date" label="咨询" width="180" align="center">
+      <el-table :data="visitedTableData" border style="width: 100%">
+        <el-table-column
+          prop="followUpDate"
+          label="随访日期"
+          width="120"
+          align="center"
+        >
         </el-table-column>
-        <el-table-column prop="name" label="姓名" width="180" align="center">
+        <el-table-column prop="name" label="姓名" width="80" align="center">
         </el-table-column>
-        <el-table-column prop="address" label="医护人员" align="center">
+        <el-table-column prop="sex" label="性别" width="80" align="center">
         </el-table-column>
-        <el-table-column prop="address" label="咨询时长" align="center">
+        <el-table-column prop="age" label="年龄" width="80" align="center">
         </el-table-column>
-        <el-table-column prop="address" label="储存空间" align="center">
+        <el-table-column prop="phone" label="手机号" width="120" align="center">
         </el-table-column>
-        <el-table-column prop="address" label="储存空间" align="center">
-          <!-- <template slot-scope="scope"> -->
-          <el-button size="text" @click="dialogVisible = true">随访</el-button>
-          <!-- </template> -->
+        <el-table-column prop="tagList" label="用户标签" align="center">
+        </el-table-column>
+        <el-table-column prop="followUpContent" label="随访内容" align="center">
+        </el-table-column>
+        <el-table-column prop="address" label="操作" width="80" align="center">
+          <template slot-scope="scope">
+            <el-button size="text" @click="visitedEdit(scope.$index, scope.row)"
+              >随访</el-button
+            >
+          </template>
         </el-table-column>
       </el-table>
     </div>
     <div class="ask_pagination">
       <el-pagination
         background
-        layout="prev, pager, next"
-        :total="1000"
+        @current-change="handelCurrentChange"
+        :current-page="currentPage"
+        :page-size="pageSize"
+        layout="total, prev, pager, next"
+        :total="count"
         align="center"
       >
       </el-pagination>
     </div>
     <!-- 查看-对话框 -->
-    <el-dialog
-      title="随访"
-      :visible.sync="dialogVisible"
-      width="30%"
-      :before-close="handleClose"
-      center
-    >
+    <el-dialog title="随访" :visible.sync="visitDialogVisible" width="30%" center>
       <div class="visited">
         <el-form
-          :model="ruleForm"
-          :rules="rules"
-          ref="ruleForm"
           label-width="100px"
-          class="demo-ruleForm"
-         
         >
           <el-form-item label="随访状态" prop="name">
-            <el-select v-model="ruleForm.region" placeholder="请选择活动区域">
-              <el-option label="区域一" value="shanghai"></el-option>
-              <el-option label="区域二" value="beijing"></el-option>
+            <el-select
+              v-model="visitedRow.state"
+              placeholder="请选择活动区域"
+              @change="visitedStatusChange"
+            >
+              <el-option
+                v-for="item in statusOptions"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              >
+              </el-option>
             </el-select>
           </el-form-item>
           <el-form-item label="本次随访内容" prop="region">
             <p>
-              最忠诚从不是发顺丰就是空的发，圣诞节客服骨伤科交电费健康的风格萨
+              {{ visitedRow.followUpContent }}
             </p>
-            <!-- <el-input v-model="ruleForm.name"></el-input> -->
           </el-form-item>
           <el-form-item label="下次随访时间" prop="name">
-            <el-select v-model="ruleForm.region" placeholder="请选择活动区域">
-              <el-option label="区域一" value="shanghai"></el-option>
-              <el-option label="区域二" value="beijing"></el-option>
+            <el-select v-model="nextVisitedTime" placeholder="请选择活动区域">
+              <el-option
+                v-for="item in nextVisitedOptions"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              >
+              </el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="下次随访时间" prop="name">
+          <el-form-item label="下次随访内容" prop="name">
             <el-input
               type="textarea"
-              v-model="ruleForm.name"
               resize="none"
+              placeholder="请输入下次随访内容 / 自定义内容"
+              v-model="customText"
               :rows="4"
             ></el-input>
           </el-form-item>
           <div style="margin-top: 15px">
-            <el-input
-              placeholder="自定义常用语"
-              v-model="phrase_text"
-              class="customPhrase"
-              style="height: 44px"
-            >
-              <el-button slot="append" @click="addPharse">添加</el-button>
-            </el-input>
-          </div>
-          <div class="phraseContainer">
-            <div
-              class="phraseBar"
-              v-for="(item, index) in phraseLists"
+            <el-tag
               :key="index"
+              v-for="(item, index) in oftenSpeak"
+              closable
+              :disable-transitions="false"
+              @close="handleClosed(item)"
+              @click="doublePush(item)"
             >
               {{ item }}
-            </div>
+            </el-tag>
+            <el-input
+              class="input-new-tag"
+              v-if="oftenSpeakVisible"
+              v-model="oftenSpeakValue"
+              ref="saveTagInput"
+              size="small"
+              @keyup.enter.native="addOftenSpeak"
+              @blur="addOftenSpeak"
+            >
+            </el-input>
+            <el-button
+              v-else
+              class="button-new-tag"
+              size="small"
+              @click="showInput"
+              >+自定义常用语</el-button
+            >
           </div>
         </el-form>
       </div>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="dialogVisible = false"
-          >确 定</el-button
-        >
+        <el-button @click="visitDialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="visitedDialog">确 定</el-button>
       </span>
     </el-dialog>
   </div>
 </template>
 
 <script>
+import { get, post, put } from "../../request/http";
 export default {
   data() {
     return {
-      input1: "",
-      dialogVisible: false,
-      options: [
+      filterValue: "",
+      visitDialogVisible: false,
+      visitedNumoptions: [
         {
-          value: "选项1",
+          value: "0",
           label: "今日待随访",
         },
         {
-          value: "选项2",
+          value: "2",
           label: "3天内待随访",
         },
       ],
-      value: "",
-      tableData: [
+      statusOptions: [
         {
-          date: "2016-05-03",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄",
+          value: "1",
+          label: "已随访",
         },
         {
-          date: "2016-05-02",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄",
-        },
-        {
-          date: "2016-05-04",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄",
-        },
-        {
-          date: "2016-05-01",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄",
-        },
-        {
-          date: "2016-05-08",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄",
-        },
-        {
-          date: "2016-05-06",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄",
-        },
-        {
-          date: "2016-05-07",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄",
+          value: "0",
+          label: "未随访",
         },
       ],
-      ruleForm: {
-        name: "",
-        region: "",
-        date1: "",
-        date2: "",
-        delivery: false,
-      },
-      // 设置随访--常用语（放一个数组里面，添加就添加到数组里面）
-      phrase_text: "",
-      phraseLists: ["糖尿病"],
+      nextVisitedTime: "",
+      nextVisitedOptions: [
+        {
+          value: "3",
+          label: "3天后",
+        },
+        {
+          value: "7",
+          label: "7天后",
+        },
+        {
+          value: "14",
+          label: "14天后",
+        },
+        {
+          value: "30",
+          label: "30天后",
+        },
+        {
+          value: "90",
+          label: "90天后",
+        },
+        {
+          value: "180",
+          label: "180天后",
+        },
+      ],
+      visitedTableData: [],
+
+      visitedNum: "今日待随访",
+      statusChangeed: "",
+      visitedRow: {},
+      // 自定义常用语
+      oftenSpeak: [],
+      oftenSpeakVisible: true,
+      oftenSpeakValue: "",
+      customText: "",
+
+      // 分页
+      count: 0,
+      pageSize: 10,
+      currentPage: 1,
     };
   },
   computed: {
@@ -193,20 +228,155 @@ export default {
       return this.$refs.videoPlayer.player;
     },
   },
+  created() {
+    this.visitedTimeChange();
+    // 查询--自定义常用语
+    get(
+      `/api/userfulExpress/list/${localStorage.getItem("userId")}?expressType=1`
+    ).then((res) => {
+      for (let item of res.data.data) {
+        this.oftenSpeak.push(item.content);
+      }
+    });
+  },
   methods: {
-    handleClose(done) {
-      this.$confirm("确认关闭？")
-        .then((_) => {
-          done();
-        })
-        .catch((_) => {});
+    // 改变随访时间
+    visitedTimeChange(data) {
+      this.currentPage = 1
+      this.getVisitedList(data);
     },
-    // 添加常用语的btn
-    addPharse() {
-      if (this.phrase_text == "") return;
-      this.phraseLists.push(this.phrase_text);
-      this.phrase_text = "";
-      // console.log(this.phrase_text,'添加的常用语')
+    filterSearch(){
+      this.getVisitedList('2')
+    },
+    //验证input是否为数字
+    isNumber(value) {         
+        var patrn = /^(-)?\d+(\.\d+)?$/;
+        if (patrn.exec(value) == null || value == "") {
+            return false
+        } else {
+            return true
+        }
+    },
+    // 获取带随访列表页
+    async getVisitedList(num='0') {
+      let res = await post(`/health/followUp/list?pageNum=${this.currentPage}&pageSize=${this.pageSize}`, {
+        dayNum: num,
+        name: this.isNumber(this.filterValue) === false ? this.filterValue : "",
+        phone: this.isNumber(this.filterValue) === true ? this.filterValue : "",
+      });
+      try {
+        if (res.data.code === 0) {
+          // console.log(res, "随访列表");
+          this.count = Number(res.data.count);
+          this.visitedTableData = res.data.data;
+
+          // 将用户标签---转换成字符串
+          let labelName = [];
+          for (let item of this.visitedTableData) {
+            for (let labelList of item.tagList) {
+              labelName.push(labelList.name);
+              let labelContent = Array.from(new Set(labelName)).join(",");
+              item.tagList = labelContent;
+            }
+          }
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    // 点击随访
+    visitedEdit(index, row) {
+      // console.log(index, row, "随访");
+      this.visitDialogVisible = true;
+      this.visitedRow = row;
+    },
+    // 自定义常用语
+    async addOftenSpeak() {
+      let oftenSpeakValue = this.oftenSpeakValue;
+      if (oftenSpeakValue) {
+        if (this.oftenSpeak.indexOf(oftenSpeakValue) == -1) {
+          this.oftenSpeak.push(oftenSpeakValue);
+          // 添加常用语
+          let res = await post("/api/userfulExpress", {
+            content: oftenSpeakValue,
+            expressType: 1,
+            userId: localStorage.getItem("userId"),
+          });
+          try {
+            console.log(res.data.code);
+          } catch (error) {
+            console.log(error);
+          }
+        } else {
+          this.$message({
+            message: "已存在",
+            type: "warning",
+          });
+          // return this.oftenSpeak
+        }
+      }
+      this.oftenSpeakVisible = false;
+      this.oftenSpeakValue = "";
+    },
+    showInput() {
+      this.oftenSpeakVisible = true;
+      this.$nextTick((_) => {
+        this.$refs.saveTagInput.$refs.input.focus();
+      });
+    },
+    handleClosed(tag) {
+      this.oftenSpeak.splice(this.oftenSpeak.indexOf(tag), 1);
+    },
+    doublePush(tag) {
+      this.customText += tag + ",";
+    },
+    visitedStatusChange(data) {
+      this.statusChangeed = data;
+    },
+    // 随访的确定按钮
+    visitedDialog() {
+      this.visitDialogVisible = false
+      this.nextVisitedTime = ''
+      this.customText = ''
+
+      if (this.statusChangeed !== "") {
+        this.setVisitedStatus();
+      }
+      if (this.nextVisitedTime !== "") {
+        this.AddNextVisit();
+      }
+      console.log(this.visitedRow.state, this.nextVisitedTime, this.customText);
+    },
+    async setVisitedStatus() {
+      let res = await put(`/health/followUp/${this.visitedRow.id}`, {
+        state: this.visitedRow.state,
+      })
+      try {
+        console.log(res,'改变随访状态');
+      } catch (error) {
+        console.log(error)
+      } 
+    },
+    async AddNextVisit() {
+      let res = await post(`/health/followUp/${this.nextVisitedTime}`, {
+        name: this.visitedRow.name,
+        sex: this.visitedRow.sex,
+        age: this.visitedRow.age,
+        phone: this.visitedRow.phoneNumber,
+        userId: this.visitedRow.userId,
+        tagIds: this.visitedRow.tagIds,
+        followUpContent: this.customText,
+      })
+      try {
+        console.log(res,'添加下次随访');
+      } catch (error) {
+        console.log(error)
+      } 
+    },
+    // 分页
+    handelCurrentChange(val) {
+      this.currentPage = val;
+      this.getVisitedList(this.visitedNum)
     },
   },
 };
@@ -225,10 +395,6 @@ export default {
       span {
         padding-right: 14px;
       }
-      // /deep/ .el-input__inner {
-      //   border: 1px solid #6672fb;
-      //   background: rgba(102, 114, 251, 0.05);
-      // }
     }
     .ask_tool_search {
       display: inline-block;
@@ -246,10 +412,11 @@ export default {
         border: none;
         background: #6672fb;
         color: white;
+        cursor: pointer;
       }
       /deep/.el-input__inner {
         outline: none;
-        border: none;
+        border: none  !important;
       }
     }
   }
@@ -269,33 +436,18 @@ export default {
     padding: 2% 0;
   }
 }
-.visited{
-    /deep/.el-textarea__inner {
-  border: none !important;
-  background: rgba(102, 114, 251, 0.05) !important;
-}
-     /deep/.el-input-group > .el-input__inner {
+.visited {
+  /deep/.el-textarea__inner {
+    border: none !important;
+    background: rgba(102, 114, 251, 0.05) !important;
+  }
+  /deep/.el-input-group > .el-input__inner {
     border-radius: 26px 0 0 26px !important;
   }
   /deep/.el-input-group__append {
-  border: none;
-  border-radius: 0 26px 26px 0;
-  cursor: pointer;
-}
-  .phraseContainer {
-    margin-top: 12px;
-    .phraseBar {
-      width: calc(100% - 4%);
-      height: 44px;
-      font-size: 14px;
-      line-height: 44px;
-      background: #fafafa;
-      border: 1px solid #eeeeee;
-      border-radius: 27px;
-      color: #333366;
-      padding-left: 4%;
-      margin-bottom: 12px;
-    }
+    border: none;
+    border-radius: 0 26px 26px 0;
+    cursor: pointer;
   }
 }
 
@@ -311,9 +463,24 @@ export default {
 }
 
 // 设置dialog弹窗的样式---圆角
-/deep/.el-dialog{
-    box-shadow: 0px 0px 50px 0px rgba(155, 209, 255, 0.4);
-    border-radius: 20px;
+/deep/.el-dialog {
+  box-shadow: 0px 0px 50px 0px rgba(155, 209, 255, 0.4);
+  border-radius: 20px;
 }
 
+.el-tag + .el-tag {
+  margin-left: 10px;
+}
+.button-new-tag {
+  margin-left: 10px;
+  height: 32px;
+  line-height: 30px;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+.input-new-tag {
+  width: 90px;
+  margin-left: 10px;
+  vertical-align: bottom;
+}
 </style>                                                                                                                       

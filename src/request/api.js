@@ -1,7 +1,7 @@
-// import { get, post } from './http'
 
-let base = {    
-    sq: '/api'
+let httpsUrl = {    
+    "qny":'https://upload.qiniup.com/',//七牛云
+
 }
 
-export { base }
+export { httpsUrl }

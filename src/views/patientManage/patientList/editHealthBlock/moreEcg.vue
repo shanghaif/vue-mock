@@ -46,7 +46,12 @@
     >
       <div class="interpret">
         <p><span>测量时间：</span>{{ testEcgTime }}</p>
-        <ecgChart></ecgChart>
+         <MyEcharts
+      :id="'ecgUrl'"
+      :style="{ width: '48vw', height: '380px' }"
+      :option="option"
+    >
+    </MyEcharts>
         <el-input
           type="textarea"
           :rows="4"
@@ -59,7 +64,7 @@
       <div class="customText">
         <el-tag
           :key="index"
-          v-for="(item, index) in docotorOftenSpeak"
+          v-for="(item, index) in oftenSpeak"
           closable
           :disable-transitions="false"
           @close="handleClosed(item)"
@@ -94,14 +99,14 @@
 
 <script>
 import { get, post,put } from "../../../../request/http";
-import ecgChart from "../ecgChart";
+import MyEcharts from "@/components/echarts/index"; //echarts
 export default {
-  components: { ecgChart },
+  components: { MyEcharts },
   data() {
     return {
       // tag
       docotor_read: "",
-      docotorOftenSpeak: [],
+      oftenSpeak: [],
       oftenSpeakVisible: false,
       oftenSpeakValue: "",
       // tag
@@ -111,18 +116,128 @@ export default {
       //   解读内容
       interpret_text: "",
       id:'',//主键id
+
       // 分页
       count: 0,
       pageSize: 10,
       currentPage: 1,
+      ecgUrl:'',
+      option: {
+        grid: {
+          top: 40,
+          left: 50,
+          right: 40,
+          bottom: 50,
+        },
+        xAxis: {
+          type: "category",
+        },
+        yAxis: [
+          {
+            type: "value",
+            minInterval: 100,
+            interval: 100,
+            axisLine: {
+              show: false,
+            },
+            axisTick: {
+              show: false,
+            },
+            axisLabel: {
+              show: false,
+            },
+          },
+          {
+            nameLocation: "start",
+            type: "value",
+            inverse: true,
+            max: 160,
+            axisLine: {
+              show: false,
+            },
+            axisTick: {
+              show: false,
+            },
+            axisLabel: {
+              show: false,
+            },
+          },
+          {
+            type: "value",
+            inverse: true,
+            min: -210,
+            max: 30,
+            axisLine: {
+              show: false,
+            },
+            axisTick: {
+              show: false,
+            },
+            axisLabel: {
+              show: false,
+            },
+          },
+        ],
+        series: [
+          {
+            data: [],
+            type: "line",
+            itemStyle: {
+              normal: {
+                lineStyle: {
+                  width: 1.6,
+                  color: "	#CE0000",
+                },
+              },
+            },
+          },
+          {
+            data: [],
+            type: "line",
+            itemStyle: {
+              normal: {
+                lineStyle: {
+                  width: 1.6,
+                  color: "	#CE0000",
+                },
+              },
+            },
+          },
+          {
+            data: [],
+            type: "line",
+            itemStyle: {
+              normal: {
+                lineStyle: {
+                  width: 1.6,
+                  color: "	#CE0000",
+                },
+              },
+            },
+          },
+        ],
+      },
     };
+  },
+  mounted() {
+    window.addEventListener("resize", function () {
+      myChartm.resize();
+      document.getElementById("ecgUrl").style.width = "100" + "%";
+    });
   },
   created() {
     this.getEcgData();
+    // 查询--自定义常用语
+      get(`/api/userfulExpress/list/${localStorage.getItem('userId')}?expressType=0`).then((res) => {
+        for (let item of res.data.data) {
+          this.oftenSpeak.push(item.content);
+        }
+      });
   },
+  
   methods: {
     handleClosed(tag) {
-      this.docotorOftenSpeak.splice(this.docotorOftenSpeak.indexOf(tag), 1);
+      this.oftenSpeak.splice(this.oftenSpeak.indexOf(tag), 1);
     },
     // 点击自定义语句--push
     doublePush(tag) {
@@ -138,12 +253,26 @@ export default {
     async addOftenSpeak() {
       let oftenSpeakValue = this.oftenSpeakValue;
       if (oftenSpeakValue) {
-        this.docotorOftenSpeak.push(oftenSpeakValue);
-        // 添加常用语
-        let res = await post("/api/userfulExpress", {
-          content: oftenSpeakValue,
-          userId: 11111,
-        });
+        if (this.oftenSpeak.indexOf(oftenSpeakValue) == -1) {
+          this.oftenSpeak.push(oftenSpeakValue);
+          // 添加常用语
+          let res = await post("/api/userfulExpress", {
+            content: oftenSpeakValue,
+            expressType: 0,
+            userId: localStorage.getItem("userId"),
+          });
+          try {
+            console.log(res.data.code);
+          } catch (error) {
+            console.log(error);
+          }
+        } else {
+          this.$message({
+            message: "已存在",
+            type: "warning",
+          });
+          // return this.oftenSpeak
+        }
       }
       this.oftenSpeakVisible = false;
       this.oftenSpeakValue = "";
@@ -169,18 +298,55 @@ export default {
       this.testEcgTime = row.createTime;
       this.id = row.id
       this.dialogVisible = true;
+      this.ecgUrl  =  row.ecgUrl
 
       // 查看---获取心电数据--绘制心电图表
-      // get(row.ecgUrl).then((res) => {
-      //   let toSplit = res.data.split("\n").join(" ").split(" ");
-      //   console.log(toSplit, "个人心电数据");
-      // });
-      // 自定义常用语
-      get(`/api/userfulExpress/list/11111`).then((res) => {
-        console.log(res,'自定义内容')
-        for (let item of res.data.data) {
-          this.docotorOftenSpeak.push(item.content);
+      this.$nextTick(() => {
+        this.echarts(row.ecgUrl)
+      })
+      
+    },
+    echarts(ecgUrl) {
+      let that = this;
+      that.myChartm = that.$echarts.init(document.getElementById("ecgUrl"));
+      that.myChartm.setOption(that.option);
+      get(ecgUrl).then((res) => {
+        console.log(res)
+        let toSplit = res.data.split("\n").join("").split(" ");
+        toSplit.pop();
+        let aa = toSplit.slice(0, 1000);
+        let bb = toSplit.slice(1000, 2000);
+        let cc = toSplit.slice(2000, 3000);
+        let heartDataAa = [];
+        let heartDataBb = [];
+        let heartDataCc = [];
+        for (let item of aa) {
+          item = item > 0 ? Number(item) - 128 : Number(item) + 128;
+          heartDataAa.push(item);
         }
+        for (let item of bb) {
+          item = item > 0 ? Number(item) - 128 : Number(item) + 128;
+          heartDataBb.push(item);
+        }
+        for (let item of cc) {
+          item = item > 0 ? Number(item) - 128 : Number(item) + 128;
+          heartDataCc.push(item);
+        }
+        this.myChartm.setOption({
+          series: [
+            {
+              yAxisIndex: 1,
+              data: heartDataAa,
+            },
+            {
+              yAxisIndex: 2,
+              data: heartDataCc,
+            },
+            {
+              data: heartDataBb,
+            },
+          ],
+        });
       });
     },
     // 解读---确定

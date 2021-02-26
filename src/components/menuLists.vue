@@ -76,9 +76,9 @@
               <el-menu-item index="RoleSet">角色设置</el-menu-item>
             </el-menu-item-group>
           </el-submenu>
-          <el-menu-item index="WarnData">
+          <el-menu-item>
             <i class="el-icon-setting"></i>
-            <span slot="title">退出登录</span>
+            <span slot="title" @click="exitLogin">退出登录</span>
           </el-menu-item>
         </el-menu>
       </el-aside>
@@ -118,11 +118,13 @@
 </template>
 
 <script>
+import { get, post } from "../request/http";
 export default {
   data() {
     return {
       userName: "",
       isCollapse: false,
+      userId:''
     };
   },
   computed: {
@@ -137,29 +139,29 @@ export default {
     changePsw() {
       this.$router.push("/changePassword");
     },
-    // async logout(){
-    //   const logoutResult = data => post(`${API}/administrator/logout`);
-    //   try{
-    //       const detailData = await logoutResult();
-    //       if(detailData.data.status == 401){
-    //         localStorage.clear()
-    //           this.$message({
-    //               type: 'success',
-    //               message: '退出成功!'
-    //           });
-    //       }else{
-    //           throw new Error('获取数据失败');
-    //       }
-    //   }catch(err){
-    //       console.log('获取数据失败', err);
-    //   }
-    // }
+    // 退出登录
+    async exitLogin(){
+      const exitLoginResult = data => post(`/login/userInfo/logout?id=${this.userId}`);
+      try{
+          const exitLoginData = await exitLoginResult();
+          console.log(exitLoginData.data.code,'退出登录的详细信息');
+          if(exitLoginData.data.code === 0){
+             localStorage.clear()
+              this.$router.push('/login')
+              this.$message({
+                  type: 'success',
+                  message: '退出成功!'
+              })
+          }else{
+              throw new Error('获取数据失败');
+          }
+      }catch(err){
+          console.log('获取数据失败', err);
+      }
+    }
   },
   created() {
-    let user = window.localStorage.getItem("AccountName");
-    if (user) {
-      this.userName = user;
-    }
+    this.userId = window.localStorage.getItem("userId");
   },
 };
 </script>

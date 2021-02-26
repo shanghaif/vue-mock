@@ -10,19 +10,19 @@
           <div class="user_label_msg">
             <div class="photo_contanier">
               <div class="user_photo">
-                <img src="@/assets/images/login/qr_code.png" alt="" />
+                <img :src="userInfo.avatar" alt="" />
               </div>
               <div class="user_detail clearfix">
-                <p><span>昵称：</span>爷爷</p>
-                <p><span>会员级别：</span>Vip</p>
-                <p><span>邀请人：</span>细小没</p>
-                <p><span>会员有效期：</span>2019-11-12至2020-11-12日</p>
+                <p><span>昵称：</span>{{userInfo.nickname}}</p>
+                <p><span>会员级别：</span>{{userInfo.memberLevel == "0" ? 'VIP' : ''}}</p>
+                <p><span>邀请人：</span>{{userInfo.inviter}}</p>
+                <p><span>会员有效期：</span>{{userInfo.memberStart}}至{{userInfo.memberEnd}}</p>
               </div>
             </div>
-            <p class="label"><span>标签：</span>脆性糖尿病，容易愤怒，很有钱</p>
+            <p class="label"><span>标签：</span>{{labelListData}}</p>
             <p class="label">
-              <span>下次随访：</span>2020年11月20日通知复诊血常规检查，系主任
-              2020-10-29 10:23
+              <span>下次随访：</span>
+              {{nextVisitContent}}
             </p>
           </div>
         </div>
@@ -34,10 +34,64 @@ import { get,post } from '@/request/http'
 export default {
   data() {
     return {
+      userInfo:{},
+      labelListData:null,
+      nextVisitContent:""
     };
   },
-  created() {
+  activated() {
+    this.getUerInfo()
+    this.getLabelList()
+    this.getNextVisit()
   },
+  methods:{
+    async getUerInfo(){
+      let res = await get(`/login/userInfo/${localStorage.getItem('userId')}`)
+      console.log(res)
+      try {
+        if(res.data.code === 0){
+          this.userInfo = res.data.data
+        }else{
+          console.log('用户标签err');
+        }
+      } catch (error) {
+        console.log(error)
+      }
+    },
+    async getLabelList(){
+      let listData = await post(`/health/tag/list?userId=${localStorage.getItem('userId')}`)
+      try {
+        if(listData.data.code === 0){
+          let labelArr = []
+          let labelIdArr = []
+          for(let item of listData.data.data){
+            labelArr.push(item.name)
+            labelIdArr.push(item.id)
+            this.labelListData = labelArr.join(',')
+            let labelId = labelIdArr.join(',')
+            window.localStorage.setItem('visitedLabelId',labelId)
+          }
+        }else{
+          console.log('标签列表err');
+        }
+      } catch (error) {
+        console.log(error)
+      }
+    },
+    async getNextVisit(){
+      let res = await get(`/health/followUp/${localStorage.getItem('userId')}`)
+      let nextVisitData = res.data
+      try {
+        if(nextVisitData.code === 0){
+          this.nextVisitContent = nextVisitData.data.followUpDate + '  ' + nextVisitData.data.followUpContent + ' , ' + nextVisitData.data.name + ' ' + nextVisitData.data.updateTime
+        }else{
+          console.log('标签列表err');
+        }
+      } catch (error) {
+        console.log(error)
+      }
+    },
+  }
 };
 </script>
 
@@ -53,6 +107,7 @@ export default {
         margin-bottom: 1%;
         .user_photo {
           width: 100px;
+          height: 100px;
           border-radius: 50%;
           margin-right: 2%;
           border: 1px dashed rgba(102, 114, 251, 1);
@@ -66,7 +121,7 @@ export default {
           flex: 1;
           padding-top: 1%;
           p:last-child {
-            width: 40%;
+            width: 44%;
           }
           p {
             width: 30%;

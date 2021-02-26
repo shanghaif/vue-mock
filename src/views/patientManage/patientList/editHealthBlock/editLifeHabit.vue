@@ -483,7 +483,7 @@ export default {
       this.editData.otherRegular = this.saveOtherRegular();
       this.$refs[lifeHabit].validate((valid) => {
         if (valid) {
-          put("/health/healthLife/11111", {
+          put("/health/healthLife/${this.editData.id}", {
             beginSmokeTime: this.editData.beginSmokeTime,
             endSmokeTime: this.editData.endSmokeTime,
             smokeAmount: this.editData.smokeAmount,
@@ -497,11 +497,10 @@ export default {
             exerciseType: this.editData.exerciseType,
             eatType: this.editData.eatType,
             sleepSituation: this.editData.sleepSituation,
-            otherRegular: this.editData.otherRegular,
-            userId: "11111",
+            otherRegular: this.editData.otherRegular
           }).then((res) => {
             console.log(res, this.editData,'修改生活习惯：：：：');
-            this.$router.push("/Patientwatch");
+            // this.$router.push("/Patientwatch");
           });
         } else {
           console.log("error submit!!");

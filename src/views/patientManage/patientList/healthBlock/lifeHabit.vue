@@ -49,10 +49,12 @@ export default {
       healthLife: {},
     };
   },
-  created() {
+  activated() {
     //生活习惯
-    get('/health/healthLife/11111').then(res=>{
+    get(`/health/healthLife/${localStorage.getItem('userId')}`).then(res=>{
       this.healthLife = JSON.parse(JSON.stringify(res.data.data))
+    }).catch(error => {
+      console.log(error)
     })
   },
   methods:{

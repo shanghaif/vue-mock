@@ -100,10 +100,6 @@ export default {
       editData: this.editDataList,
     };
   },
-  created() {
-    console.log(this.editDataList)
-    // this.editData = this.editDataList;
-  },
   methods: {
     otherMsgSave(otherMsg) {
       this.$refs[otherMsg].validate((valid) => {

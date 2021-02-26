@@ -31,16 +31,18 @@ export default {
       healthOther: {},
     };
   },
-  created() {
+  activated() {
     //其他信息
-   get('/health/healthOther/11111').then(res=>{
+   get(`/health/healthOther/${localStorage.getItem('userId')}`).then(res=>{
+     console.log(res,'基本信息')
       this.healthOther = JSON.parse(JSON.stringify(res.data.data))
+    }).catch(error => {
+      console.log(error)
     })
   },
   methods:{
     edit(){
       this.$router.push({ path: 'PatientEdit', query: {editIndex:'5',editData:this.healthOther}})
-      // this.$router.push({ name: 'PatientEdit', query: {editIndex:'5',editData:this.healthOther}})
     }
   }
 };

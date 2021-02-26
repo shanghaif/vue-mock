@@ -24,6 +24,9 @@
 
 
 <script>
+// 引入bus.js
+import Bus from '../../../components/bus.js'
+
 import userLabel from "./healthBlock/userLabel";
 import healthBase from "./healthBlock/healthBase";
 import healthMsg from "./healthBlock/healthMsg";
@@ -61,6 +64,12 @@ export default {
     showBlockList(val) {
       this.defaultVal = val;
     },
+    getVisitedData(data){
+      Bus.$emit('visitedMsg',data)
+    },
+    getVisitedLabelId(data){
+      Bus.$emit('visitedLabelIdMsg',data)
+    }
   }
 };
 </script>

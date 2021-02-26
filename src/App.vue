@@ -5,6 +5,35 @@
   </div>
 </template>
 
+<script>
+export default {
+  data(){
+    return{
+      userId:localStorage.getItem('userId')
+    }
+  },
+  // 关闭浏览器清除token
+  mounted: function () {
+    let beginTime = 0; //开始时间
+    let differTime = 0; //时间差
+    window.onunload = function () {
+      differTime = new Date().getTime() - beginTime;
+      if (differTime <= 5) {
+        console.log("这是关闭");
+        localStorage.setItem("Authorization", "");
+        //退出登录跳到首页
+        this.$router.push({ path: "/login" });
+      } else {
+        console.log("这是刷新");
+      }
+    };
+    window.onbeforeunload = function () {
+      beginTime = new Date().getTime();
+    };
+  },
+}
+</script>
+
 <style lang="less">
 * {
   margin: 0;
@@ -137,4 +166,6 @@ a {
       }
     }
   }
+
+
 </style>

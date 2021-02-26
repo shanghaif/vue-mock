@@ -15,6 +15,9 @@ import VideoPlayer from 'vue-video-player'
 import 'vue-video-player/src/custom-theme.css'
 import 'video.js/dist/video-js.css'
 
+// 处理返回的id大于18位，尾数为0
+
+
 // 健康档案的sidebar
 import healthBar from './views/patientManage/patientList/health'
 
@@ -23,6 +26,7 @@ import healthBar from './views/patientManage/patientList/health'
 
 Vue.use(ElementUI)
 Vue.use(VueCookies)
+
 //配置默认过期日期:7天
 VueCookies.config("7d");
 Vue.prototype.$axios = axios;
@@ -31,6 +35,16 @@ Vue.prototype.$echarts = echarts
 Vue.use(VideoPlayer)
 
 Vue.component('healthBar',healthBar);
+
+
+// router.beforeEach((to, from, next) => {
+//   console.log(store.state)
+//   if(store.state.Authorization && store.state.Authorization !== "undefined"){
+//     next()
+//   }else{
+//     router.push('/login')
+//   }
+// });
 
 
 new Vue({

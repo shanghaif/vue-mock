@@ -9,26 +9,26 @@
           </div>
           <div class="health_msg_container clearfix">
             <div class="personal_msg">
-              <p><span>血型：</span>{{healthInfo.bloodType}}</p>
-              <p><span>RH阴性：</span>{{healthInfo.rhNegative}}</p>
-              <p><span>身高：</span>{{healthInfo.height}}</p>
-              <p><span>体重：</span>{{healthInfo.weight}}</p>
-              <p><span>腰围：</span>{{healthInfo.waist}}</p>
-              <p><span>臀围：</span>{{healthInfo.hip}}</p>
+              <p><span>血型：</span>{{healthMsg.bloodType}}</p>
+              <p><span>RH阴性：</span>{{healthMsg.rhNegative}}</p>
+              <p><span>身高：</span>{{healthMsg.height}}</p>
+              <p><span>体重：</span>{{healthMsg.weight}}</p>
+              <p><span>腰围：</span>{{healthMsg.waist}}</p>
+              <p><span>臀围：</span>{{healthMsg.hip}}</p>
               <p><span>BMI：</span>14.21</p>
               <p><span> 腰：臀：</span>36.1</p>
               <p>
                 <span> 药物过敏史：</span
-                >{{healthInfo.drugAllergy}}
+                >{{healthMsg.drugAllergy}}
               </p>
             </div>
             <div class="personal_record">
               <div class="before_history">
                 <h6>既往史</h6>
-                <p><span>疾病：</span>{{healthInfo.illness}}</p>
-                <p><span>手术：</span>{{healthInfo.operation}}</p>
-                <p><span>外伤：</span>{{healthInfo.trauma}}</p>
-                <p><span>输血：</span>{{healthInfo.transfusion}}</p>
+                <p><span>疾病：</span>{{healthMsg.illness}}</p>
+                <p><span>手术：</span>{{healthMsg.operation}}</p>
+                <p><span>外伤：</span>{{healthMsg.trauma}}</p>
+                <p><span>输血：</span>{{healthMsg.transfusion}}</p>
               </div>
 
               <div class="family_history">
@@ -36,37 +36,37 @@
                 <div class="family">
                   <p>父亲：</p>
                   <div class="family_type clearfix">
-                    <p>{{healthInfo.fatherIll}}</p>
+                    <p>{{healthMsg.fatherIll}}</p>
                   </div>
                 </div>
                 <div class="family">
                   <p>母亲：</p>
                   <div class="family_type clearfix">
-                    <p>{{healthInfo.motherIll}}</p>
+                    <p>{{healthMsg.motherIll}}</p>
                   </div>
                 </div>
                 <div class="family">
                   <p>兄弟姐妹：</p>
                   <div class="family_type clearfix">
-                    <p>{{healthInfo.siblingIll}}</p>
+                    <p>{{healthMsg.siblingIll}}</p>
                   </div>
                 </div>
                 <div class="family">
                   <p>子女：</p>
                   <div class="family_type clearfix">
-                    <p>{{healthInfo.childIll}}</p>
+                    <p>{{healthMsg.childIll}}</p>
                   </div>
                 </div>
                 <div class="family">
                   <p>遗传病史：</p>
                   <div class="family_type clearfix">
-                    <p>{{healthInfo.inheritIll}}</p>
+                    <p>{{healthMsg.inheritIll}}</p>
                   </div>
                 </div>
                 <div class="family">
                   <p>残疾情况：</p>
                   <div class="family_type clearfix">
-                    <p>{{healthInfo.disability}}</p>
+                    <p>{{healthMsg.disability}}</p>
                   </div>
                 </div>
               </div>
@@ -82,19 +82,23 @@ import { get,post } from '@/request/http'
 export default {
   data() {
     return {
-      healthInfo: null,
+      healthMsg: null,
     };
   },
-  created() {
+  activated() {
     //基本信息
-    get('/health/healthInfo/11111').then(res=>{
-      this.healthInfo = JSON.parse(JSON.stringify(res.data.data))
+    get(`/health/healthInfo/${localStorage.getItem('userId')}`).then(res=>{
+      console.log(res,'基本信息')
+      this.healthMsg = JSON.parse(JSON.stringify(res.data.data))
+    }).catch(error => {
+      console.log(error)
     })
   },
   methods:{
     edit(){
-      console.log(this.healthInfo)
-      this.$router.push({ name: 'PatientEdit', query: {editIndex:'3',editData:this.healthInfo}})
+      console.log(this.healthMsg)
+      this.$router.push({ name: 'PatientEdit', query: {editIndex:'3',editData:JSON.parse(JSON.stringify(this.healthMsg))}})
+      
     }
   }
 };

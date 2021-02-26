@@ -25,17 +25,17 @@
                 maxlength="11"
               ></el-input>
             </el-form-item>
-            <el-form-item prop="verify_code">
+            <el-form-item prop="pictureCodes">
               <el-input
                 type="password"
-                v-model="ruleForm.verify_code"
+                v-model="ruleForm.pictureCodes"
                 placeholder="请输入验证码"
                 style="width: 70%"
               ></el-input>
               <VerificationCode
                 class="verifycode"
                 :changeCode.sync="identifyCode"
-                :fistCode="verify_Code"
+                v-on:pictureCode="pictureCode"
               ></VerificationCode>
             </el-form-item>
             <el-form-item prop="phone_verify_code" class="note_codes">
@@ -106,6 +106,12 @@ export default {
     VerificationCode,
   },
   data() {
+    // let validatorPictureCodes = (rules,value, callback) => {
+    //   console.log(rules,value)
+    //   if(this.ruleForm.pictureCodes == this.characterCode.toLowerCase() || this.ruleForm.pictureCodes == this.characterCode){
+    //     console.log('22222')
+    //   }
+    // }
     return {
       identifyCode: "", //当前生成的验证码,
       characterCode: "",
@@ -115,7 +121,7 @@ export default {
       sendAuthCode: true,
       ruleForm: {
         phoneNum: "",
-        verify_code: "",
+        pictureCodes: "",
         phone_verify_code: "",
       },
       rules: {
@@ -123,8 +129,9 @@ export default {
           { required: true, message: "请填写手机号", trigger: "blur" },
           { min: 0, max: 11, message: "长度在 0 到 11个字符", trigger: "blur" },
         ],
-        verify_code: [
+        pictureCodes: [
           { required: true, message: "请填写验证码", trigger: "blur" },
+           { min: 0, max: 4, message: "只允许4个数字", trigger: "blur" }
         ],
         phone_verify_code: [
           { required: true, message: "请填写手机验证码", trigger: "blur" },
@@ -140,9 +147,9 @@ export default {
       this.isQrLogin = !this.isQrLogin;
     },
     // 获取字符验证码
-    verify_Code(data) {
+    pictureCode(data) {
       this.characterCode = data;
-      console.log(data, this.characterCode);
+      console.log(this.characterCode)
     },
     // 获取手机号的验证码
     phoneCode() {
@@ -204,12 +211,11 @@ export default {
       return null;
     },
     submitForm(formName) {
-      console.log(formName);
       this.$refs[formName].validate((valid) => {
         if (valid) {
+          console.log('8888')
           console.log(this.ruleForm.phoneNum, this.ruleForm.phone_verify_code);
           this.getToken()
-          alert("submit!");
         } else {
           console.log("error submit!!");
           return false;
@@ -223,7 +229,7 @@ export default {
       ).then((res) => {
         console.log(res, "登录接口::::::");
         if(res.data.code === 0){
-          this.changeLogin({ Authorization : 'Bearer ' + res.data.token});
+          this.changeLogin({ Authorization : 'Bearer ' + res.data.token,userId:res.data.id});
           this.$router.push("/statistics");
         }else{
           console.log('获取token失败')
@@ -239,7 +245,7 @@ export default {
   },
   mounted() {
     this.wxlogin(); //当页面加载成功后执行，生成微信二维码
-    // console.log(window.location.href, this.GetQueryString("code"));
+    console.log(this.$store.state)
   },
 };
 </script>

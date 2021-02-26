@@ -17,12 +17,17 @@ service.interceptors.request.use(config => {
 // 添加respone拦截器
 service.interceptors.response.use(                  
   response => {
-   console.log('200::::::')
+   if(response.data.code == 401 || response.data.code == 403){
+    window.localStorage.clear('')
+    router.replace({
+         path: '/login'
+     })
+    }
     return response
   },
   error => {
     const response = error.response.status;
-    console.log(response,'err:::::')
+    console.log(response.data.code,'err:::::')
     switch (response) {
       case 401:
         console.log('Token已过期或有误')

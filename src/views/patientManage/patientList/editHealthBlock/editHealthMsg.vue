@@ -7,7 +7,7 @@
         <p>健康信息</p>
       </div>
       <div class="user_label_msg">
-        <el-form ref="form" :model="form" label-width="100px">
+        <el-form ref="healthMsg" label-width="100px">
           <el-form-item label="血型">
             <el-radio-group v-model="editData.bloodType">
               <el-radio label="A">A</el-radio>
@@ -28,33 +28,33 @@
             <el-input
               v-model="editData.height"
               placeholder="身高"
-              style="width: 6%"
+              style="width: 8%"
             ></el-input
-            ><span>cm</span>
+            >
           </el-form-item>
           <el-form-item label="体重">
             <el-input
               v-model="editData.weight"
               placeholder="体重"
-              style="width: 6%"
+              style="width: 8%"
             ></el-input
-            ><span>kg</span>
+            >
           </el-form-item>
           <el-form-item label="腰围">
             <el-input
               v-model="editData.waist"
               placeholder="腰围"
-              style="width: 6%"
+              style="width: 8%"
             ></el-input
-            ><span>cm</span>
+            >
           </el-form-item>
           <el-form-item label="臀围">
             <el-input
               v-model="editData.hip"
               placeholder="臀围"
-              style="width: 6%"
+              style="width: 8%"
             ></el-input
-            ><span>cm</span>
+            >
           </el-form-item>
           <el-form-item label="BMI">
             <div>24.14</div>
@@ -64,17 +64,14 @@
           </el-form-item>
           <el-form-item label="药物过敏史">
             <el-radio-group v-model="editData.drugAllergy">
-              <el-radio label="0">无</el-radio>
-              <el-radio label="1">磺胺</el-radio>
-              <el-radio label="2">青霉素</el-radio>
-              <el-radio label="3">链霉素</el-radio>
-              <el-radio label="4">不详</el-radio>
-              <el-radio label="5">其他过敏药物质(请注明)</el-radio>
+              <el-radio  v-for="(item, index) in medicine"
+                :key="index"
+                :label="item">{{item}}</el-radio>
             </el-radio-group>
             <input
               type="text"
               v-model="editData.drugAllergyInfo"
-              v-show="editData.drugAllergy !== '5' ? false : true"
+              v-show="editData.drugAllergy !== '其他过敏药物质(请注明)' ? false : true"
               placeholder="请填写其他药物过敏史"
               style="border: none; outline: none; margin-left: 1%"
             />
@@ -192,7 +189,31 @@
             </el-checkbox-group>
           </el-form-item>
 
-          <el-form-item label="母亲">
+           <el-form-item label="测试">
+            <el-radio-group v-model="fatherRadio">
+              <el-radio label="0">无</el-radio>
+              <el-radio label="1">有</el-radio>
+            </el-radio-group>
+
+            <el-checkbox-group
+              v-model="test"
+            >
+              <el-checkbox
+                v-for="(item, index) in familyIlls"
+                :key="index"
+                :label="item"
+                >{{ item }}</el-checkbox
+              >
+              <input
+                type="text"
+                v-model="editData.fatherIllInfo"
+                v-show="editData.fatherIll.includes('其他') ? true : false"
+                placeholder="请填写其他疾病"
+                style="border: none; outline: none; margin-left: 1%"
+              />
+            </el-checkbox-group>
+          </el-form-item>
+          <!-- <el-form-item label="母亲">
             <el-radio-group v-model="motherRadio" @change="motherChange">
               <el-radio label="0">无</el-radio>
               <el-radio label="1">有</el-radio>
@@ -302,9 +323,9 @@
                 style="border: none; outline: none; margin-left: 2%"
               />
             </el-checkbox-group>
-          </el-form-item>
+          </el-form-item> -->
           <el-form-item>
-            <el-button type="primary" @click="savebBseMsg">保存</el-button>
+            <el-button type="primary" @click="savebBseMsg('healthMsg')">保存</el-button>
             <el-button>取消</el-button>
           </el-form-item>
         </el-form>
@@ -314,11 +335,15 @@
 </template>
 
 <script>
+  import { put } from "@/request/http";
 export default {
-  props: ["editDataList"],
+  props: {
+    editDataList: null,
+  },
   data() {
     return {
-      form: {},
+      test:[],
+      editData: this.editDataList,
       illness: "",
       operation: "",
       trauma: "",
@@ -328,10 +353,20 @@ export default {
       siblingRadio: "",
       childRadio: "",
       disabilityRadio: "",
-      editData: {
-        // illnessDate: "",
-      },
+      medicine:[
+        "无","磺胺","青霉素","链霉素","不详","其他过敏药物质(请注明)"
+      ],
       fathersIll: [
+        "糖尿病",
+        "高血压",
+        "冠心病",
+        "脑猝中",
+        "高脂血症",
+        "精神病",
+        "肿瘤",
+        "其他",
+      ],
+       familyIlls: [
         "糖尿病",
         "高血压",
         "冠心病",
@@ -354,13 +389,13 @@ export default {
   },
   watch: {
     // 监听选择‘无’，清空input框
-    editData: {
-      handler(newVal, oldVal) {
-        console.log(newVal.inheritIll, oldVal);
-        if(newVal.inheritIll == '0') this.editData.inheritIll = ""
-      },
-      deep: true,
-    },
+    // editData: {
+    //   handler(newVal, oldVal) {
+    //     console.log(newVal.inheritIll, oldVal);
+    //     if(newVal.inheritIll == '0') this.editData.inheritIll = ""
+    //   },
+    //   deep: true,
+    // },
     illness(newVal, oldVal) {
       if (newVal == "0") this.editData.illness = "";
     },
@@ -374,8 +409,16 @@ export default {
       if (newVal == "0") this.editData.transfusion = "";
     },
   },
+  // activated(){
+  //   // 药物过敏史
+  //   this.editData.drugAllergyInfo = this.getDrugAllergyInfo(
+  //     this.editData.drugAllergy
+  //   );
+  //   this.editData.drugAllergy = this.getDrugAllergy(this.editData.drugAllergy);
+  // },
   created() {
-    this.editData = this.editDataList;
+   console.log(this.editDataList,'获取来的数据')
+    // this.editData = this.editDataList;
     this.editData.drugAllergyInfo = this.getDrugAllergyInfo(
       this.editData.drugAllergy
     );
@@ -416,8 +459,6 @@ export default {
     this.transfusion = this.getTransfusion(this.editData.traumaInfo);
     // 父亲
     this.editData.fatherIll = this.editData.fatherIll.split(" ");
-
-    // this.editData.fatherIll.push("其他啊--");
     this.editData.fatherIllInfo = "";
     for (let item of this.editData.fatherIll) {
       if (this.fathersIll.indexOf(item) == -1) {
@@ -484,23 +525,24 @@ export default {
   },
   methods: {
     getDrugAllergy(value) {
-      const list = ["无", "磺胺", "青霉素", "链霉素", "不详"];
+      console.log(value)
+      const list = ["无", "磺胺", "青霉素", "链霉素",'其他过敏物质(请注明)', "不详"];
       const idx = list.indexOf(value);
-      return idx == -1 ? 5 + "" : idx + "";
+      return idx == -1 ? '其他过敏物质(请注明)' : value;
     },
     getDrugAllergyInfo(v) {
       console.log(v);
-      const list = ["无", "磺胺", "青霉素", "链霉素", "不详"];
+      const list = ["无", "磺胺", "青霉素", "链霉素",'其他过敏物质(请注明)', "不详"];
       const idx = list.indexOf(v);
       return idx === -1 ? v : "";
     },
-    saveDrug() {
-      if (this.editData.drugAllergy == "5") {
-        return this.editData.drugAllergyInfo;
-      }
-      const list = ["无", "磺胺", "青霉素", "链霉素", "不详"];
-      return list[~~this.editData.drugAllergy];
-    },
+    // saveDrug() {
+    //   if (this.editData.drugAllergy == "5") {
+    //     return this.editData.drugAllergyInfo;
+    //   }
+    //   const list = ["无", "磺胺", "青霉素", "链霉素", "不详"];
+    //   return list[~~this.editData.drugAllergy];
+    // },
     // 疾病
     getIllness(value) {
       const list = ["无", "有"];
@@ -621,19 +663,56 @@ export default {
       let idx = value.length >= 0 ? "1" : "0";
       return idx;
     },
-    savebBseMsg() {
-      console.log(this.editData.fatherDefault, this.editData.motherDefault);
-      this.editData.drugAllergy = this.saveDrug();
-      this.editData.fatherIll = this.editData.fatherIll.join(" ");
-      this.editData.motherIll = this.editData.motherIll.join(" ");
-      this.editData.siblingIll = this.editData.siblingIll.join(" ");
-      this.editData.childIll = this.editData.childIll.join(" ");
-      this.editData.disability = this.editData.disability.join(" ");
-      console.log(
-        this.editData.transfusionTime,
-        this.editData.transfusionInfo,
-        "保存编辑信息"
-      );
+    savebBseMsg(healthMsg) {
+      // console.log(this.editData.fatherDefault, this.editData.motherDefault);
+      // this.editData.drugAllergy = this.saveDrug();
+      // this.editData.fatherIll = this.editData.fatherIll.join(" ");
+      // this.editData.motherIll = this.editData.motherIll.join(" ");
+      // this.editData.siblingIll = this.editData.siblingIll.join(" ");
+      // this.editData.childIll = this.editData.childIll.join(" ");
+      // this.editData.disability = this.editData.disability.join(" ");
+       console.log(this.editDataList,this.editData,'健康信息的列表');
+      // console.log(this.illness,this.editData.fatherIll)
+      // 药物过敏史
+      if(this.editData.drugAllergy == "其他过敏药物质(请注明)"){
+        this.editData.drugAllergy = this.editData.drugAllergyInfo
+      }
+      // console.log(this.editData.drugAllergy,this.editData.drugAllergyInfo,'药物过敏史');
+      // console.log(
+      //   this.editData.transfusionTime,
+      //   this.editData.transfusionInfo,
+      //   "保存编辑信息"
+      // );
+
+      this.$refs[healthMsg].validate((valid) => {
+        if (valid) {
+          // put(`/health/healthInfo/${this.editData.id}`, {
+          //   bloodType: this.editData.bloodType,
+          //   rhNegative: this.editData.rhNegative,
+          //   height: this.editData.height,
+          //   weight: this.editData.weight,
+          //   waist: this.editData.waist,
+          //   hip: this.editData.hip,
+          //   drugAllergy: this.editData.drugAllergy,
+          //   illness: this.editData.illness,
+          //   operation: this.editData.operation,
+          //   trauma: this.editData.trauma,
+          //   transfusion: this.editData.transfusion,
+          //   fatherIll: this.editData.fatherIll,
+          //   motherIll: this.editData.motherIll,
+          //   siblingIll: this.editData.siblingIll,
+          //   childIll: this.editData.childIll,
+          //   inheritIll: this.editData.inheritIll,
+          //   disability: this.editData.disability
+          // }).then((res) => {
+          //   console.log(res,'健康信息的保存按钮')
+          //   // this.$router.push("/Patientwatch");
+          // });
+        } else {
+          console.log("error submit!!");
+          return false;
+        }
+      });
     },
   },
 };

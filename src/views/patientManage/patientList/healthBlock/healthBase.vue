@@ -47,18 +47,41 @@ export default {
   data() {
     return {
       healthBase: null,
+      userAge:'',
     };
   },
-  created() {
+  activated() {
     //基本信息
     get("/health/healthBase/11111").then((res) => {
       this.healthBase = JSON.parse(JSON.stringify(res.data.data));
+      this.getAge(this.healthBase.birthday)
+      let visitedData = {
+        name:this.healthBase.name,
+        sex:this.healthBase.sex,
+        age:this.userAge,
+        phoneNumber:this.healthBase.phoneNumber,
+      }
+      window.localStorage.setItem('visitedData',JSON.stringify(visitedData))
     })
   },
   methods:{
     edit(){
       this.$router.push({ name: 'PatientEdit', query: {editIndex:'2',editData:JSON.parse(JSON.stringify(this.healthBase))}})
-    }
+    },
+    // 根据出生日期获取年龄
+     getAge(userBirthday){
+        let birthdays = new Date(userBirthday.replace(/-/g, "/"));
+        let d = new Date();
+        let age =
+          d.getFullYear() -
+          birthdays.getFullYear() -
+          (d.getMonth() < birthdays.getMonth() ||
+          (d.getMonth() == birthdays.getMonth() &&
+          d.getDate() < birthdays.getDate())
+            ? 1
+            : 0);
+        this.userAge = age;
+      }
   }
 };
 </script>

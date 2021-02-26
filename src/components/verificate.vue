@@ -152,9 +152,7 @@ export default {
       for (let i = 0; i < n; i++) {
         this.identifyCode += e[this.randomNum(0, e.length)];
       }
-      // this.$emit("update:changeCode", this.identifyCode);
-      this.$emit("fistCode", this.identifyCode);
-      // console.log(this.identifyCode,'222')
+      this.$emit("pictureCode", this.identifyCode);
     },
     randomNum(min, max) {
       return Math.floor(Math.random() * (max - min) + min);
