@@ -27,7 +27,6 @@ service.interceptors.response.use(
   },
   error => {
     const response = error.response.status;
-    console.log(response.data.code,'err:::::')
     switch (response) {
       case 401:
         console.log('Token已过期或有误')

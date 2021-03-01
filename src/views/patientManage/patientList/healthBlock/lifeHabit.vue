@@ -59,7 +59,7 @@ export default {
   },
   methods:{
     edit(){
-      this.$router.push({ name: 'PatientEdit', query: {editIndex:'4',editData:this.healthLife}})
+      this.$router.push({ name: 'PatientEdit', query: {editIndex:'4',editData:JSON.parse(JSON.stringify(this.healthLife))}})
     }
   }
 };

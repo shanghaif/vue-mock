@@ -8,7 +8,7 @@
         <el-button plain>编辑</el-button>
       </div>
       <div class="user_label_msg">
-        <el-form ref="lifeHabit" :model="form" label-width="100px">
+        <el-form ref="lifeHabit" label-width="100px">
           <h4>吸烟史</h4>
           <el-form-item label="是否吸烟">
             <el-radio-group v-model="smoking" v-show="true">
@@ -182,7 +182,7 @@
               type="text"
               v-model="editData.eatTypeInfo"
               v-show="editData.eatType == '6' ? true : false"
-              placeholder="饮食习惯类型"
+              placeholder="饮食习惯类型" 
               style="border: none; outline: none; margin-left: 2%"
             />
             <input
@@ -198,8 +198,7 @@
                 v-for="(item, index) in sleepCase"
                 :key="index"
                 :label="index"
-                >{{ item }}</el-radio
-              >
+                >{{ item }}</el-radio>
             </el-radio-group>
             <input
               type="text"
@@ -244,271 +243,39 @@
 <script>
 import { get, post, put } from "@/request/http";
 export default {
-  props: ["editDataList"],
+  props: ['editDataList'],
   data() {
     return {
-      form: {},
+      editData:this.editDataList,
       smoking: "",
       drinking: "",
       beginSmokingTime: "1956",
-      editData: this.editDataList,
       eatType: ["偏咸", "偏甜", "偏油", "素食", "辛辣", "嗜热食", "其他"],
       sleepCase: ["睡眠困难", "入睡困难", "早醒", "没有", "其他"],
     };
   },
-  watch: {
-    smoking(newVal, oldVal) {
-      switch (newVal) {
-        case "0":
-          this.editData.endSmokeTime = "";
-          break;
-        case "1":
-          this.editData.beginSmokeTime = "";
-          this.editData.endSmokeTime = "";
-          this.editData.smokeAmount = "";
-          break;
-        default:
-          break;
-      }
-    },
-    drinking(newVal, oldVal) {
-      switch (newVal) {
-        case "1":
-          this.editData.drinkType = "";
-          this.editData.drinkAmount = "";
-          this.editData.drinkFrequency = "";
-          break;
-        case "2":
-          this.editData.drinkType = "";
-          this.editData.drinkAmount = "";
-          this.editData.drinkFrequency = "";
-          this.editData.endDrinkTime = "";
-          break;
-        default:
-          break;
-      }
-    },
-    editData: {
-      handler(newVal, oldVal) {
-        console.log(newVal.eatType, oldVal);
-        switch (newVal.exerciseRegular) {
-          case "否":
-            this.editData.exerciseSituation = "";
-            this.editData.exerciseTime = "";
-            this.editData.exerciseType = "";
-            break;
-          default:
-            break;
-        }
-
-        switch (newVal.exerciseTime) {
-          case 0:
-            this.editData.exerciseTime = "<30分钟";
-            break;
-          case 1 :
-            this.editData.exerciseTime = "30-60分钟";
-            break;
-          case 2:
-            this.editData.exerciseTime = "每周1-2次";
-            break;
-          default:
-            break;
-        }
-      },
-      deep: true,
-    },
-  },
   created() {
-    // this.editData = this.editDataList;
-    //   是否吸烟
-    this.editData.beginSmokeTime = this.getYearData(
-      this.editData.beginSmokeTime
-    );
-    this.editData.endSmokeTime = this.getYearData(this.editData.endSmokeTime);
-    this.smoking = this.getSmoking(
-      this.editData.smokeAmount,
-      this.editData.endSmokeTime
-    );
-
-    // 是否饮酒
-    this.editData.endDrinkTime = this.getYearData(this.editData.endDrinkTime);
-    this.drinking = this.getDrinking(
-      this.editData.endDrinkTime,
-      this.editData.drinkType,
-      this.editData.drinkAmount,
-      this.editData.drinkFrequency
-    );
-
-    console.log(this.editData, "生活习惯");
-    //   每日锻炼时间
-    this.editData.exerciseTime = this.getExerciseTime(
-      this.editData.exerciseTime
-    );
-    //   饮食习惯类型
-    // this.editData.eatType = "偏甜"
-    this.editData.eatTypeInfo = this.getEatTypeInfo(this.editData.eatType);
-    this.editData.kg = this.getKg(this.editData.eatType);
-    this.editData.eatType = this.getEatType(this.editData.eatType);
-    // 睡眠请跨
-    this.editData.sleepSituationInfo = this.getSleepSituationInfo(
-      this.editData.sleepSituation
-    );
-    this.editData.hourOfDay = this.getHourOfDay(this.editData.sleepSituation);
-    this.editData.sleepSituation = this.getSleepSituation(
-      this.editData.sleepSituation
-    );
-    // 其他习惯
-    this.editData.otherRegularInfo = this.getOtherRegularInfo(
-      this.editData.otherRegular
-    );
-    this.editData.otherRegular = this.getOtherRegular(
-      this.editData.otherRegular
-    );
+    console.log(this.editData,'编辑生活习惯-')
+    this.editData.sleepSituation = this.getSleepSituation(this.editData.sleepSituation)
+    console.log(this.editData.sleepSituation)
   },
-  methods: {
-    // //   是否吸烟
-    getSmoking(smokeValue, endSmokeValue) {
-      if (smokeValue.length >= 1 && endSmokeValue.length >= 1) {
-        return "2";
-      } else if (smokeValue.length >= 1) {
-        return "0";
-      } else if (smokeValue.length <= 1 && endSmokeValue.length <= 1) {
-        return "1";
-      }
-    },
-    // 是否饮酒
-    getDrinking(endDrinkingDate, drinkType, drinkAmount, drinkFrequency) {
-      if (
-        drinkType.length >= 1 &&
-        drinkAmount.length >= 1 &&
-        drinkFrequency.length >= 1
-      ) {
-        return "0";
-      } else if (
-        drinkType.length >= 1 ||
-        drinkAmount.length >= 1 ||
-        drinkFrequency.length >= 1
-      ) {
-        return "0";
-      }
-      if (
-        drinkType.length <= 1 &&
-        drinkAmount.length <= 1 &&
-        drinkFrequency.length <= 1
-      ) {
-        return "1";
-      } else if (endDrinkingDate.length >= 1) {
-        return "2";
-      }
-    },
-    // 切割时间
-    getYearData(value) {
-      return value.split("").slice(0, 4).join("");
-    },
-    // 锻炼时间
-    getExerciseTime(value) {
-      const list = ["<30分钟", "30-60分钟", "1小时以上"];
-      let idx = list.indexOf(value);
-      return idx == -1 ? "" : idx;
-    },
-    // 饮食习惯类型
-    getEatType(value) {
-      value.split(" ");
-      let idx = this.eatType.indexOf(value.split(" ")[0]);
-      return idx == -1 ? 6 : idx;
-    },
-    getEatTypeInfo(v) {
-      v.split(" ");
-      let idx = this.eatType.indexOf(v.split(" ")[0]);
-      return idx == -1 ? v.split(" ")[0] : "";
-    },
-    getKg(v) {
-      v.split(" ");
-      let idx = v.split(" ")[1];
-      return idx !== undefined ? idx : "";
-    },
-    saveEatType() {
-      if (this.editData.eatType == "6") {
-        return this.editData.eatTypeInfo;
+  methods:{
+    getSleepSituation(val){
+      let otherData = val.split(' ')[0]
+      console.log(otherData)
+      let idx = this.sleepCase.indexOf(val)
+      if(idx == -1){
+        this.editData.sleepSituationInfo = otherData
+        return 4
       }else{
-        this.editData.eatTypeInfo = ""
-      return this.eatType[~~this.editData.eatType];
+        return  idx
       }
+      // return idx == -1 ? 4 : idx
     },
-    // 睡眠情况
-    getSleepSituation(value) {
-      value.split(" ");
-      console.log(value.split(" ")[0]);
-      let idx = this.sleepCase.indexOf(value.split(" ")[0]);
-      return idx == -1 ? 4 : idx;
-    },
-    getSleepSituationInfo(v) {
-      v.split(" ");
-      let idx = this.sleepCase.indexOf(v.split(" ")[0]);
-      return idx == -1 ? v.split(" ")[0] : "";
-    },
-    getHourOfDay(v) {
-      v.split(" ");
-      console.log(v.split(" "));
-      let idx = v.split(" ")[1];
-      return idx !== undefined ? idx : "";
-    },
-    saveSleepSituation() {
-      if (this.editData.sleepSituation == "4") {
-        return this.editData.sleepSituationInfo;
-      }
-      return this.sleepCase[~~this.editData.sleepSituation];
-    },
-    // 其他习惯
-    getOtherRegular(value) {
-      const list = ["无", "有"];
-      let idx = list.indexOf(value);
-      return idx == -1 ? 1 + "" : idx;
-    },
-    getOtherRegularInfo(v) {
-      const list = ["无", "有"];
-      let idx = list.indexOf(v);
-      return idx == -1 ? v : "";
-    },
-    saveOtherRegular() {
-      if (this.editData.otherRegular == "1") {
-        return this.editData.otherRegularInfo;
-      }
-      const list = ['无','有']
-      return list[~~this.editData.otherRegular];
-    },
-    savebBseMsg(lifeHabit) {
-      this.editData.eatType = this.saveEatType();
-      this.editData.sleepSituation = this.saveSleepSituation();
-      this.editData.otherRegular = this.saveOtherRegular();
-      this.$refs[lifeHabit].validate((valid) => {
-        if (valid) {
-          put("/health/healthLife/${this.editData.id}", {
-            beginSmokeTime: this.editData.beginSmokeTime,
-            endSmokeTime: this.editData.endSmokeTime,
-            smokeAmount: this.editData.smokeAmount,
-            drinkType: this.editData.drinkType,
-            drinkAmount: this.editData.drinkAmount,
-            drinkFrequency: this.editData.drinkFrequency,
-            endDrinkTime: this.editData.endDrinkTime,
-            exerciseRegular: this.editData.exerciseRegular,
-            exerciseSituation: this.editData.exerciseSituation,
-            exerciseTime: this.editData.exerciseTime,
-            exerciseType: this.editData.exerciseType,
-            eatType: this.editData.eatType,
-            sleepSituation: this.editData.sleepSituation,
-            otherRegular: this.editData.otherRegular
-          }).then((res) => {
-            console.log(res, this.editData,'修改生活习惯：：：：');
-            // this.$router.push("/Patientwatch");
-          });
-        } else {
-          console.log("error submit!!");
-          return false;
-        }
-      });
-    },
-  },
+    savebBseMsg(){
+      console.log(this.editDataList,this.editData)
+    }
+  }
 };
 </script>
 

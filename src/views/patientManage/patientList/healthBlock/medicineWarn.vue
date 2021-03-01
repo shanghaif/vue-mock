@@ -33,7 +33,7 @@
 
 <script>
 import { get, post } from "@/request/http";
-import { put } from '../../../../request/http';
+import { patch, put } from '../../../../request/http';
 export default {
   data() {
     return { 
@@ -51,48 +51,37 @@ export default {
       try {
         if(res.data.code == 0) {
           this.warnData = res.data.data
-          console.log(res.data.data,'服药提醒列表')
+          this.warnData.map(_=> { _.status = !!_.status; return _})
         }
       } catch (error) {
         console.log(error)
       }
     },
     warnStatusChange(val,index){
-      
         console.log( val);
        this.$confirm('确定更改状态吗？', '请谨慎操作', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
         }).then(() => {
-          put(`/health/healthDrugRemind/${val.id}`,{
-                time: val.time,
-                content: val.content,
-                status: val.status == true ? 1 : 0,
-                userId: val.userId,
-                doctorId: val.doctorId,
-          }).then((result)=>{
+          patch(`/health/healthDrugRemind/${val.id}`).then((result)=>{
             console.log(result)
-              // if(result.data.status == 200){
-              //   // this.getAllTypes()
-              //     this.$message({
-              //         type: 'success',
-              //         message: '状态修改成功!'
-              //     });
-              // }else{
-              //     this.ATypeData[index].status = !this.ATypeData[index].status
-              //     this.$message({
-              //         type: 'warning',
-              //         message: '状态修改失败!'
-              //     });
-              // }
+              if(result.data.code == 0){
+                  this.$message({
+                      type: 'success',
+                      message: '状态修改成功!'
+                  });
+              }else{
+                  this.$message({
+                      type: 'warning',
+                      message: '状态修改失败!'
+                  });
+              }
           }).catch((error)=>{
-              this.ATypeData[index].status = !this.ATypeData[index].status
               console.log(error)
           })
          
         }).catch(() => {
-            this.ATypeData[index].status = ! this.ATypeData[index].status
             this.$message({
                 type: 'info',
                 message: '已取消修改'
@@ -109,6 +98,8 @@ export default {
       padding: 3%;
     .warn_list {
         .warn_inner_bar{
+            width: 50%;
+            float: left;
             display: flex;
             padding: 2% 0;
             border-bottom: 1px solid rgba(204, 204, 255, .2);

@@ -7,7 +7,7 @@
         <p>基本信息</p>
         <el-button plain @click="edit">编辑</el-button>
       </div>
-      <div class="base_msg_container clearfix">
+      <div class="base_msg_container">
         <p><span>姓名：</span>{{ healthBase.name }}</p>
         <p><span>籍贯：</span>{{ healthBase.birthplace }}</p>
         <p><span>性别：</span>{{ healthBase.sex }}</p>
@@ -52,7 +52,7 @@ export default {
   },
   activated() {
     //基本信息
-    get("/health/healthBase/11111").then((res) => {
+    get(`/health/healthBase/${localStorage.getItem('userId')}`).then((res) => {
       this.healthBase = JSON.parse(JSON.stringify(res.data.data));
       this.getAge(this.healthBase.birthday)
       let visitedData = {
