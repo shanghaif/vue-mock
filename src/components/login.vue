@@ -213,8 +213,6 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          console.log('8888')
-          console.log(this.ruleForm.phoneNum, this.ruleForm.phone_verify_code);
           this.getToken()
         } else {
           console.log("error submit!!");

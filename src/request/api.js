@@ -1,6 +1,6 @@
 
 let httpsUrl = {    
-    "qny":'https://upload.qiniup.com/',//七牛云
+    "qnyUrl":'https://upload.qiniup.com/',//七牛云
 
 }
 

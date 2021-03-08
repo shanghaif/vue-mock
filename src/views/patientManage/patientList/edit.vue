@@ -79,7 +79,6 @@ export default {
   activated() {
     this.editIndex = this.$route.query.editIndex;
     this.editData = JSON.parse(JSON.stringify(this.$route.query.editData));
-    
   },
   methods: {
     defaultBlock(defaultVal) {

@@ -33,25 +33,25 @@
 
               <div class="family_history">
                 <h6>既往史</h6>
-                <div class="family">
+                <div class="family" v-show="healthMsg.fatherIll == '' ? false : true">
                   <p>父亲：</p>
                   <div class="family_type clearfix">
                     <p>{{healthMsg.fatherIll}}</p>
                   </div>
                 </div>
-                <div class="family">
+                <div class="family" v-show="healthMsg.motherIll == '' ? false : true">
                   <p>母亲：</p>
                   <div class="family_type clearfix">
                     <p>{{healthMsg.motherIll}}</p>
                   </div>
                 </div>
-                <div class="family">
+                <div class="family" v-show="healthMsg.siblingIll == '' ? false : true">
                   <p>兄弟姐妹：</p>
                   <div class="family_type clearfix">
                     <p>{{healthMsg.siblingIll}}</p>
                   </div>
                 </div>
-                <div class="family">
+                <div class="family" v-show="healthMsg.childIll == '' ? false : true">
                   <p>子女：</p>
                   <div class="family_type clearfix">
                     <p>{{healthMsg.childIll}}</p>
@@ -63,7 +63,7 @@
                     <p>{{healthMsg.inheritIll}}</p>
                   </div>
                 </div>
-                <div class="family">
+                <div class="family" v-show="healthMsg.disability == '' ? false : true">
                   <p>残疾情况：</p>
                   <div class="family_type clearfix">
                     <p>{{healthMsg.disability}}</p>
@@ -82,7 +82,7 @@ import { get,post } from '@/request/http'
 export default {
   data() {
     return {
-      healthMsg: null,
+      healthMsg: {}
     };
   },
   activated() {
@@ -90,15 +90,18 @@ export default {
     get(`/health/healthInfo/${localStorage.getItem('userId')}`).then(res=>{
       console.log(res,'基本信息')
       this.healthMsg = JSON.parse(JSON.stringify(res.data.data))
+      // this.healthMsg.fatherIll =  this.healthMsg.fatherIll.split('其他').join(' ')
+      // this.healthMsg.motherIll =  this.healthMsg.motherIll.split('其他').join(' ')
+      // this.healthMsg.childIll =  this.healthMsg.childIll.split('其他').join(' ')
+      // this.healthMsg.siblingIll =  this.healthMsg.siblingIll.split('其他').join(' ')
+      // this.healthMsg.disability =  this.healthMsg.disability.split('其他残疾').join(' ')
     }).catch(error => {
       console.log(error)
     })
   },
   methods:{
     edit(){
-      console.log(this.healthMsg)
       this.$router.push({ name: 'PatientEdit', query: {editIndex:'3',editData:JSON.parse(JSON.stringify(this.healthMsg))}})
-      
     }
   }
 };

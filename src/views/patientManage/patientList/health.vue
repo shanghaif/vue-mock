@@ -215,7 +215,8 @@
       </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button @click="testReportDialog = false">取 消</el-button>
-        <el-button type="primary" @click="testReportDialog = false"
+        <!-- <el-button type="primary" @click="testReportDialog = false" -->
+        <el-button type="primary" @click="upTestReport"
           >确 定</el-button
         >
       </span>
@@ -229,7 +230,9 @@ import JSONbig from "json-bigint";
 import editHealth from "./edit";
 import watch from "./watch";
 import edits from "./edit";
+import axios from "axios";
 import { get, post } from "../../../request/http";
+import {httpsUrl} from "../../../request/api"
 export default {
   components: {
     editHealth,
@@ -426,18 +429,37 @@ export default {
   },
   methods: {
     handleChange(file,fileList){
-      if(fileList.length >= 2){
-        this.hideUpload = fileList.length>=2;
+      
+      if(fileList.length >= 6){
+        this.hideUpload = fileList.length>=6;
       }
-      console.log(fileList,'上传的图片')
+      console.log(file,fileList,'上传的图片')
+      for(let item of fileList){
+        console.log(item.url)
+      }
         let formData = new FormData();
-        formData.append('file', this.$refs.invoice.files[0]);
-        formData.append('identifier', 'invoice');
-        formData.append('identifier_type', this.order.identifier+'_invoices');
-        formData.append('table', 'business');
+        formData.append('token', 'hwDcg1uTxoMZrgH541WI_Q0gq5VJWndrkvUm7Wb0:VT3ZWZrlI62f0GII9ZDFQeT0QN8=:eyJzY29wZSI6ImtlbXVfamlhbmdrYW5nX3NoYW5nY2hlbmciLCJyZXR1cm5Cb2R5Ijoie1wia2V5XCI6XCIkKGtleSlcIixcImhhc2hcIjpcIiQoZXRhZylcIixcImJ1Y2tldFwiOlwiJChidWNrZXQpXCIsXCJmc2l6ZVwiOiQoZnNpemUpfSIsImRlYWRsaW5lIjoxNjQyNTYwMDU4fQ==');
+        formData.append('key', 'hwDcg1uTxoMZrgH541WI_Q0gq5VJWndrkvUm7Wb0');
+        formData.append('file', file.url);
+          console.log(formData,'formData')
         let config = {
             'Content-Type': 'multipart/form-data',
         };
+        const axiosInstance = axios.create({withCredentials: false});
+        axiosInstance.post(httpsUrl.qnyUrl, formData, config)
+				.then(res => {
+					console.log(res, "上传图片");
+					// this.Addbusiness.coverUrl =
+					// 	httpsUrl.sydUrl + `${res.data.key}`;
+					// this.fullscreenLoading = false;
+					// this.$message({
+					// 	type: "success",
+					// 	message: "上传图片成功!"
+					// });
+				})
+				.catch(err => {
+					console.log("err", err);
+				});
       
     },
     imageUpload(f){
@@ -446,6 +468,16 @@ export default {
     beforeAvatarUpload(f){
       console.log('8888')
       console.log(f,'sss')
+    },
+    upTestReport(){
+      // this.testReportDialog = false
+      // post(`/health/healthReport/`,{
+      //   testReportUrl:,
+      //   title:'',
+      //   userId:localStorage.getItem('userId')
+      // }).then(res => {
+
+      // })
     },
     // 上传检测报告
     handleRemove(file) {

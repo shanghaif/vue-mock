@@ -15,7 +15,8 @@ import VideoPlayer from 'vue-video-player'
 import 'vue-video-player/src/custom-theme.css'
 import 'video.js/dist/video-js.css'
 
-// 处理返回的id大于18位，尾数为0
+// 七牛云
+import * as qiniu from 'qiniu-js';
 
 
 // 健康档案的sidebar
@@ -26,6 +27,8 @@ import healthBar from './views/patientManage/patientList/health'
 
 Vue.use(ElementUI)
 Vue.use(VueCookies)
+Vue.use(qiniu);
+
 
 //配置默认过期日期:7天
 VueCookies.config("7d");

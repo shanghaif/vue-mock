@@ -13,23 +13,23 @@
         <div class="life_left">
           <div class="historyBlock smoking_history">
             <h6>吸烟史</h6>
-            <p><span>开始吸烟时间：</span>{{ healthLife.beginSmokeTime }}</p>
-            <p><span>吸烟量：</span>{{ healthLife.smokeAmount }}</p>
+            <p v-show="healthLife.beginSmokeTime == '' ? false : true"><span>开始吸烟时间：</span>{{ healthLife.beginSmokeTime }}</p>
+            <p v-show="healthLife.smokeAmount == '' ? false : true"><span>吸烟量：</span>{{ healthLife.smokeAmount }}</p>
           </div>
 
           <div class="historyBlock smoking_history">
             <h6>饮酒史</h6>
-            <p><span>饮酒类型：</span>{{ healthLife.drinkType }}</p>
-            <p><span>饮酒量：</span>{{ healthLife.drinkAmount }}</p>
-            <p><span>饮酒频率：</span>{{ healthLife.drinkFrequency }}</p>
+            <p v-show="healthLife.drinkType == '' ? false : true"><span>饮酒类型：</span>{{ healthLife.drinkType }}</p>
+            <p v-show="healthLife.drinkAmount == '' ? false : true"><span>饮酒量：</span>{{ healthLife.drinkAmount }}</p>
+            <p v-show="healthLife.drinkFrequency == '' ? false : true"><span>饮酒频率：</span>{{ healthLife.drinkFrequency }}</p>
           </div>
         </div>
         <div class="life_right">
           <div class="historyBlock smoking_history">
             <h6>体育锻炼情况</h6>
-            <p><span>是否锻炼：</span>{{ healthLife.exerciseRegular }}</p>
-            <p><span>锻炼情况：</span>{{ healthLife.exerciseSituation }}</p>
-            <p><span>每次锻炼时间：</span>{{ healthLife.exerciseTime }}</p>
+            <p v-show="healthLife.exerciseRegular == '' ? false : true"><span>是否锻炼：</span>{{ healthLife.exerciseRegular }}</p>
+            <p v-show="healthLife.exerciseSituation == '' ? false : true"><span>锻炼情况：</span>{{ healthLife.exerciseSituation }}</p>
+            <p v-show="healthLife.exerciseTime == '' ? false : true"><span>每次锻炼时间：</span>{{ healthLife.exerciseTime }}</p>
             <p><span>锻炼类型：</span>{{ healthLife.exerciseType }}</p>
             <p><span>饮食习惯类型：</span>{{ healthLife.eatType }}</p>
             <p><span>睡眠情况：</span>{{ healthLife.sleepSituation }}</p>
@@ -47,6 +47,7 @@ export default {
   data() {
     return {
       healthLife: {},
+      isShow:true
     };
   },
   activated() {
